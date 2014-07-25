@@ -1,0 +1,90 @@
+﻿<Window x:Class="WpfHomeBudget.DocumentMoveDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"            
+    xmlns:common="clr-namespace:WpfHomeBudget.Common" 
+        xmlns:this="clr-namespace:WpfHomeBudget"
+    Title="Перемещение" Background="{StaticResource DefaultWindowBackgroundBrush}" Height="300" Width="455" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png" ResizeMode="NoResize" ShowInTaskbar="False" ShowActivated="True">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <this:WindowCaption DockPanel.Dock="Top" />
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Grid.ColumnDefinitions>                
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!-- Левая панель с календарем и отчетом по счетам -->
+            <!-- Панель с фильтрами и документами -->
+            <DockPanel Name="pnlMain" LastChildFill="True" Grid.Column="1" Grid.Row="0">
+                <!-- Панель кнопок-->
+                <Border Margin="1" DockPanel.Dock="Bottom" >
+                    <StackPanel Margin="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button Name="btnOk" Margin="0 4 6 0" Height="22" Width="50" Click="btnOk_Click" IsDefault="True">
+                            <TextBlock>Ok</TextBlock>
+                        </Button>
+                        <Button Name="btnCancel" Margin="0 4 6 0" Height="22" Width="50" Click="btnCancel_Click" IsCancel="True">
+                            <TextBlock>Отмена</TextBlock>
+                        </Button>
+                    </StackPanel>                    
+                </Border>
+                <Border Margin="1" >
+                    <StackPanel Orientation="Vertical">
+                        <c:DatePicker Name="txtDate" Margin="4" Width="120" HorizontalAlignment="Left"></c:DatePicker>
+                        <TextBlock Margin="10 0 10 0" >Списать со счета</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label Width="55" HorizontalContentAlignment="Right" >Счет</Label>
+                                <ComboBox Name="cbxAccountFrom" Width="120" SelectionChanged="cbxAccountFrom_SelectionChanged"></ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label HorizontalContentAlignment="Right" >Валюта</Label>
+                                <ComboBox Name="cbxCurrencyFrom" Width="60" ></ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label HorizontalContentAlignment="Right" >Сумма</Label>
+                                <TextBox Name="txtSummaFrom" Width="80" common:TextBoxMaskBehavior.Mask="Decimal" TextChanged="txtSummaFrom_TextChanged"></TextBox>
+                            </DockPanel>
+                        </StackPanel>
+                        <TextBlock Margin="10 0 10 0">Зачислить на счет</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label Width="55" HorizontalContentAlignment="Right" >Счет</Label>
+                                <ComboBox Name="cbxAccountTo" Width="120" SelectionChanged="cbxAccountTo_SelectionChanged"></ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label HorizontalContentAlignment="Right" >Валюта</Label>
+                                <ComboBox Name="cbxCurrencyTo" Width="60" ></ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4" LastChildFill="True">
+                                <Label HorizontalContentAlignment="Right" >Сумма</Label>
+                                <TextBox Name="txtSummaTo" Width="80" common:TextBoxMaskBehavior.Mask="Decimal" ></TextBox>
+                            </DockPanel>
+                        </StackPanel>
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="100" HorizontalContentAlignment="Right" >Тип документа</Label>
+                            <ComboBox Name="cbxDocType" ></ComboBox>
+                        </DockPanel>
+
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="100" HorizontalContentAlignment="Right" >Примечание</Label>
+                            <TextBox Name="txtNote" ></TextBox>
+                        </DockPanel>
+
+                        <DockPanel Margin="4" LastChildFill="True"></DockPanel>
+                    </StackPanel>
+                </Border>
+
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

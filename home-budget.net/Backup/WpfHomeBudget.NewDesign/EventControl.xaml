@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="WpfHomeBudget.EventControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"  >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>                
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border>
+        <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" Background="{StaticResource MessageBackgroundBrush}">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Height="20" Width="60" Margin="4" Name="btnOk" Click="btnOk_Click">Ок</Button>
+                <Button Height="20" Width="60" Margin="4" Name="btnIgnore" Click="btnIgnore_Click">Позже</Button>
+                <Button Height="20" Width="60" Margin="4" Name="btnDelete" Click="btnDelete_Click">Хватит</Button>
+                <Button Height="20" Width="60" Margin="4" Name="btnDocument" Click="btnDocument_Click">Документ</Button>
+            </StackPanel>
+            <TextBlock Name="txtMessage" VerticalAlignment="Center" TextWrapping="Wrap" Margin="20 0 0 0"></TextBlock>
+        </DockPanel>
+    </Border>
+</UserControl>

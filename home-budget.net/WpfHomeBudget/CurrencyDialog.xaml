@@ -1,0 +1,72 @@
+﻿<Window x:Class="WpfHomeBudget.CurrencyDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"        
+    Title="Валюта" Height="234.421" Width="248.864" Background="Black" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png" ShowInTaskbar="False" ResizeMode="NoResize">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+                <ResourceDictionary Source="Themes/TextBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="2">
+            <DockPanel Name="pnlCaption" Height="22" LastChildFill="True" Background="{StaticResource ButtonBackgroundBrush}">
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" FontWeight="Bold" Click="btnCancel_Click">X</Button>
+                <Label Name="lblCaption" Foreground="White" Height="25" HorizontalContentAlignment="Center" FontWeight="Bold" VerticalContentAlignment="Center" PreviewMouseDown="lblCaption_PreviewMouseDown" PreviewMouseMove="lblCaption_PreviewMouseMove" PreviewMouseUp="lblCaption_PreviewMouseUp">
+                    <TextBlock>Валюта</TextBlock>
+                </Label>
+            </DockPanel>
+        </Border>
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" Background="Transparent" LastChildFill="True">
+                    <Border DockPanel.Dock="Bottom">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="40">
+                            <Button Name="btnOk" Template="{DynamicResource GlassButton}" Height="22" Width="70" Margin="8" Click="btnOk_Click" IsDefault="True">
+                                <TextBlock>Ок</TextBlock>
+                            </Button>
+                            <Button Name="btnCancel" Template="{DynamicResource GlassButton}" Height="22" Width="70" Margin="8" Click="btnCancel_Click" IsCancel="True">
+                                <TextBlock>Отмена</TextBlock>
+                            </Button>
+                        </StackPanel>                        
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <DockPanel LastChildFill="True" Margin="4">
+                                <TextBox DockPanel.Dock="Right" Name="txtCode" Width="60" MaxLength="4"></TextBox>
+                                <Label Foreground="White" HorizontalAlignment="Right">Код валюты</Label>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True" Margin="4">
+                                <TextBox DockPanel.Dock="Right" Name="txtISO" Width="60" MaxLength="4"></TextBox>
+                                <Label Foreground="White" HorizontalAlignment="Right">Код ISO</Label>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True" Margin="4">
+                                <TextBox DockPanel.Dock="Right" Name="txtShortName" Width="60" MaxLength="10"></TextBox>
+                                <Label Foreground="White" HorizontalAlignment="Right">Сокращение</Label>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True" Margin="4" HorizontalAlignment="Right">
+                                <Label Foreground="White" HorizontalAlignment="Right">Символ</Label>
+                                <TextBox xml:lang="ru-ru" Name="txtSymbol" Width="60" MaxLength="4"></TextBox>
+                                <CheckBox Margin="6 0 4 0" VerticalAlignment="Center" Name="cbxSymbolPlace" >
+                                    <TextBlock Foreground="White">Перед сумой</TextBlock> 
+                                </CheckBox>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                </DockPanel>
+            </Border>
+            <!-- Панель с фильтрами и документами -->
+        </Grid>
+    </DockPanel>
+</Window>

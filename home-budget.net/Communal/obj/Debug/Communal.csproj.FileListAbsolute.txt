@@ -1,0 +1,9 @@
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Communal\bin\Debug\Communal.dll
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Communal\bin\Debug\Communal.pdb
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Communal\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Communal\obj\Debug\Communal.dll
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Communal\obj\Debug\Communal.pdb
+D:\development\Barma\Production\HomeBudget.WPF.III\Communal\bin\Debug\Communal.dll
+D:\development\Barma\Production\HomeBudget.WPF.III\Communal\bin\Debug\Communal.pdb
+D:\development\Barma\Production\HomeBudget.WPF.III\Communal\obj\Debug\Communal.dll
+D:\development\Barma\Production\HomeBudget.WPF.III\Communal\obj\Debug\Communal.pdb

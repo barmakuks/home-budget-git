@@ -1,0 +1,70 @@
+﻿<Window x:Class="WpfHomeBudget.EventDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+        xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"
+        xmlns:this="clr-namespace:WpfHomeBudget"
+    Title="Напоминание" Height="296" Width="408" Background="{StaticResource DefaultWindowBackgroundBrush}" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png" ShowInTaskbar="False" ResizeMode="NoResize" >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <this:WindowCaption DockPanel.Dock="Top" />
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Border Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" LastChildFill="True">
+                    <Border DockPanel.Dock="Bottom">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="40">
+                            <Button Name="btnOk" Height="22" Width="70" Margin="8" Click="btnOk_Click" IsDefault="True">
+                                <TextBlock>Ок</TextBlock>
+                            </Button>
+                            <Button Name="btnCancel" Height="22" Width="70" Margin="8" Click="btnCancel_Click" IsCancel="True">
+                                <TextBlock>Отмена</TextBlock>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+                                <Label >Дата напоминания</Label>
+                                <c:DatePicker Name="dateDate" Width="160" ></c:DatePicker>                                
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">                                
+                                <Label >Периодичность</Label>
+                                <ComboBox Name="cbxPeriodicity" Width="150" SelectionChanged="cbxPeriodicity_SelectionChanged"></ComboBox>                                
+                                <TextBox Name="txtPeriodValue" Margin="4 0 0 0" Width="20"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+                                <Label VerticalContentAlignment="Top">Текст напоминания</Label>
+                                <TextBox Name="txtText" Width="265" Height="50"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+                                <Label >Длительность показа сообщения</Label>
+                                <TextBox Name="txtDuration" Width="20"></TextBox>
+                                <Label>дней</Label>
+                            </StackPanel>
+                            <Border>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                                    <Label HorizontalAlignment="Center">При получениии напоминания предложить создать документ:</Label>
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="4 10 4 4">
+                                        <Label>Тип документа не указан</Label>
+                                        <Button Height="20" VerticalAlignment="Bottom">Указать документ</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </DockPanel>
+            </Border>
+            <!-- Панель с фильтрами и документами -->
+        </Grid>
+    </DockPanel>
+</Window>

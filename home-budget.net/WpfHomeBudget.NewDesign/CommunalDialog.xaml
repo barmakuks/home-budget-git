@@ -1,0 +1,80 @@
+﻿<Window x:Class="WpfHomeBudget.CommunalDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:this="clr-namespace:WpfHomeBudget"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"        
+    xmlns:common="clr-namespace:WpfHomeBudget.Common"
+    Title="Счета" Height="338" Width="498" Background="{StaticResource DefaultWindowBackgroundBrush}" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterOwner" Icon="/WpfHomeBudget;component/Resources/Icon.png" ShowInTaskbar="False" ResizeMode="NoResize">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+  <Border>
+    <DockPanel LastChildFill="True">
+
+      <!-- Заголовок с кнопками -->
+      <this:WindowCaption DockPanel.Dock="Top"/>
+      <!-- Основная панель -->
+      <Grid  Margin="1">
+        <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+          <DockPanel Name="pnlLeft" Background="Transparent" LastChildFill="True">
+            <Border DockPanel.Dock="Bottom">
+              <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="40">
+                <Button Name="btnOk" Height="22" Width="70" Margin="8" Click="btnOk_Click" IsDefault="True">
+                  <TextBlock>Ок</TextBlock>
+                </Button>
+                <Button Name="btnCancel" Height="22" Width="70" Margin="8" Click="btnCancel_Click" IsCancel="True">
+                  <TextBlock>Отмена</TextBlock>
+                </Button>
+              </StackPanel>
+            </Border>
+            <Border BorderThickness="1" Grid.Column="0" Grid.Row="0">
+              <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4 8 4 4">
+                  <Label >Дата</Label>
+                  <c:DatePicker Width="120" Name="dateDate"/>
+                  <Label HorizontalAlignment="Right">Вид услуги</Label>
+                  <ComboBox Name="cbxType" Width="200"  SelectionChanged="cbxPeriod_SelectionChanged" ></ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4 8 4 4" >
+                  <Label HorizontalAlignment="Right">Период</Label>
+                  <ComboBox Name="cbxPeriodMonth" Width="120" Margin="8 0 8 0" SelectionChanged="cbxPeriod_SelectionChanged" ></ComboBox>
+                  <ComboBox Name="cbxPeriodYear" Width="80" SelectionChanged="cbxPeriod_SelectionChanged" ></ComboBox>
+                  <Label HorizontalAlignment="Right" Margin="8 0 8 0">Тариф</Label>
+                  <TextBox Name="txtTariff" Width="60" common:TextBoxMaskBehavior.Mask="Decimal"></TextBox>
+                  <Label HorizontalAlignment="Right" Width="53" Margin="8 0 8 0" Name="lblTariff">кВт/ч</Label>
+                </StackPanel>
+                <Label Margin="8 8 200 0" HorizontalAlignment="Right"> Показания счетчика :</Label>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+                  <Label HorizontalAlignment="Right">До</Label>
+                  <TextBox Name="txtCounterBefore" Width="60" common:TextBoxMaskBehavior.Mask="Integer" TextChanged="txtCounterAfter_TextChanged"></TextBox>
+                  <Label HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="50">После</Label>
+                  <TextBox Name="txtCounterAfter" Width="60" common:TextBoxMaskBehavior.Mask="Integer" TextChanged="txtCounterAfter_TextChanged"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4 0 4 4">
+                  <Label HorizontalAlignment="Right">Разница</Label>
+                  <TextBox Name="txtCounter" Width="60" common:TextBoxMaskBehavior.Mask="Integer" TextChanged="txtCounter_TextChanged"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4 8 4 4">
+                  <Label HorizontalAlignment="Right">Начисление от коммунального предприятия</Label>
+                  <TextBox Name="txtSummaAlt" Width="60" common:TextBoxMaskBehavior.Mask="Decimal" ></TextBox>
+                  <Label HorizontalAlignment="Right">Сумма</Label>
+                  <TextBox Name="txtSumma" Width="60" common:TextBoxMaskBehavior.Mask="Decimal" ></TextBox>
+                </StackPanel>
+              </StackPanel>
+            </Border>
+
+          </DockPanel>
+        </Border>
+        <!-- Панель с фильтрами и документами -->
+      </Grid>
+
+    </DockPanel>
+  </Border>
+</Window>

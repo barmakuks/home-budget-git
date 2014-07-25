@@ -1,0 +1,48 @@
+﻿<Window x:Class="WpfHomeBudget.InputDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"        
+        xmlns:this="clr-namespace:WpfHomeBudget"
+    Background="{StaticResource DefaultWindowBackgroundBrush}" Height="138" Width="248.864" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png" ShowInTaskbar="False" ResizeMode="NoResize">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <this:WindowCaption x:Name="wincapcaption" DockPanel.Dock="Top" />
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Border Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" LastChildFill="True">
+                    <Border DockPanel.Dock="Bottom">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="40">
+                            <Button Name="btnOk" Height="22" Width="70" Margin="8" Click="btnOk_Click" IsDefault="True">
+                                <TextBlock>Ок</TextBlock>
+                            </Button>
+                            <Button Name="btnCancel" Height="22" Width="70" Margin="8" Click="btnCancel_Click" IsCancel="True">
+                                <TextBlock>Отмена</TextBlock>
+                            </Button>
+                        </StackPanel>                        
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <DockPanel LastChildFill="True" Margin="4">
+                                <TextBox DockPanel.Dock="Right" Name="txtValue" Width="129"></TextBox>
+                                <Label Name="lblText" HorizontalAlignment="Right" Width="82">Код валюты</Label>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                </DockPanel>
+            </Border>
+            <!-- Панель с фильтрами и документами -->
+        </Grid>
+    </DockPanel>
+</Window>

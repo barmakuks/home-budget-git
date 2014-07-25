@@ -1,0 +1,86 @@
+﻿<Window x:Class="WpfHomeBudget.AccountsListWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"        
+    Title="Счета" Height="300" Width="486" Background="Black" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png" Loaded="Window_Loaded">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="2">
+            <DockPanel Name="pnlCaption" Height="22" LastChildFill="True" Background="{StaticResource ButtonBackgroundBrush}">
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" FontWeight="Bold" Click="Button_Click_2" IsCancel="True">X</Button>
+                <Label Name="lblCaption" Foreground="White" Height="25" HorizontalContentAlignment="Center" FontWeight="Bold" VerticalContentAlignment="Center" PreviewMouseDown="lblCaption_PreviewMouseDown" PreviewMouseMove="lblCaption_PreviewMouseMove" PreviewMouseUp="lblCaption_PreviewMouseUp">
+                    <TextBlock>Счета</TextBlock>
+                </Label>
+            </DockPanel>
+        </Border>
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250*" />
+                <ColumnDefinition Width="86" />
+            </Grid.ColumnDefinitions>
+            <!-- Левая панель с календарем и отчетом по счетам -->
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" Background="Transparent" LastChildFill="True">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ListBox x:Name="itemsAccounts" MouseDoubleClick="itemsAccounts_MouseDoubleClick">                            
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                            <Label FontFamily="Tahoma" Name="lblBank" BorderThickness="1" Width ="150" Content="{Binding Bank}" />
+                                            <Label FontFamily="Tahoma" Name="lblName" BorderThickness="1" Width="150"  Content="{Binding Name}" />
+                                            <Label FontFamily="Tahoma" Name="lblCurrency" BorderThickness="1"  Width="50" Content="{Binding DefaultCurrencyName}" />
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsActive}" Value="false">
+                                            <Setter Property="Foreground" TargetName="lblBank" Value="Gray"/>
+                                            <Setter Property="Foreground" TargetName="lblName" Value="Gray"/>
+                                            <Setter Property="Foreground" TargetName="lblCurrency" Value="Gray"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>            
+            <!-- Панель с фильтрами и документами -->
+            <DockPanel Name="pnlMain" Background="Transparent" LastChildFill="True" Grid.Column="1" Grid.Row="0">
+                <!-- Панель кнопок-->
+                <Border Margin="1" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="3">
+                    <StackPanel Margin="6" Width="Auto" Orientation="Vertical" HorizontalAlignment="Left">                        
+                        <Button Name="btnAdd" Template="{DynamicResource GlassButton}" Margin="0 4 0 0" Height="22" Width="70" Click="btnAdd_Click">
+                            <TextBlock>Добавить</TextBlock>
+                        </Button>
+                        <Button Name="btnEdit" Template="{DynamicResource GlassButton}" Margin="0 4 0 0" Height="22" Width="70" Click="btnEdit_Click">
+                            <TextBlock>Изменить</TextBlock>
+                        </Button>
+                        <Button Name="btnDelete" Template="{DynamicResource GlassButton}" Margin="0 4 0 0" Height="22" Width="70" Click="btnDelete_Click">
+                            <TextBlock>Удалить</TextBlock>
+                        </Button>
+                        <Button Name="btnUp" Template="{DynamicResource GlassButton}" Margin="0 24 0 0" Height="22" Width="40" Click="btnUp_Click">
+                            <TextBlock>Вверх</TextBlock>
+                        </Button>
+                        <Button Name="btnDown" Template="{DynamicResource GlassButton}" Margin="2 4 0 0" Height="22" Width="40" Click="btnDown_Click">
+                            <TextBlock>Вниз</TextBlock>
+                        </Button>
+
+                    </StackPanel>
+                </Border>
+
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

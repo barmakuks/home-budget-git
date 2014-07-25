@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="ListBoxItem">
+        <!--<Setter Property="Height" Value="24"></Setter> -->
+        <Style.Resources>            
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource HighlightColor}"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{StaticResource HighlightColor}"/>
+        </Style.Resources>
+    </Style>
+    <Style x:Key="AccountBalanceItem" TargetType="StackPanel">
+        <Setter Property="Height" Value="100"/>
+    </Style>
+    <Style x:Key="AccountBalanceName" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="AccountBalanceAmount" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+    <Style x:Key="ChangeBackgroundStyle"  TargetType="{x:Type ItemsControl}">
+        <Style.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter Property="Background" Value="{StaticResource BalanceBrush}"></Setter>
+            </Trigger>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                <Setter Property="Background" Value="{StaticResource BalanceAltBrush}"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

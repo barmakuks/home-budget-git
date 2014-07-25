@@ -1,0 +1,14 @@
+D:\Work\Prоj.Proba\WpfHomeBudget\Kernel\bin\Debug\Kernel.dll
+D:\Work\Prоj.Proba\WpfHomeBudget\Kernel\bin\Debug\Kernel.pdb
+D:\Work\Prоj.Proba\WpfHomeBudget\Kernel\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\Prоj.Proba\WpfHomeBudget\Kernel\obj\Debug\Kernel.dll
+D:\Work\Prоj.Proba\WpfHomeBudget\Kernel\obj\Debug\Kernel.pdb
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Kernel\bin\Debug\Kernel.dll
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Kernel\bin\Debug\Kernel.pdb
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Kernel\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Kernel\obj\Debug\Kernel.dll
+D:\Work\Proj\VisualStudio.NET\HomeBudget.WPF.III\Kernel\obj\Debug\Kernel.pdb
+D:\development\Barma\Production\HomeBudget.WPF.III\Kernel\bin\Debug\Kernel.dll
+D:\development\Barma\Production\HomeBudget.WPF.III\Kernel\bin\Debug\Kernel.pdb
+D:\development\Barma\Production\HomeBudget.WPF.III\Kernel\obj\Debug\Kernel.dll
+D:\development\Barma\Production\HomeBudget.WPF.III\Kernel\obj\Debug\Kernel.pdb

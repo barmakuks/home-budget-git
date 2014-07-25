@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="WpfHomeBudget.DocumentGrid" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:this="clr-namespace:WpfHomeBudget"
+             Width="Auto" Height="Auto">
+    <!-- Подключение файлов с ресурсами-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+                <ResourceDictionary Source="Themes/DataGridStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <c:DataGrid x:Name="grdDocuments" x:FieldModifier="public" AutoGenerateColumns="False" SelectionUnit="FullRow" RowHeaderWidth="0" MouseDoubleClick="grdDocuments_MouseDoubleClick" MouseRightButtonDown="grdDocuments_MouseRightButtonDown" SelectionChanged="grdDocuments_SelectionChanged" VerticalContentAlignment="Stretch">
+            <c:DataGrid.Resources>
+                <this:AccountColorConverter x:Key="AccountColorConverter" />
+                <this:DocTypeColorConverter x:Key="DocTypeColorConverter"/>
+            </c:DataGrid.Resources>
+            <c:DataGrid.Columns>
+                <c:DataGridTextColumn IsReadOnly="True" Visibility="Hidden" Binding="{Binding Id}" CanUserSort="False" />
+                <c:DataGridTextColumn IsReadOnly="True" MaxWidth="22" CellStyle="{StaticResource CenterCellStyle}"  Binding="{Binding DayOfWeek}" CanUserSort="False" CanUserResize="False" />
+                <c:DataGridTextColumn Header="Дата" IsReadOnly="True" CellStyle="{StaticResource CenterCellStyle}" Width="70" Binding="{Binding Path=DocDate, StringFormat=dd.MM.yyyy}"/>
+                <c:DataGridTemplateColumn Header="Назначение" IsReadOnly="True" Width="120">
+                    <c:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="4 0 4 0" Text="{Binding DocType.Name}" Foreground="{Binding Path=DocType.Sign, Converter={StaticResource DocTypeColorConverter}}"></TextBlock>
+                        </DataTemplate>
+                    </c:DataGridTemplateColumn.CellTemplate>
+                </c:DataGridTemplateColumn>
+                <c:DataGridTextColumn Header="Приход" IsReadOnly="True" Width="75" CellStyle="{StaticResource RightCellStyle}"  Binding="{Binding Debit.Amount.AsMoney}" CanUserSort="False" />
+                <c:DataGridTextColumn Header="Расход" IsReadOnly="True" Width="75" CellStyle="{StaticResource RightCellStyle}"  Binding="{Binding Credit.Amount.AsMoney}" CanUserSort="False" />
+                <c:DataGridTemplateColumn Header="Сч. прих." IsReadOnly="True" Width="80" CanUserSort="False">
+                    <c:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="4 0 4 0" Text="{Binding Debit.Account}" Foreground="{Binding Path=Debit.Account.ForegroundColor, Converter={StaticResource AccountColorConverter}}"></TextBlock>
+                        </DataTemplate>
+                    </c:DataGridTemplateColumn.CellTemplate>
+                </c:DataGridTemplateColumn>
+                <c:DataGridTemplateColumn Header="Сч. расх." IsReadOnly="True" Width="80" CanUserSort="False">
+                    <c:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="4 0 4 0" Text="{Binding Credit.Account}" Foreground="{Binding Path=Credit.Account.ForegroundColor, Converter={StaticResource AccountColorConverter}}"></TextBlock>
+                        </DataTemplate>
+                    </c:DataGridTemplateColumn.CellTemplate>
+                </c:DataGridTemplateColumn>
+                <c:DataGridTextColumn Header="Магазин" IsReadOnly="True" Width="60" Binding="{Binding Shop}" CanUserSort="False" />
+                <c:DataGridTextColumn Header="Прим." IsReadOnly="True" Width="120" Binding="{Binding Note}"  CanUserSort="False" />
+            </c:DataGrid.Columns>
+        </c:DataGrid>
+    </DockPanel>
+</UserControl>

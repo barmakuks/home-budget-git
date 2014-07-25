@@ -1,0 +1,213 @@
+﻿<Window x:Class="WpfHomeBudget.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"
+    xmlns:this="clr-namespace:WpfHomeBudget"
+    Title="Hello this fucking world!!!" Height="600" Width="970" Background="Black" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/WpfHomeBudget;component/Resources/cash_register.png">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+                <ResourceDictionary Source="Themes/DataGridStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ComboBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>            
+        </ResourceDictionary>        
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">        
+        <!-- Заголовок с кнопками -->
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="2">
+            <DockPanel Name="pnlCaption" Height="22" LastChildFill="True" Background="{StaticResource ButtonBackgroundBrush}">
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" Click="BtnClose_Click" FontWeight="Bold">X</Button>
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" Click="BtnMaximize_Click" FontWeight="Bold">¯</Button>
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" Click="BtnMinimize_Click" FontWeight="Bold">_</Button>
+                <Label Name="lblCaption" Foreground="White" Height="25" HorizontalContentAlignment="Center" FontWeight="Bold" VerticalContentAlignment="Center" MouseDoubleClick="pnlCaption_MouseDown" PreviewMouseDown="lblCaption_PreviewMouseDown" PreviewMouseMove="lblCaption_PreviewMouseMove" PreviewMouseUp="lblCaption_PreviewMouseUp">
+                    <TextBlock>Hello this fucking world</TextBlock> 
+                </Label>
+            </DockPanel>
+        </Border>
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="176*" />
+            </Grid.ColumnDefinitions>
+            <!-- Левая панель с календарем и отчетом по счетам -->
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" Background="Transparent" LastChildFill="True">
+                    <c:Calendar DockPanel.Dock="Top" Name="dateAccount" SelectionMode="SingleDate" MouseDoubleClick="dateAccount_MouseDoubleClick"/>
+                    <Label DockPanel.Dock="Top" Name="lblBalanceCaption" Foreground="White" HorizontalContentAlignment="Center" FontSize="12">Баланс счетов на 21/10/2010</Label>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl Name="itemsAccountBalance" Background="White" AlternationCount="2">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="0.3" BorderBrush="Black" >                                        
+                                        <Grid Name="yahoo">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Margin="5 2 5 2" Grid.Column="0" Text="{Binding Account}" Style="{StaticResource AccountBalanceName}"/>
+                                            <Grid HorizontalAlignment="Right" Grid.Column="1">
+                                                <ItemsControl ItemsSource="{Binding Path=Balance}" Width="80">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                                <TextBlock Margin="5 2 5 2" Text="{Binding Path=.}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="{StaticResource BalanceBrush}" TargetName="yahoo"></Setter>
+                                        </Trigger>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="{StaticResource BalanceAltBrush}" TargetName="yahoo"></Setter>
+                                        </Trigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <GridSplitter Height="Auto" Name="gridSplitter1" Width="2" Background="Transparent" />
+            <!-- Панель с фильтрами и документами -->
+            <DockPanel Name="pnlMain" Background="Transparent" LastChildFill="True" Grid.Column="1" Grid.Row="0">
+                <!-- Панель кнопок-->
+                <Border Margin="1" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="3">
+                    <StackPanel Margin="2" Height="26" Orientation="Horizontal">
+                        <Button Template="{DynamicResource GlassButton}" Height="22" Width="50" Name="btnAccounts" Click="btnAccounts_Click"> 
+                            <TextBlock>Счета</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="4 0 0 0" Height="22" Width="50" Name="btnCurrency" Click="btnCurrency_Click">
+                            <TextBlock>Валюта</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="60 0 0 0" Height="22" Width="100" Name="btnDebit" Click="btnDebit_Click">
+                            <TextBlock>Новые доходы</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="4 0 0 0" Height="22" Width="100" Name="btnCredit" Click="btnCredit_Click">
+                            <TextBlock>Новые расходы</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="4 0 0 0" Height="22" Width="100" Name="btnMovement" Click="btnMovement_Click">
+                            <TextBlock>Перемещение</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="12 0 0 0" Height="22" Width="80" Name="btnEdit" Click="btnEdit_Click">
+                            <TextBlock>Изменить</TextBlock>
+                        </Button>
+                        <Button Template="{DynamicResource GlassButton}" Margin="12 0 0 0" Height="22" Width="80" Name="btnDelete" Click="btnDelete_Click">
+                            <TextBlock>Удалить</TextBlock>
+                        </Button>
+
+                    </StackPanel>
+                </Border>
+                
+                <!-- Панель фильтров -->
+                <Border Margin="1" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="3">
+                    <Canvas Name="pnlFilter" Height="48">
+                        <Label Canvas.Top="2" Canvas.Left="4" Height="23.277" Name="label2" Width="96" Foreground="White">Начальная дата</Label>
+                        <Label Canvas.Top="2" Canvas.Left="180" Height="23.277" Name="label3" Foreground="White" Width="86">Конечная дата</Label>
+                        <Label Canvas.Top="2" Canvas.Left="95" Height="23.277" Name="lblMinDate" FontWeight="Bold" Foreground="White" Width="83" >25/15/2009</Label>
+                        <Label Canvas.Top="2" Canvas.Left="265" FontWeight="Bold" Height="23.277" Name="lblMaxDate" Foreground="White" MinWidth="80" Width="79">25/15/2009</Label>
+                        <Label Canvas.Left="4" Canvas.Top="24" Height="23.277" Name="label1" Width="84" Foreground="White" >Диапазон дат</Label>
+                        <ComboBox Canvas.Left="90" Canvas.Top="24" Height="21" Width="120" Name="cbxPeriod" SelectionChanged="cbxPeriod_SelectionChanged">
+                            <ComboBoxItem>Сегодня</ComboBoxItem>
+                            <ComboBoxItem>Вчера</ComboBoxItem>
+                            <ComboBoxItem>Эта неделя</ComboBoxItem>
+                            <ComboBoxItem>Прошлая неделя</ComboBoxItem>
+                            <ComboBoxItem>Этот месяц</ComboBoxItem>
+                            <ComboBoxItem>Прошлый месяц</ComboBoxItem>
+                            <ComboBoxItem>Этот квартал</ComboBoxItem>
+                            <ComboBoxItem>Прошлый квартал</ComboBoxItem>
+                            <ComboBoxItem>Этот год</ComboBoxItem>
+                            <ComboBoxItem>Прошлый год</ComboBoxItem>
+                            <ComboBoxItem>Весь период</ComboBoxItem>
+                        </ComboBox>
+                        <Button Canvas.Top="24" Canvas.Left="216" Foreground="White" Height="21" Name="btnShowPeriod" Template="{DynamicResource GlassButton}" Width="23" HorizontalAlignment="Right" Click="btnShowPeriod_Click" VerticalAlignment="Stretch">
+                            <Image Name="imgButton" Source="Resources/Down.png" ClipToBounds="True" Width="9" Height="11"/>                                
+                        </Button>
+                        <Label Canvas.Left="244" Canvas.Top="24" Height="23.277" Width="84" Foreground="White" >Счет</Label>
+                        <ComboBox Canvas.Left="280" Canvas.Top="24" Height="21" Width="160" Name="cbxAccount" SelectedIndex="0" SelectionChanged="cbxAccount_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>                                    
+                                    <ContentControl Name="lblName" Content="{Binding Path=.}"></ContentControl>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsActive}" Value="false">
+                                            <Setter Property="Foreground" TargetName="lblName" Value="Gray"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>                                    
+                                </DataTemplate>                                
+                            </ComboBox.ItemTemplate>
+                            
+                        </ComboBox>
+                        <Label Canvas.Left="445" Canvas.Top="24" Height="23.277"  Foreground="White" >Валюта</Label>
+                        <ComboBox Canvas.Left="495" Canvas.Top="24" Height="21" Width="60" Name="cbxCurrency" SelectedIndex="0" SelectionChanged="cbxAccount_SelectionChanged">
+                            <ComboBoxItem>&lt;Все&gt;</ComboBoxItem>
+                        </ComboBox>
+                        <Button Canvas.Top="4" Canvas.Left="568" Height="42" Width="60" Name="btnRefresh" Template="{DynamicResource GlassButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="btnRefresh_Click">
+                            <TextBlock>Обновить</TextBlock>
+                        </Button>
+                        <c:Calendar Canvas.Left="0" Canvas.Top="50" Height="165" Width="185" Name="dateMin" Visibility="Hidden" SelectionMode="SingleDate" SelectedDatesChanged="date_SelectedDatesChanged" MouseDoubleClick="dateMin_MouseDoubleClick"></c:Calendar>
+                        <c:Calendar Canvas.Left="190" Canvas.Top="50" Height="165" Width="185" Name="dateMax" Visibility="Hidden" SelectionMode="SingleDate" SelectedDatesChanged="date_SelectedDatesChanged" MouseDoubleClick="dateMin_MouseDoubleClick"/>
+                    </Canvas>
+            
+                </Border>
+                <!-- Панель документов -->
+
+                <Border Margin="1" BorderThickness="1" BorderBrush="White" CornerRadius="3">
+                    <DockPanel Margin="2" Name="pnlDocGrid" LastChildFill="True">
+                        <TabControl Name="tcMain"  Background="Black" SelectionChanged="TabControl_SelectionChanged">
+                            <TabItem Name="tpgDocs" Header="Документы" Background="Black" Foreground="White" >
+                                <DockPanel LastChildFill="True">
+                                    <StackPanel Name="pnlSummary" Orientation="Vertical" DockPanel.Dock="Bottom" Height="Auto" Visibility="Collapsed"></StackPanel>
+                                    <c:DataGrid x:Name="grdDocuments" Background="#FF202020" Foreground="Black" SelectionUnit="FullRow" RowHeaderWidth="0" MouseDoubleClick="grdDocuments_MouseDoubleClick" MouseRightButtonDown="grdDocuments_MouseRightButtonDown" SelectionChanged="grdDocuments_SelectionChanged">
+                                        <c:DataGrid.Resources>
+                                                <this:MyColorConverter x:Key="MyColorConverter" />
+                                        </c:DataGrid.Resources>
+                                        <c:DataGrid.Columns>
+                                            <c:DataGridTextColumn IsReadOnly="True" Visibility="Hidden" Binding="{Binding Id}" CanUserSort="False" />
+                                            <c:DataGridTextColumn IsReadOnly="True" MaxWidth="22" CellStyle="{StaticResource CenterCellStyle}"  Binding="{Binding DayOfWeek}" CanUserSort="False" CanUserResize="False" />
+                                            <c:DataGridTextColumn Header="Дата" IsReadOnly="True" CellStyle="{StaticResource CenterCellStyle}" Width="70" Binding="{Binding DateString}"/>
+                                            <c:DataGridTextColumn Header="Назначение" IsReadOnly="True" Width="120" Binding="{Binding DocType.Name}"/>
+                                            <c:DataGridTextColumn Header="Приход" IsReadOnly="True" Width="75" CellStyle="{StaticResource RightCellStyle}"  Binding="{Binding Debit.Amount.AsMoney}" CanUserSort="False" />
+                                            <c:DataGridTextColumn Header="Расход" IsReadOnly="True" Width="75" CellStyle="{StaticResource RightCellStyle}"  Binding="{Binding Credit.Amount.AsMoney}" CanUserSort="False" />
+                                            <c:DataGridTemplateColumn Header="Сч. прих." IsReadOnly="True" Width="80" CanUserSort="False">
+                                                <c:DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Margin="2 0 0 0" Text="{Binding Debit.Account}" Foreground="{Binding Path=Debit.Account.ForegroundColor, Converter={StaticResource MyColorConverter}}"></TextBlock>
+                                                    </DataTemplate>
+                                                </c:DataGridTemplateColumn.CellTemplate>
+                                            </c:DataGridTemplateColumn>
+                                            <c:DataGridTemplateColumn Header="Сч. расх." IsReadOnly="True" Width="80" CanUserSort="False">
+                                                <c:DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Margin="2 0 0 0" Text="{Binding Credit.Account}" Foreground="{Binding Path=Credit.Account.ForegroundColor, Converter={StaticResource MyColorConverter}}"></TextBlock>
+                                                    </DataTemplate>
+                                                </c:DataGridTemplateColumn.CellTemplate>
+                                            </c:DataGridTemplateColumn>                                                
+                                            <c:DataGridTextColumn Header="Магазин" IsReadOnly="True" Width="60" Binding="{Binding Shop}" CanUserSort="False" />
+                                            <c:DataGridTextColumn Header="Прим." IsReadOnly="True" Width="120" Binding="{Binding Note}"  CanUserSort="False" />
+                                        </c:DataGrid.Columns>
+                                    </c:DataGrid>                                    
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Name="tpgReports" Header="Отчеты" Background="#FF303030" Foreground="White" >
+                                <c:DataGrid x:Name="grdReport" Background="#FF202020" Foreground="Black" SelectionUnit="FullRow" RowHeaderWidth="0" >
+                                </c:DataGrid>
+                            </TabItem>
+                        </TabControl>
+                    
+                    </DockPanel>
+                </Border>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,11 @@
+﻿<Window x:Class="WpfHomeBudget.StartWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="StartWindow" Height="107" Width="296" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Black">
+    <DockPanel LastChildFill="True" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Vertical">
+                <Label Foreground="White" FontSize="15" HorizontalContentAlignment="Center" >Домашний бюджет</Label>
+                <Label Foreground="White" FontSize="10" HorizontalContentAlignment="Center">WPF версия 3.0</Label>
+            </StackPanel>
+    </DockPanel>
+</Window>

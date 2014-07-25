@@ -1,0 +1,115 @@
+﻿<Window x:Class="WpfHomeBudget.DocumentInOutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+    xmlns:cp="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"            
+    xmlns:common="clr-namespace:WpfHomeBudget.Common"            
+    Title="Счета" Height="416" Width="595" Background="Black" WindowStyle="None" VerticalAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" Icon="/WpfHomeBudget;component/Resources/cash_register.png">
+    <!-- Подключение файлов с ресурсами-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Themes/TreeViewStyle.xaml"/>
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+                <ResourceDictionary Source="Themes/TextBoxStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ComboBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- Самая большая панель -->
+    <DockPanel LastChildFill="True">
+        <!-- Заголовок с кнопками -->
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="White" CornerRadius="2">
+            <DockPanel Name="pnlCaption" Height="22" LastChildFill="True" Background="{StaticResource ButtonBackgroundBrush}">
+                <Button Margin="1" DockPanel.Dock="Right" Width="20" Template ="{DynamicResource GlassButton}" FontWeight="Bold" Click="btnCancel_Click" IsCancel="True">X</Button>
+                <Label Name="lblCaption" Foreground="White" Height="25" HorizontalContentAlignment="Center" FontWeight="Bold" VerticalContentAlignment="Center" PreviewMouseDown="lblCaption_PreviewMouseDown" PreviewMouseMove="lblCaption_PreviewMouseMove" PreviewMouseUp="lblCaption_PreviewMouseUp">
+                    <TextBlock Text="Документ"></TextBlock>
+                </Label>
+            </DockPanel>
+        </Border>
+        <!-- Основная панель -->
+        <Grid  Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200*" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <!-- Левая панель с календарем и отчетом по счетам -->
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="3" Grid.Column="0" Grid.Row="0">
+                <DockPanel Name="pnlLeft" Background="Transparent" LastChildFill="True">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TreeView x:Name="treeDocTypes" FontSize="13">
+                            <TreeView.Resources>
+                                <ContextMenu x:Key="docTypesContextMenu">
+                                    <ContextMenu.Style>
+                                        <Style>
+                                            <Style.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGreen"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightYellow"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black"/>
+                                            </Style.Resources>
+                                        </Style>
+                                    </ContextMenu.Style>
+                                    <MenuItem Header="Создать новый" Click="MenuItem_Click" CommandParameter="CREATE" />
+                                    <MenuItem Header="Переименовать" Click="MenuItem_Click" CommandParameter="RENAME"/>
+                                    <MenuItem Header="Удалить" Click="MenuItem_Click" CommandParameter="DELETE"/>
+                                </ContextMenu>                                
+                            </TreeView.Resources>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem" >
+                                    <Setter Property="TreeViewItem.ContextMenu" Value="{StaticResource docTypesContextMenu}" />
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <!-- Панель с фильтрами и документами -->
+            <DockPanel Name="pnlMain" Background="Transparent" LastChildFill="True" Grid.Column="1" Grid.Row="0">
+                <!-- Панель кнопок-->
+                <Border Margin="1" DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="White" CornerRadius="3">
+                    <StackPanel Margin="6" Width="170" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Button Name="btnOk" Template="{DynamicResource GlassButton}" Margin="0 4 6 0" Height="22" Width="50" Click="btnOk_Click">
+                            <TextBlock>Ok</TextBlock>
+                        </Button>
+                        <Button Name="btnMore" Template="{DynamicResource GlassButton}" Margin="0 4 6 0" Height="22" Width="50" IsDefault="True" Click="btnMore_Click">
+                            <TextBlock>Еще</TextBlock>
+                        </Button>
+                        <Button Name="btnCancel" Template="{DynamicResource GlassButton}" Margin="0 4 6 0" Height="22" Width="50" Click="btnCancel_Click">
+                            <TextBlock>Отмена</TextBlock>
+                        </Button>
+                    </StackPanel>                    
+                </Border>
+                <Border>
+                    <StackPanel Orientation="Vertical">
+                        <c:DatePicker Name="txtDate" Margin="4"></c:DatePicker>
+                        <StackPanel Margin="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label HorizontalContentAlignment="Right" >Сумма</Label>                            
+                            <TextBox Name="txtSumma" Width="80" FontSize="13" common:TextBoxMaskBehavior.Mask="Decimal" GotFocus="txtSumma_GotFocus"></TextBox>
+                        </StackPanel>
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="55" HorizontalContentAlignment="Right" >Счет</Label>
+                            <ComboBox Name="cbxAccount" SelectionChanged="cbxAccount_SelectionChanged"></ComboBox>
+                        </DockPanel>
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="110" HorizontalContentAlignment="Right" >Валюта</Label>
+                            <ComboBox Name="cbxCurrency" ></ComboBox>
+                        </DockPanel>
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="55" HorizontalContentAlignment="Right" >Прим.</Label>
+                            <TextBox Name="txtNote" ></TextBox>
+                        </DockPanel>
+
+                        <DockPanel Margin="4" LastChildFill="True">
+                            <Label Width="55" HorizontalContentAlignment="Right" Name="lblShop" >Магазин</Label>
+                            <ComboBox Name="txtShop" IsEditable="True" ></ComboBox>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>
