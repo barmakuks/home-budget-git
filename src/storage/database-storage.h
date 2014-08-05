@@ -26,6 +26,11 @@ public:
 
     core::CurrencyMapPtr GetCurrencies(const core::IFilter& filter) const;
 
+    bool Write(core::Document& doc) const;
+    bool Write(core::DocumentType& docType) const;
+    bool Write(core::Account& account) const;
+    bool Write(core::Currency& currency) const;
+
 private:
 
     core::IDatabaseEngine&    m_databaseEngine;

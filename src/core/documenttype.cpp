@@ -5,11 +5,9 @@ namespace hb
 namespace core
 {
 
-const DocTypeId EmptyDocTypeId = 0;
-
 DocumentType::DocumentType():
-    m_id(EmptyDocTypeId),
-    m_parentId(EmptyDocTypeId),
+    m_id(EmptyId),
+    m_parentId(EmptyId),
     m_sign(TypeSign::Movement)
 {
 }
@@ -37,7 +35,7 @@ void DocumentTypeList::AddType(DocumentTypePtr& docType)
 
     insert(value_type(docType->Id(), docType));
 
-    if (docType->ParentId() == EmptyDocTypeId)
+    if (docType->ParentId() == EmptyId)
     {
         m_head.push_back(docType->Id());
     }

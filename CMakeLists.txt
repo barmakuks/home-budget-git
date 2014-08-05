@@ -1,5 +1,6 @@
 project(home-budget)
 cmake_minimum_required(VERSION 2.8)
+enable_testing(true)
 
 #TODO separate include directories by executable targets
 include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies)
@@ -28,12 +29,15 @@ add_executable(${PROJECT_NAME} ${MAIN_SRC})
 target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME} ${CMAKE_DL_LIBS} pthread)
 
 #Tests
-#set(TEST_EXE_NAME task-test)
-#aux_source_directory(./test TEST_SRC)
-#add_executable(${TEST_EXE_NAME} EXCLUDE_FROM_ALL ${TEST_SRC})
-#target_link_libraries(${TEST_EXE_NAME} gtest gtest_main ${MAIN_LIB_NAME} ${UTIL_LIB_NAME} ${CMAKE_THREAD_LIBS_INIT})
+include_directories(./thirdparty/gtest/include)
+add_subdirectory(./thirdparty/gtest)
+link_directories(./thirdparty/gtest/lib)
+set(TEST_EXE_NAME home-budget-test)
+aux_source_directory(./tests TEST_SRC)
+add_executable(${TEST_EXE_NAME} EXCLUDE_FROM_ALL ${TEST_SRC})
+target_link_libraries(${TEST_EXE_NAME} gtest gtest_main ${CORE_LIB_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
-#add_custom_target(test
-#                  COMMAND ./${TEST_EXE_NAME})
+add_custom_target(test
+                  COMMAND ./${TEST_EXE_NAME})
 
-#add_dependencies(test ${TEST_EXE_NAME})
+add_dependencies(test ${TEST_EXE_NAME})

@@ -6,6 +6,8 @@
 namespace hb
 {
 
+const int EmptyId = 0;
+
 typedef int DocId;
 typedef int AccountId;
 typedef int CurrencyId;

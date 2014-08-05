@@ -33,6 +33,12 @@ public:
     virtual AccountMapPtr GetAccounts(const IFilter& filter) const = 0;
 
     virtual CurrencyMapPtr GetCurrencies(const IFilter& filter) const = 0;
+
+    virtual bool Write(Document& doc) const = 0;
+    virtual bool Write(DocumentType& docType) const = 0;
+    virtual bool Write(Account& account) const = 0;
+    virtual bool Write(Currency& currency) const = 0;
+
 };
 
 } // namespace core

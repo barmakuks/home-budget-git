@@ -55,6 +55,24 @@ CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
     return GetData<FillCurrencyMapStrategy>(m_databaseEngine, filter);
 }
 
+bool DatabaseStorage::Write(core::Document& doc) const
+{
+
+}
+
+bool DatabaseStorage::Write(core::DocumentType& docType) const
+{
+}
+
+bool DatabaseStorage::Write(core::Account& account) const
+{
+
+}
+
+bool DatabaseStorage::Write(core::Currency& currency) const
+{
+
+}
 
 } // namespace storage
 } // namespace hb

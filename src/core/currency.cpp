@@ -4,7 +4,8 @@ namespace hb
 {
 namespace core
 {
-Currency::Currency()
+Currency::Currency():
+    m_code(EmptyId)
 {
 }
 
