@@ -57,7 +57,14 @@ public:
     {}
     virtual std::string Value() const
     {
-        return "'" + m_value + "'";
+        if (m_value.empty())
+        {
+            return "NULL";
+        }
+        else
+        {
+            return "'" + m_value + "'";
+        }
     }
 private:
     std::string   m_value;
@@ -73,6 +80,11 @@ public:
     {}
     std::string Value() const
     {
+        if (m_value && !*m_value)
+        {
+            return "NULL";
+        }
+
         std::string result = "'";
         result += m_value;
         result += "'";

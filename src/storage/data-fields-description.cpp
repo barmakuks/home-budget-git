@@ -2,6 +2,7 @@
 #include "documenttype.h"
 #include "currency.h"
 #include "account.h"
+#include "document.h"
 
 namespace hb
 {
@@ -82,6 +83,59 @@ FieldDescriptionList Fields<hb::core::Account>(hb::core::Account data)
     list.push_back(CreateFieldDescription("bank", data.Bank()));
     list.push_back(CreateFieldDescription("is_active", data.IsActive()));
     list.push_back(CreateFieldDescription("foreground_color", data.ForegroundColor()));
+
+    return list;
+}
+
+/***** Document *****/
+template<>
+std::string TableName<hb::core::Document>(hb::core::Document)
+{
+    return "documents";
+}
+
+template<>
+FieldDescriptionPtr KeyField<hb::core::Document>(hb::core::Document data)
+{
+    return CreateFieldDescription("id", data.Id());
+}
+
+template<>
+FieldDescriptionList Fields<hb::core::Document>(hb::core::Document data)
+{
+    hb::core::Amount amount;
+    FieldDescriptionList list;
+    list.push_back(CreateFieldDescription("doc_date", data.DocDate()));
+    list.push_back(CreateFieldDescription("doc_type_id", data.DocType()));
+
+    if (data.AmountFrom().is_initialized())
+    {
+        list.push_back(CreateFieldDescription("account_from_id", data.AmountFrom()->Account()));
+        list.push_back(CreateFieldDescription("account_from_cur", data.AmountFrom()->Currency()));
+        list.push_back(CreateFieldDescription("amount_from", data.AmountFrom()->Value()));
+    }
+    else
+    {
+        list.push_back(CreateFieldDescription("account_from_id", ""));
+        list.push_back(CreateFieldDescription("account_from_cur", ""));
+        list.push_back(CreateFieldDescription("amount_from", ""));
+    }
+
+    if (data.AmountTo().is_initialized())
+    {
+        list.push_back(CreateFieldDescription("account_to_id", data.AmountTo()->Account()));
+        list.push_back(CreateFieldDescription("account_to_cur", data.AmountTo()->Currency()));
+        list.push_back(CreateFieldDescription("amount_to", data.AmountTo()->Value()));
+    }
+    else
+    {
+        list.push_back(CreateFieldDescription("account_to_id", ""));
+        list.push_back(CreateFieldDescription("account_to_cur", ""));
+        list.push_back(CreateFieldDescription("amount_to", ""));
+    }
+
+    list.push_back(CreateFieldDescription("note", data.Note()));
+    list.push_back(CreateFieldDescription("shop", data.Shop()));
 
     return list;
 }

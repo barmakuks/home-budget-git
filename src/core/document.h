@@ -67,15 +67,15 @@ public:
     void SetShop(const std::string& shop) { m_shop = shop; }
 
 private:
-    DocId   m_id;
-    Date m_doc_date;
-    DocTypeId m_doc_type_id;
+    DocId                   m_id;
+    Date                    m_doc_date;
+    DocTypeId               m_doc_type_id;
 
     boost::optional<Amount> m_amount_from;
     boost::optional<Amount> m_amount_to;
 
-    std::string m_note;
-    std::string m_shop;
+    std::string             m_note;
+    std::string             m_shop;
 };
 
 typedef std::shared_ptr<Document> DocumentPtr;
