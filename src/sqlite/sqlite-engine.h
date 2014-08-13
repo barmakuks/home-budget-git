@@ -33,7 +33,9 @@ public:
 public:
     SqliteEngine(const std::string& path);
 
-    virtual bool ExecuteSql(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const;
+    virtual bool ExecuteQuery(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const;
+
+    virtual bool ExecuteNonQuery(const std::string& sqlquery) const;
 
 private:
     std::string m_pathToDatabase;

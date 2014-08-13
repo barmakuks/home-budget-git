@@ -22,7 +22,9 @@ public:
     };
 
 public:
-    virtual bool ExecuteSql(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const = 0;
+    virtual bool ExecuteQuery(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const = 0;
+
+    virtual bool ExecuteNonQuery(const std::string& sqlquery) const = 0;
 };
 
 } // namespace core

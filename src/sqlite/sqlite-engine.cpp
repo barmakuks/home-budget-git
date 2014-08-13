@@ -67,7 +67,7 @@ int callback(void* strategyPtr, int argc, char** argv, char** azColName)
 }
 }
 
-bool SqliteEngine::ExecuteSql(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const
+bool SqliteEngine::ExecuteQuery(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const
 {
     sqlite3* db;
     char* zErrMsg = 0;
@@ -91,6 +91,32 @@ bool SqliteEngine::ExecuteSql(const std::string& sqlquery, ICallbackStrategy& ca
 
     return true;
 }
+
+bool SqliteEngine::ExecuteNonQuery(const std::string& sqlquery) const
+{
+    sqlite3* db;
+    char* zErrMsg = 0;
+
+    if (sqlite3_open(m_pathToDatabase.c_str(), &db) != SQLITE_OK)
+    {
+      sqlite3_close(db);
+
+      return false;
+    }
+
+    if (sqlite3_exec(db, sqlquery.c_str(), NULL, NULL, &zErrMsg) != SQLITE_OK)
+    {
+      sqlite3_free(zErrMsg);
+      sqlite3_close(db);
+
+      return false;
+    }
+
+    sqlite3_close(db);
+
+    return true;
+}
+
 
 } // namespace sqlite
 } // namespace hb
