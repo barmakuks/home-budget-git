@@ -85,9 +85,9 @@ private:
     DocTypeId      m_parentId;
 
     DocTypeIdList  m_subtypes;
-    std::string         m_name;
+    std::string    m_name;
 
-    TypeSign            m_sign;
+    TypeSign       m_sign;
 };
 
 typedef std::shared_ptr<DocumentType> DocumentTypePtr;
@@ -108,6 +108,8 @@ private:
 };
 
 typedef std::shared_ptr<DocumentTypeList> DocumentTypeListPtr;
+
+void SortByName(DocTypeIdList& idList, const DocumentTypeList& docTypes);
 
 } // namespace core
 } // namespace hb

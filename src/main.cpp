@@ -16,8 +16,12 @@ void Print(const hb::core::DocumentTypeList& list, const hb::core::DocTypeIdList
 {
     using namespace hb::core;
 
-    for (DocTypeIdList::const_iterator it = head.begin();
-         it != head.end();
+    hb::core::DocTypeIdList doc_types = head;
+
+    SortByName(doc_types, list);
+
+    for (DocTypeIdList::const_iterator it = doc_types.begin();
+         it != doc_types.end();
          ++it)
     {
         for (int i = 0; i < level; ++i)
@@ -112,10 +116,9 @@ int main()
 
     cout << "Hello World!" << endl;
 
-//    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
-//    const DocTypeIdList& head = docTypes->Head();
-
-//    Print(*docTypes, head);
+    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
+    const DocTypeIdList& head = docTypes->Head();
+    Print(*docTypes, head);
 
 //    DocumentsMapPtr documents = storage.GetDocuments(AllDocumentsFilter());
 
@@ -124,8 +127,8 @@ int main()
 //    AccountMapPtr accounts = storage.GetAccounts(AllAccountsFilter());
 //    Print(*accounts);
 
-    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
-    Print(*currencies);
+//    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
+//    Print(*currencies);
 
     std::cout << "Finished" << std::endl;
     return 0;

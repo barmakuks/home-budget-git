@@ -1,5 +1,5 @@
 project(home-budget)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.1)
 enable_testing(true)
 
 #TODO separate include directories by executable targets
@@ -7,12 +7,14 @@ include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/s
 # TODO setup link directory for unit tests only
 #link_directories(${CMAKE_SOURCE_DIR}/../thirdparty/gtest/lib)
 
+find_package(Boost COMPONENTS locale REQUIRED)
+
 add_definitions(-g -std=c++11 -O0)
 
 # Main library
 set(SQLITE_LIB_NAME sqlite-lib)
 aux_source_directory(./src/sqlite SQLITE_LIB_SRC)
-add_library(${SQLITE_LIB_NAME} STATIC ${SQLITE_LIB_SRC})
+add_library(${SQLITE_LIB_NAME} STATIC ${SQLITE_LIB_SRC} )
 
 #Main library
 set(CORE_LIB_NAME core-lib)
@@ -22,11 +24,12 @@ aux_source_directory(./src/storage/strategies CORE_LIB_SRC)
 aux_source_directory(./src/storage/filters CORE_LIB_SRC)
 
 add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC})
+target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES})
 
 #Executable
 set(MAIN_SRC ./src/main.cpp)
 add_executable(${PROJECT_NAME} ${MAIN_SRC})
-target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME} ${CMAKE_DL_LIBS} pthread)
+target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME}  ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} pthread)
 
 #Tests
 include_directories(./thirdparty/gtest/include)
@@ -35,7 +38,7 @@ link_directories(./thirdparty/gtest/lib)
 set(TEST_EXE_NAME home-budget-test)
 aux_source_directory(./tests TEST_SRC)
 add_executable(${TEST_EXE_NAME} EXCLUDE_FROM_ALL ${TEST_SRC})
-target_link_libraries(${TEST_EXE_NAME} gtest gtest_main ${CORE_LIB_NAME} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${TEST_EXE_NAME} gtest gtest_main  ${Boost_LIBRARIES} ${CORE_LIB_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
 add_custom_target(test
                   COMMAND ./${TEST_EXE_NAME})
