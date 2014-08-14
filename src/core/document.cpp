@@ -5,7 +5,8 @@ namespace hb
 namespace core
 {
 Document::Document():
-    m_id(EmptyId)
+    m_id(EmptyId),
+    m_doc_type_id(EmptyId)
 {
 }
 
