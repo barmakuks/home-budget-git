@@ -6,12 +6,14 @@
 namespace hb
 {
 
-const int EmptyId = 0;
+typedef int Identifier;
 
-typedef int DocId;
-typedef int AccountId;
-typedef int CurrencyId;
-typedef int DocTypeId;
+const Identifier EmptyId = 0;
+
+typedef Identifier DocId;
+typedef Identifier AccountId;
+typedef Identifier CurrencyId;
+typedef Identifier DocTypeId;
 
 typedef unsigned int Color;
 

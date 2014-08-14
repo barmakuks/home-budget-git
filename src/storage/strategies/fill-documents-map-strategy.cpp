@@ -43,7 +43,7 @@ void FillDocumentsMapStrategy::AddColumnValue(const std::string& fieldName, cons
 
     if (m_currentDoc)
     {
-        FieldSetter<int, Document, &Document::SetId>::SetValue(m_currentDoc, "id", name, value);
+        FieldSetter<DocId, Document, &Document::SetId>::SetValue(m_currentDoc, "id", name, value);
         FieldSetter<const std::string&, Document, &Document::SetDocDate>::SetValue(m_currentDoc, "doc_date", name, value);
         FieldSetter<DocTypeId, Document, &Document::SetDocType>::SetValue(m_currentDoc, "doc_type_id", name, value);
         FieldSetter<const std::string&, Document, &Document::SetShop>::SetValue(m_currentDoc, "shop", name, value);

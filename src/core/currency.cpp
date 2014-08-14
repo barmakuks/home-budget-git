@@ -5,6 +5,7 @@ namespace hb
 namespace core
 {
 Currency::Currency():
+    m_id(EmptyId),
     m_code(EmptyId)
 {
 }

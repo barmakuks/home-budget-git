@@ -16,6 +16,9 @@ class Currency
 public:
     Currency();
 
+    CurrencyId Id() const {return m_id;}
+    void SetId(CurrencyId code) {m_id = code;}
+
     CurrencyId Code() const { return m_code; }
     void SetCode(CurrencyId code) { m_code = code; }
 
@@ -32,6 +35,7 @@ public:
     void SetSymbolPlace(bool symbol_place) { m_symbol_place = symbol_place; }
 
 private:
+    CurrencyId      m_id;
     CurrencyId      m_code;
     std::string     m_iso_code;
     std::string     m_short_name;

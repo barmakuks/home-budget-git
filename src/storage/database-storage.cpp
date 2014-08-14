@@ -38,11 +38,10 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 }
 
 template <class T>
-int GetLastId(IDatabaseEngine& engine)
+Identifier SetLastId(IDatabaseEngine& engine, T& data)
 {
     LastIdStrategy strategy;
 
-    T data;
     const std::string table = TableName(data);
     const std::string key_field = KeyField(data)->Name();
 
@@ -50,8 +49,17 @@ int GetLastId(IDatabaseEngine& engine)
 
     engine.ExecuteQuery(query_string, strategy);
 
-    return strategy.Result();
+    data.SetId(strategy.Result());
+    return data.Id();
 }
+
+template <>
+Identifier SetLastId<Currency>(IDatabaseEngine& engine, Currency& data)
+{
+    data.SetId(data.Code());
+    return data.Id();
+}
+
 
 template <class T>
 class class_has_id
@@ -77,9 +85,9 @@ public:
 
         const bool result = engine.ExecuteNonQuery(sql_query);
 
-        if (data.Id() <= 0)
+        if (data.Id() <= EmptyId)
         {
-            data.SetId(GetLastId<T>(engine));
+            SetLastId(engine, data);
         }
 
         return result;

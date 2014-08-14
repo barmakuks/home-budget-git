@@ -3,6 +3,7 @@
 
 #include "idatabase-engine.h"
 #include <boost/lexical_cast.hpp>
+#include "raw-types.h"
 
 namespace hb
 {
@@ -12,13 +13,13 @@ namespace storage
 class LastIdStrategy: public hb::core::IDatabaseEngine::ICallbackStrategy
 {
 public:
-    typedef int ResultType;
+    typedef Identifier ResultType;
 
     LastIdStrategy();
 
     virtual void NewRecord()
     {
-        m_lastId = -1;
+        m_lastId = EmptyId;
     }
 
     virtual void ApplyRecord()

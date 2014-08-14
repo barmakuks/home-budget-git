@@ -21,10 +21,24 @@ TEST(SqlBuilderSuite, testInsertCurrencySql)
 
     const std::string expectedStatement = "INSERT INTO currency_list (code, iso_code, short_name, symbol, symbol_place) VALUES (980, 'UAH', 'uah', '$', 0)";
 
-    // TODO : implement update statement
+    ASSERT_EQ(expectedStatement, BuildSql(cur));
+}
+
+TEST(SqlBuilderSuite, testUpdateCurrencySql)
+{
+    Currency cur;
+    cur.SetId(980);
+    cur.SetCode(980);
+    cur.SetIsoCode("UAH");
+    cur.SetShortName("uah");
+    cur.SetSymbol("$");
+    cur.SetSymbolPlace(false);
+
+    const std::string expectedStatement = "UPDATE currency_list SET code=980, iso_code='UAH', short_name='uah', symbol='$', symbol_place=0 WHERE code=980";
 
     ASSERT_EQ(expectedStatement, BuildSql(cur));
 }
+
 
 TEST(SqlBuilderSuite, testInsertDocumentTypeSql)
 {
