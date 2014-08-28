@@ -18,12 +18,14 @@ add_library(${SQLITE_LIB_NAME} STATIC ${SQLITE_LIB_SRC} )
 
 #Main library
 set(CORE_LIB_NAME core-lib)
+file(GLOB_RECURSE CORE_HEADERS ./src/*.h)
+file(GLOB_RECURSE CORE_TEMPLATES ./src/*.hpp)
 aux_source_directory(./src/core CORE_LIB_SRC)
 aux_source_directory(./src/storage CORE_LIB_SRC)
 aux_source_directory(./src/storage/strategies CORE_LIB_SRC)
 aux_source_directory(./src/storage/filters CORE_LIB_SRC)
 
-add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC})
+add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CORE_HEADERS})
 target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES})
 
 #Executable

@@ -2,24 +2,18 @@
 #define ALLCURRENCYFILTER_H
 
 #include <string>
-
-#include "currency.h"
+#include "all-values-filter.h"
 
 namespace hb
 {
 namespace storage
 {
 
-class AllCurrencyFilter: public core::IFilter
+class AllCurrencyFilter: public AllValuesFilter
 {
 public:
     AllCurrencyFilter()
     {
-    }
-
-    std::string WhereCondition() const
-    {
-        return "";
     }
 
     std::string From() const

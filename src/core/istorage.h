@@ -5,6 +5,7 @@
 #include "document.h"
 #include "account.h"
 #include "currency.h"
+#include "balance.h"
 
 namespace hb
 {
@@ -14,8 +15,11 @@ namespace core
 class IFilter
 {
 public:
+    virtual std::string Fields() const = 0;
     virtual std::string From() const = 0;
     virtual std::string WhereCondition() const = 0;
+    virtual std::string GroupByCondition() const = 0;
+    virtual std::string HavingCondition() const = 0;
 };
 
 class IStorage
@@ -33,6 +37,8 @@ public:
     virtual AccountMapPtr GetAccounts(const IFilter& filter) const = 0;
 
     virtual CurrencyMapPtr GetCurrencies(const IFilter& filter) const = 0;
+
+    virtual BalanceSetPtr GetBalance(const IFilter& filter) const  = 0;
 
     virtual bool Write(Document& doc) const = 0;
     virtual bool Write(DocumentType& docType) const = 0;

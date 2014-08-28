@@ -5,13 +5,14 @@
 #include <sstream>
 
 #include "documenttype.h"
+#include "all-values-filter.h"
 
 namespace hb
 {
 namespace storage
 {
 
-class DocTypeSignFilter: public core::IFilter
+class DocTypeSignFilter: public AllValuesFilter
 {
 public:
     DocTypeSignFilter(core::DocumentType::TypeSign sign):

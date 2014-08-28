@@ -6,6 +6,8 @@
 #include "strategies/fill-accounts-map-strategy.h"
 #include "strategies/fill-currency-map-strategy.h"
 #include "strategies/last-id-strategy.h"
+#include "strategies/fill-balance-map-strategy.h"
+
 #include "sql-builder.h"
 #include "data-fields-description.h"
 
@@ -28,9 +30,15 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 {
     Strategy strategy;
 
+    const std::string fields = filter.Fields().empty() ? std::string("*") : filter.Fields();
     const std::string where = filter.WhereCondition();
+    const std::string group_by = filter.GroupByCondition();
+    const std::string having = filter.HavingCondition();
 
-    const std::string query_string = "SELECT * FROM " + filter.From() + ((where.empty()) ? std::string("") : std::string(" WHERE ") + where);
+    const std::string query_string = "SELECT " + fields + " FROM " + filter.From()
+                                    + ((where.empty()) ? std::string("") : std::string(" WHERE ") + where)
+                                    + ((group_by.empty()) ? std::string("") : std::string(" GROUP BY ") + group_by)
+                                    + ((having.empty()) ? std::string("") : std::string(" HAVING ") + having);
 
     engine.ExecuteQuery(query_string, strategy);
 
@@ -134,6 +142,12 @@ CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
 {
     return GetData<FillCurrencyMapStrategy>(m_databaseEngine, filter);
 }
+
+BalanceSetPtr DatabaseStorage::GetBalance(const core::IFilter& filter) const
+{
+    return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
+}
+
 
 bool DatabaseStorage::Write(core::Document& doc) const
 {

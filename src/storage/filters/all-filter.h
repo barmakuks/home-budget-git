@@ -1,12 +1,14 @@
 #ifndef ALLFILTER_H
 #define ALLFILTER_H
 
+#include "all-values-filter.h"
+
 namespace hb
 {
 namespace storage
 {
 
-class AllDocumentsFilter: public core::IFilter
+class AllDocumentsFilter: public AllValuesFilter
 {
 public:
     AllDocumentsFilter()
@@ -16,11 +18,6 @@ public:
     std::string From() const
     {
         return "documents";
-    }
-
-    std::string WhereCondition() const
-    {
-        return "";
     }
 };
 

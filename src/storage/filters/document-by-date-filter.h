@@ -4,13 +4,14 @@
 #include <sstream>
 
 #include "documenttype.h"
+#include "all-values-filter.h"
 
 namespace hb
 {
 namespace storage
 {
 
-class DocByDateFilter: public core::IFilter
+class DocByDateFilter: public AllValuesFilter
 {
 public:
     DocByDateFilter(const std::string& after):

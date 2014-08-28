@@ -9,6 +9,8 @@
 #include "all-currency-filter.h"
 #include "account.h"
 #include "currency.h"
+#include "balance.h"
+#include "balance-filter.h"
 
 using namespace std;
 
@@ -101,6 +103,22 @@ void Print(const hb::core::CurrencyMap& currency_list)
     }
 }
 
+void Print(const hb::core::BalanceSet& balance,
+           const hb::core::AccountMap& accounts,
+           const hb::core::CurrencyMap& currency_list)
+{
+    using namespace hb::core;
+
+    for (BalanceSet::const_iterator it = balance.begin();
+         it != balance.end();
+         ++it)
+    {
+        BalancePtr item = *it;
+
+        cout << accounts.at(item->Account())->Name() << " [" << currency_list.at(item->Currency())->ShortName() << "]:\t" << item->Amount();
+        std::cout << std::endl;
+    }
+}
 
 int main()
 {
@@ -116,19 +134,22 @@ int main()
 
     cout << "Hello World!" << endl;
 
-    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
-    const DocTypeIdList& head = docTypes->Head();
-    Print(*docTypes, head);
+//    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
+//    const DocTypeIdList& head = docTypes->Head();
+//    Print(*docTypes, head);
 
 //    DocumentsMapPtr documents = storage.GetDocuments(AllDocumentsFilter());
 
 //    Print(*documents, *docTypes);
 
-//    AccountMapPtr accounts = storage.GetAccounts(AllAccountsFilter());
+    AccountMapPtr accounts = storage.GetAccounts(AllAccountsFilter());
 //    Print(*accounts);
 
-//    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
+    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
 //    Print(*currencies);
+
+    BalanceSetPtr balance = storage.GetBalance(BalanceFilter("20130101"));
+    Print(*balance, *accounts, *currencies);
 
     std::cout << "Finished" << std::endl;
     return 0;
