@@ -28,10 +28,30 @@ aux_source_directory(./src/storage/filters CORE_LIB_SRC)
 add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CORE_HEADERS})
 target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES})
 
-#Executable
+#Executable console
 set(MAIN_SRC ./src/main.cpp)
 add_executable(${PROJECT_NAME} ${MAIN_SRC})
 target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME}  ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} pthread)
+
+#GUI application
+FIND_PACKAGE(Qt4 REQUIRED)
+set(GUI_PROJECT_NAME home-budget-gui)
+set(GUI_MAIN_SRC ./src/gui-main.cpp)
+file(GLOB_RECURSE GUI_SRC src/gui/*.cpp)
+file(GLOB_RECURSE GUI_HEADERS src/gui/*.h)
+file(GLOB_RECURSE GUI_FORMS src/gui/forms/*.ui)
+
+qt4_wrap_ui(GENERATED_FORMS_HEADERS ${GUI_FORMS})
+qt4_wrap_cpp(GENERATED_HEADERS_MOC ${GUI_HEADERS})
+
+include(${QT_USE_FILE})
+add_definitions(${QT_DEFINITIONS})
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${GUI_HEADERS})
+
+add_executable(${GUI_PROJECT_NAME} ${GUI_MAIN_SRC} ${GUI_SRC} ${GENERATED_HEADERS_MOC} ${GENERATED_FORMS_HEADERS})
+target_link_libraries(${GUI_PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME}  ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} ${QT_LIBRARIES} pthread)
 
 #Tests
 include_directories(./thirdparty/gtest/include)
