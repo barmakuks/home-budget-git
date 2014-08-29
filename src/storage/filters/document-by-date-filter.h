@@ -26,6 +26,11 @@ public:
     {
     }
 
+    std::string From() const
+    {
+        return "documents";
+    }
+
     std::string WhereCondition() const
     {
         std::ostringstream where_string;
@@ -38,6 +43,11 @@ public:
         }
 
         return where_string.str();
+    }
+
+    std::string OrderBy() const
+    {
+        return "doc_date, id";
     }
 
 private:

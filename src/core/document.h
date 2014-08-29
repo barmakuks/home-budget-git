@@ -80,8 +80,12 @@ private:
 
 typedef std::shared_ptr<Document> DocumentPtr;
 
-typedef std::map<DocId, DocumentPtr> DocumentsMap;
-typedef std::shared_ptr<DocumentsMap> DocumentsMapPtr;
+//typedef std::map<DocId, DocumentPtr> Documents;
+typedef std::vector<DocumentPtr> Documents;
+typedef std::shared_ptr<Documents> DocumentsPtr;
+
+//typedef std::map<DocId, DocumentPtr> DocumentsMap;
+//typedef std::shared_ptr<DocumentsMap> DocumentsMapPtr;
 
 } // namespace core
 } // namespace hb

@@ -11,7 +11,7 @@ namespace storage
 class FillDocumentsMapStrategy: public hb::core::IDatabaseEngine::ICallbackStrategy
 {
 public:
-    typedef core::DocumentsMapPtr ResultType;
+    typedef core::DocumentsPtr ResultType;
 
     FillDocumentsMapStrategy();
 
@@ -28,7 +28,8 @@ public:
 
 private:
     typedef ResultType::element_type    map_type;
-    typedef map_type::mapped_type       record_type;
+//    typedef map_type::mapped_type       record_type;
+    typedef map_type::value_type        record_type;
     typedef record_type::element_type   doc_type;
 
     ResultType  m_documents;

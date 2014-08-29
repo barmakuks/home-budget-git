@@ -20,6 +20,7 @@ public:
     virtual std::string WhereCondition() const = 0;
     virtual std::string GroupByCondition() const = 0;
     virtual std::string HavingCondition() const = 0;
+    virtual std::string OrderBy() const = 0;
 };
 
 class IStorage
@@ -32,7 +33,7 @@ public:
     */
     virtual DocumentTypeListPtr GetTypeList(const IFilter& filter) const = 0;
 
-    virtual DocumentsMapPtr GetDocuments(const IFilter& filter) const = 0;
+    virtual DocumentsPtr GetDocuments(const IFilter& filter) const = 0;
 
     virtual AccountMapPtr GetAccounts(const IFilter& filter) const = 0;
 

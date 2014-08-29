@@ -4,7 +4,7 @@
 #include "sqlite/sqlite-engine.h"
 #include "storage/database-storage.h"
 #include "doc-type-sign-filter.h"
-#include "all-filter.h"
+#include "document-by-date-filter.h"
 #include "all-accounts-filter.h"
 #include "all-currency-filter.h"
 #include "account.h"
@@ -41,15 +41,16 @@ void Print(const hb::core::DocumentTypeList& list, const hb::core::DocTypeIdList
     }
 }
 
-void Print(const hb::core::DocumentsMap& documents, const hb::core::DocumentTypeList& docTypes)
+void Print(const hb::core::Documents& documents, const hb::core::DocumentTypeList& docTypes)
 {
     using namespace hb::core;
 
-    for (DocumentsMap::const_iterator it = documents.begin();
+    for (Documents::const_iterator it = documents.begin();
          it != documents.end();
          ++it)
     {
-        DocumentPtr doc = it->second;
+//        DocumentPtr doc = it->second;
+        DocumentPtr doc = *it;
 
         std::string doc_type_name = "\t";
         DocumentTypeList::const_iterator dtit = docTypes.find(doc->DocType());
@@ -134,22 +135,22 @@ int main()
 
     cout << "Hello World!" << endl;
 
-//    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
+    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
 //    const DocTypeIdList& head = docTypes->Head();
 //    Print(*docTypes, head);
 
-//    DocumentsMapPtr documents = storage.GetDocuments(AllDocumentsFilter());
+    DocumentsPtr documents = storage.GetDocuments(DocByDateFilter("20140101"));
 
-//    Print(*documents, *docTypes);
+    Print(*documents, *docTypes);
 
-    AccountMapPtr accounts = storage.GetAccounts(AllAccountsFilter());
+//    AccountMapPtr accounts = storage.GetAccounts(AllAccountsFilter());
 //    Print(*accounts);
 
-    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
+//    CurrencyMapPtr currencies = storage.GetCurrencies(AllCurrencyFilter());
 //    Print(*currencies);
 
-    BalanceSetPtr balance = storage.GetBalance(BalanceFilter("20130101"));
-    Print(*balance, *accounts, *currencies);
+//    BalanceSetPtr balance = storage.GetBalance(BalanceFilter("20130101"));
+//    Print(*balance, *accounts, *currencies);
 
     std::cout << "Finished" << std::endl;
     return 0;

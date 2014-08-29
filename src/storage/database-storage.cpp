@@ -34,11 +34,13 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
     const std::string where = filter.WhereCondition();
     const std::string group_by = filter.GroupByCondition();
     const std::string having = filter.HavingCondition();
+    const std::string order_by = filter.OrderBy();
 
     const std::string query_string = "SELECT " + fields + " FROM " + filter.From()
                                     + ((where.empty()) ? std::string("") : std::string(" WHERE ") + where)
                                     + ((group_by.empty()) ? std::string("") : std::string(" GROUP BY ") + group_by)
-                                    + ((having.empty()) ? std::string("") : std::string(" HAVING ") + having);
+                                    + ((having.empty()) ? std::string("") : std::string(" HAVING ") + having)
+                                    + ((order_by.empty()) ? std::string("") : std::string(" ORDER BY ") + order_by);
 
     engine.ExecuteQuery(query_string, strategy);
 
@@ -128,7 +130,7 @@ DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter &filter) const
     return GetData<FillDocumentTypeListStrategy>(m_databaseEngine, filter);
 }
 
-DocumentsMapPtr DatabaseStorage::GetDocuments(const IFilter &filter) const
+DocumentsPtr DatabaseStorage::GetDocuments(const IFilter &filter) const
 {
     return GetData<FillDocumentsMapStrategy>(m_databaseEngine, filter);
 }

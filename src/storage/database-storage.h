@@ -20,7 +20,7 @@ public:
 
     core::DocumentTypeListPtr GetTypeList(const core::IFilter& filter) const;
 
-    core::DocumentsMapPtr GetDocuments(const core::IFilter &filter) const;
+    core::DocumentsPtr GetDocuments(const core::IFilter &filter) const;
 
     core::AccountMapPtr GetAccounts(const core::IFilter& filter) const;
 

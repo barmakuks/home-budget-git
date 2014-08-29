@@ -31,7 +31,8 @@ void FillDocumentsMapStrategy::ApplyRecord()
     {
         m_currentDoc->SetAmountTo(*m_toAmount);
     }
-    m_documents->insert(map_type::value_type(m_currentDoc->Id(), m_currentDoc));
+//    m_documents->insert(map_type::value_type(m_currentDoc->Id(), m_currentDoc));
+    m_documents->push_back(m_currentDoc);
 }
 
 void FillDocumentsMapStrategy::AddColumnValue(const std::string& fieldName, const std::string& value)
