@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.1.1, 2014-08-29T10:51:30. -->
+<!-- Written by QtCreator 3.1.1, 2014-08-29T17:36:07. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -68,9 +68,9 @@
       <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">home-budget</value>
+       <value type="QString">home-budget-gui</value>
        <value type="QString">home-budget-test</value>
        <value type="QString">test</value>
-       <value type="QString">home-budget-gui</value>
       </valuelist>
       <value type="bool" key="CMakeProjectManager.MakeStep.Clean">false</value>
       <value type="bool" key="CMakeProjectManager.MakeStep.UseNinja">false</value>
