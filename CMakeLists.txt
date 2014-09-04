@@ -38,7 +38,7 @@ FIND_PACKAGE(Qt4 REQUIRED)
 set(GUI_PROJECT_NAME home-budget-gui)
 set(GUI_MAIN_SRC ./src/gui-main.cpp)
 file(GLOB_RECURSE GUI_SRC src/gui/*.cpp)
-file(GLOB_RECURSE GUI_HEADERS src/gui/*.h)
+file(GLOB GUI_HEADERS src/gui/*.h)
 file(GLOB_RECURSE GUI_FORMS src/gui/forms/*.ui)
 
 qt4_wrap_ui(GENERATED_FORMS_HEADERS ${GUI_FORMS})
