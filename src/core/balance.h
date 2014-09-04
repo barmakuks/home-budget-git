@@ -1,7 +1,7 @@
 #ifndef BALANCE_H
 #define BALANCE_H
 
-#include <set>
+#include <vector>
 #include <memory>
 
 #include "raw-types.h"
@@ -11,10 +11,14 @@ namespace hb
 namespace core
 {
 
-class Balance
+class BalanceRow
 {
 public:
-    Balance(){}
+    BalanceRow():
+        m_account(EmptyId),
+        m_currency(EmptyId),
+        m_amount(0)
+    {}
 
     Date BalanceDate() const { return m_date; }
     void SetBalanceDate(Date date) { m_date = date; }
@@ -35,20 +39,19 @@ private:
     Money       m_amount;
 };
 
-typedef std::shared_ptr<Balance>                    BalancePtr;
+typedef std::shared_ptr<BalanceRow> BalanceRowPtr;
 
-class BalanceComparator
+
+typedef std::vector<BalanceRowPtr>      TotalBalance;
+typedef std::shared_ptr<TotalBalance>   TotalBalancePtr;
+
+class Balance: public std::vector<BalanceRowPtr>
 {
 public:
-    bool operator()(const BalancePtr& first, const BalancePtr& second)
-    {
-        return (first->Account() == second->Account() && first->Currency() < second->Currency())
-                || (first->Account() < second->Account());
-    }
+    TotalBalancePtr GetTotalBalance() const;
 };
 
-typedef std::set<BalancePtr, BalanceComparator>     BalanceSet;
-typedef std::shared_ptr<BalanceSet>                 BalanceSetPtr;
+typedef std::shared_ptr<Balance>    BalancePtr;
 
 } // namespace core
 } // namespace hb

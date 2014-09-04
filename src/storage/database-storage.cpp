@@ -145,7 +145,7 @@ CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
     return GetData<FillCurrencyMapStrategy>(m_databaseEngine, filter);
 }
 
-BalanceSetPtr DatabaseStorage::GetBalance(const core::IFilter& filter) const
+BalancePtr DatabaseStorage::GetBalance(const core::IFilter& filter) const
 {
     return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
 }

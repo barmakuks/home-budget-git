@@ -104,17 +104,17 @@ void Print(const hb::core::CurrencyMap& currency_list)
     }
 }
 
-void Print(const hb::core::BalanceSet& balance,
+void Print(const hb::core::Balance& balance,
            const hb::core::AccountMap& accounts,
            const hb::core::CurrencyMap& currency_list)
 {
     using namespace hb::core;
 
-    for (BalanceSet::const_iterator it = balance.begin();
+    for (Balance::const_iterator it = balance.begin();
          it != balance.end();
          ++it)
     {
-        BalancePtr item = *it;
+        BalanceRowPtr item = *it;
 
         cout << accounts.at(item->Account())->Name() << " [" << currency_list.at(item->Currency())->ShortName() << "]:\t" << item->Amount();
         std::cout << std::endl;

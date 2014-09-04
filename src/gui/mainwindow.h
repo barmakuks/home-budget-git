@@ -17,6 +17,9 @@ public:
     explicit MainWindow(hb::core::IStorage& storage, QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_calendarWidget_clicked(const QDate &date);
+
 private:
     Ui::MainWindow*         ui;
     hb::core::IStorage&     m_storage;

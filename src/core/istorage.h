@@ -39,7 +39,7 @@ public:
 
     virtual CurrencyMapPtr GetCurrencies(const IFilter& filter) const = 0;
 
-    virtual BalanceSetPtr GetBalance(const IFilter& filter) const  = 0;
+    virtual BalancePtr GetBalance(const IFilter& filter) const  = 0;
 
     virtual bool Write(Document& doc) const = 0;
     virtual bool Write(DocumentType& docType) const = 0;

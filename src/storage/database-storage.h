@@ -26,7 +26,7 @@ public:
 
     core::CurrencyMapPtr GetCurrencies(const core::IFilter& filter) const;
 
-    core::BalanceSetPtr GetBalance(const core::IFilter& filter) const;
+    core::BalancePtr GetBalance(const core::IFilter& filter) const;
 
     bool Write(core::Document& doc) const;
     bool Write(core::DocumentType& docType) const;

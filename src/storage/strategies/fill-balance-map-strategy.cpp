@@ -20,7 +20,7 @@ void FillBalanceMapStrategy::ApplyRecord()
 {
     if (m_value)
     {
-        m_values->insert(m_value);
+        m_values->push_back(m_value);
         m_value.reset();
     }
 }
@@ -35,9 +35,9 @@ void FillBalanceMapStrategy::AddColumnValue(const std::string& fieldName,
 
     if (m_value)
     {
-        FieldSetter<AccountId, Balance, &Balance::SetAccount>::SetValue(m_value, "account_id", name, value);
-        FieldSetter<CurrencyId, Balance, &Balance::SetCurrency>::SetValue(m_value, "account_cur", name, value);
-        FieldSetter<Money, Balance, &Balance::SetAmount>::SetValue(m_value, "amount", name, value);
+        FieldSetter<AccountId, BalanceRow, &BalanceRow::SetAccount>::SetValue(m_value, "account_id", name, value);
+        FieldSetter<CurrencyId, BalanceRow, &BalanceRow::SetCurrency>::SetValue(m_value, "account_cur", name, value);
+        FieldSetter<Money, BalanceRow, &BalanceRow::SetAmount>::SetValue(m_value, "amount", name, value);
     }
 }
 

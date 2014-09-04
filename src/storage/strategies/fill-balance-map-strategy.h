@@ -12,7 +12,7 @@ namespace storage
 class FillBalanceMapStrategy: public hb::core::IDatabaseEngine::ICallbackStrategy
 {
 public:
-    typedef core::BalanceSetPtr ResultType;
+    typedef core::BalancePtr ResultType;
 
     FillBalanceMapStrategy();
 
