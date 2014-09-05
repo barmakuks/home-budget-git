@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.1)
 enable_testing(true)
 
 #TODO separate include directories by executable targets
-include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies)
+include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies ./src/utils)
 # TODO setup link directory for unit tests only
 #link_directories(${CMAKE_SOURCE_DIR}/../thirdparty/gtest/lib)
 
@@ -24,6 +24,7 @@ aux_source_directory(./src/core CORE_LIB_SRC)
 aux_source_directory(./src/storage CORE_LIB_SRC)
 aux_source_directory(./src/storage/strategies CORE_LIB_SRC)
 aux_source_directory(./src/storage/filters CORE_LIB_SRC)
+aux_source_directory(./src/utils CORE_LIB_SRC)
 
 add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CORE_HEADERS})
 target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES})

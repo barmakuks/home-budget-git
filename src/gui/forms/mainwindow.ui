@@ -16,6 +16,9 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
+  <property name="locale">
+   <locale language="Russian" country="Ukraine"/>
+  </property>
   <widget class="QSplitter" name="splitter">
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -64,7 +67,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableView" name="tableView">
+        <widget class="QTableView" name="balanceTableView">
          <property name="font">
           <font>
            <pointsize>9</pointsize>
@@ -124,6 +127,195 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QWidget" name="widget_3" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="leftMargin">
+         <number>2</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>2</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="widget_4" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Период</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="periodComboBox">
+             <item>
+              <property name="text">
+               <string>Сегодня</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Вчера</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Эта неделя</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Прошлая неделя</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Этот месяц</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Прошлый месяц</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Этот квартал</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Прошлый квартал</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Этот год</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Прошлый год</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Точно</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_5" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelFromDate">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Начало</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDateEdit" name="startDateEdit">
+                <property name="displayFormat">
+                 <string>dd MMMM yyyy</string>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_7" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelToDate">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Конец</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDateEdit" name="endDateEdit">
+                <property name="displayFormat">
+                 <string>dd MMMM yyyy</string>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget" native="true"/>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_6" native="true"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="documentsTableView"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

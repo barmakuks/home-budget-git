@@ -1,10 +1,13 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QStandardItemModel>
 #include <QDesktopWidget>
 #include <QCalendarWidget>
 #include <QTableView>
+#include <QComboBox>
 #include <iostream>
+
+#include "date-time-utils.h"
 
 namespace
 {
@@ -32,7 +35,8 @@ MainWindow::MainWindow(hb::core::IStorage& storage,
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_storage(storage),
-    m_balanceModel(storage)
+    m_balanceModel(storage),
+    m_changeDateInterval(false)
 {
     ui->setupUi(this);
     const QDesktopWidget& desktop = *QApplication::desktop();
@@ -57,8 +61,13 @@ MainWindow::MainWindow(hb::core::IStorage& storage,
 
     move( x, y );
 
-    ui->tableView->setModel(&m_balanceModel);
-    ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    ui->balanceTableView->setModel(&m_balanceModel);
+    ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+    m_changeDateInterval = true;
+    ui->startDateEdit->setDate(QDate::currentDate());
+    ui->endDateEdit->setDate(QDate::currentDate());
+    m_changeDateInterval = false;
 }
 
 MainWindow::~MainWindow()
@@ -69,4 +78,57 @@ MainWindow::~MainWindow()
 void MainWindow::on_calendarWidget_clicked(const QDate& date)
 {
     m_balanceModel.Recalculate(date);
+}
+
+void MainWindow::on_periodComboBox_currentIndexChanged(int index)
+{
+    using namespace hb::utils;
+
+    if (m_changeDateInterval)
+    {
+        return;
+    }
+
+    m_changeDateInterval = true;
+
+    const DatePeriod::Period period = static_cast<DatePeriod::Period>(index);
+
+    DateInterval interval = GetDateInterval(period);
+
+    const QDate from = QDate::fromString(QString::fromUtf8(interval.from.c_str()), "yyyyMMdd");
+    ui->startDateEdit->setDate(from);
+    const QDate to = QDate::fromString(QString::fromUtf8(interval.to.c_str()), "yyyyMMdd");
+    ui->endDateEdit->setDate(to);
+
+    m_changeDateInterval = false;
+}
+
+void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
+{
+    using namespace hb::utils;
+
+    if (m_changeDateInterval)
+    {
+        return;
+    }
+
+    DateInterval interval(dateFrom.toString("yyyyMMdd").toUtf8().constData(),
+                          dateTo.toString("yyyyMMdd").toUtf8().constData());
+
+    const DatePeriod::Period period = GetDatePeriod(interval);
+
+    m_changeDateInterval = true;
+    ui->periodComboBox->setCurrentIndex(period);
+    m_changeDateInterval = false;
+}
+
+
+void MainWindow::on_startDateEdit_dateChanged(const QDate& /*date*/)
+{
+    SetPeriodComboBox(ui->startDateEdit->date(), ui->endDateEdit->date());
+}
+
+void MainWindow::on_endDateEdit_dateChanged(const QDate& /*date*/)
+{
+    SetPeriodComboBox(ui->startDateEdit->date(), ui->endDateEdit->date());
 }
