@@ -48,6 +48,8 @@ public:
 
 };
 
+typedef std::shared_ptr<IStorage> IStoragePtr;
+
 } // namespace core
 } // namespace hb
 

@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(hb::core::IStorage& storage, QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 private:
@@ -31,7 +31,6 @@ private slots:
 
 private:
     Ui::MainWindow*         ui;
-    hb::core::IStorage&     m_storage;
     BalanceModel            m_balanceModel;
 
     bool                    m_changeDateInterval;

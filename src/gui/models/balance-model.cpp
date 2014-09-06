@@ -6,20 +6,19 @@
 #include <QColor>
 #include <QDate>
 
-#include "all-accounts-filter.h"
-#include "all-currency-filter.h"
-#include "balance-filter.h"
+#include "model.h"
 #include "balance.h"
 #include "assert_macro.h"
 
-BalanceModel::BalanceModel(hb::core::IStorage& storage):
-    m_storage(storage)
+BalanceModel::BalanceModel()
 {
-    using namespace hb::storage;
+    using namespace hb::core;
 
-    m_accounts = m_storage.GetAccounts(AllAccountsFilter());
+    Model& model = Model::GetInstance();
 
-    m_currencies = m_storage.GetCurrencies(AllCurrencyFilter());
+    m_accounts = model.GetAccounts();
+
+    m_currencies = model.GetCurrencies();
 
     Recalculate(QDate::currentDate());
 }
@@ -74,8 +73,8 @@ private:
 
 void BalanceModel::Recalculate(const std::string& date)
 {
-    using namespace hb::storage;
-    m_balance = m_storage.GetBalance(BalanceFilter(date));
+    using namespace hb::core;
+    m_balance = Model::GetInstance().GetBalance(date);
     m_total_balance = m_balance->GetTotalBalance();
 
     AccountOrderComporator comporator(m_accounts);

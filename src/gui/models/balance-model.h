@@ -20,7 +20,7 @@ class BalanceRow;
 class BalanceModel: public QAbstractItemModel
 {
 public:
-    BalanceModel(hb::core::IStorage &storage);
+    BalanceModel();
 
     void Recalculate(const QDate& date);
     void Recalculate(const std::string& date);
@@ -49,9 +49,6 @@ private:
     hb::core::CurrencyMapPtr    m_currencies;
     hb::core::BalancePtr        m_balance;
     hb::core::TotalBalancePtr   m_total_balance;
-
-    hb::core::IStorage&         m_storage;
-
 };
 
 #endif // BALANCEMODEL_H

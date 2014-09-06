@@ -30,12 +30,9 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 }
 }
 
-MainWindow::MainWindow(hb::core::IStorage& storage,
-                       QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_storage(storage),
-    m_balanceModel(storage),
     m_changeDateInterval(false)
 {
     ui->setupUi(this);
@@ -56,9 +53,12 @@ MainWindow::MainWindow(hb::core::IStorage& storage,
         screenHeight = desktop.screenGeometry(screenNo).height();
     }
 
-    const int x = screenLeft + (screenWidth - size().width()) / 2;
-    const int y = screenTop + (screenHeight - size().height()) / 2;
+    const int width = screenWidth * 3 / 4;
+    const int height = screenHeight * 3 / 4;
+    const int x = screenLeft + (screenWidth - width) / 2;
+    const int y = screenTop + (screenHeight - height) / 2;
 
+    resize(width, height);
     move( x, y );
 
     ui->balanceTableView->setModel(&m_balanceModel);
