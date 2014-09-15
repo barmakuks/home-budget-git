@@ -22,6 +22,7 @@ public:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 private:
 
@@ -37,6 +38,7 @@ private:
     hb::core::AccountMapPtr     m_accounts;
     hb::core::CurrencyMapPtr    m_currencies;
     hb::core::DocumentsPtr      m_documents;
+
 };
 
 #endif // DOCUMENTSMODEL_H

@@ -1,4 +1,4 @@
-#include "documents-model.h"
+﻿#include "documents-model.h"
 
 #include <QDate>
 #include <QColor>
@@ -38,7 +38,6 @@ void DocumentsModel::Reload(const std::string& minDate, const std::string& maxDa
 QModelIndex DocumentsModel::index(int row, int column, const QModelIndex &parent) const
 {
     return createIndex(row, column);
-
 }
 
 QModelIndex DocumentsModel::parent(const QModelIndex &child) const
@@ -53,7 +52,6 @@ struct Columns
     enum {Date = 0, AccountFrom, AccountTo, AmountFrom, AmountTo, Note, Shop, Count};
 };
 }
-
 
 int DocumentsModel::rowCount(const QModelIndex &parent) const
 {
@@ -93,6 +91,32 @@ QVariant DocumentsModel::data(const QModelIndex &index, int role) const
     }
     }
 
+}
+
+QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/, int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        switch (section)
+        {
+        case Columns::Date:
+            return QObject::tr("Дата");
+        case Columns::AccountFrom:
+            return QObject::tr("Сч. расх.");
+        case Columns::AccountTo:
+            return QObject::tr("Сч. дох.");
+        case Columns::AmountFrom:
+            return QObject::tr("Сумма расх.");
+        case Columns::AmountTo:
+            return QObject::tr("Сумма дох.");
+        case Columns::Note:
+            return QObject::tr("Прим.");
+        case Columns::Shop:
+            return QVariant();
+        }
+    }
+
+    return QVariant();
 }
 
 const hb::core::Document& DocumentsModel::GetDocumentItem(int index) const

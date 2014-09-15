@@ -65,7 +65,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
     ui->documentsTableView->setModel(&m_documentsModel);
-    ui->documentsTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    ui->documentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+
+    const int m = 25;
+
+    ui->documentsTableView->setColumnWidth(0, m * 3);
+    ui->documentsTableView->setColumnWidth(1, m * 8);
+    ui->documentsTableView->setColumnWidth(2, m * 8);
+    ui->documentsTableView->setColumnWidth(3, m * 4);
+    ui->documentsTableView->setColumnWidth(4, m * 4);
+    ui->documentsTableView->setColumnWidth(5, m * 8);
+    ui->documentsTableView->setColumnWidth(6, m * 4);
+
 
     m_changeDateInterval = true;
     ui->startDateEdit->setDate(QDate::currentDate());

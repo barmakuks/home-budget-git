@@ -47,7 +47,7 @@ public:
 
     std::string OrderBy() const
     {
-        return "doc_date, id";
+        return "doc_date DESC, id";
     }
 
 private:
