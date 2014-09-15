@@ -64,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->balanceTableView->setModel(&m_balanceModel);
     ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
+    ui->documentsTableView->setModel(&m_documentsModel);
+    ui->documentsTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
     m_changeDateInterval = true;
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate());
@@ -101,6 +104,8 @@ void MainWindow::on_periodComboBox_currentIndexChanged(int index)
     ui->endDateEdit->setDate(to);
 
     m_changeDateInterval = false;
+
+    m_documentsModel.Reload(from, to);
 }
 
 void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
@@ -120,6 +125,8 @@ void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
     m_changeDateInterval = true;
     ui->periodComboBox->setCurrentIndex(period);
     m_changeDateInterval = false;
+
+    m_documentsModel.Reload(dateFrom, dateTo);
 }
 
 

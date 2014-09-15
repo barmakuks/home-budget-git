@@ -1,12 +1,10 @@
 #include "balance-model.h"
 
-#include <sstream>
-#include <iostream>
-#include <iomanip>
 #include <QColor>
 #include <QDate>
 
 #include "model.h"
+#include "string-format.h"
 #include "balance.h"
 #include "assert_macro.h"
 
@@ -95,6 +93,14 @@ QModelIndex BalanceModel::parent(const QModelIndex& child) const
 
 }
 
+namespace
+{
+struct Columns
+{
+    enum {Account = 0, Amount, Currency, Count};
+};
+}
+
 int BalanceModel::rowCount(const QModelIndex& /*parent*/) const
 {
     int row_count = (m_balance) ? m_balance->size() : 0;
@@ -104,7 +110,7 @@ int BalanceModel::rowCount(const QModelIndex& /*parent*/) const
 
 int BalanceModel::columnCount(const QModelIndex& /*parent*/) const
 {
-    return 3;
+    return Columns::Count;
 }
 
 Qt::ItemFlags BalanceModel::flags(const QModelIndex &/*index*/) const
@@ -170,41 +176,25 @@ QVariant BalanceModel::GetCellString(const QModelIndex& index) const
 
     switch (index.column())
     {
-    case 0:
+    case Columns::Account:
     {
-        std::ostringstream buf;
-        hb::AccountId account = balance.Account();
-        if (account != hb::EmptyId && prev_balance.Account() != account)
+        hb::AccountId accountId = balance.Account();
+        if (accountId != hb::EmptyId && prev_balance.Account() != accountId)
         {
-            buf << m_accounts->at(account)->Bank();
+            const AccountPtr& account = m_accounts->at(accountId);
 
-            if (!m_accounts->at(account)->Bank().empty() )
-            {
-                buf << " - ";
-            }
-
-            buf << m_accounts->at(account)->Name();
-        }
-        else
-        {
-            buf << "";
+            return QObject::tr(hb::utils::FormatAccountName(*account).c_str());
         }
 
-        return QObject::tr(buf.str().c_str());
+        return QVariant();
     }
-    case 1:
+    case Columns::Amount:
     {
-        std::ostringstream buf;
-        buf << int(balance.Amount() / 100) << "." << std::setfill('0') << std::setw(2) << balance.Amount() % 100;
-
-        return QObject::tr(buf.str().c_str());
+        return QObject::tr(hb::utils::FormatMoney(balance.Amount()).c_str());
     }
-    case 2:
+    case Columns::Currency:
     {
-        std::ostringstream buf;
-        buf << m_currencies->at(balance.Currency())->Symbol();
-
-        return QObject::tr(buf.str().c_str());
+        return QObject::tr(m_currencies->at(balance.Currency())->Symbol().c_str());
     }
     default:
     {
@@ -215,7 +205,7 @@ QVariant BalanceModel::GetCellString(const QModelIndex& index) const
 
 QVariant BalanceModel::GetCellAlignment(const QModelIndex& index) const
 {
-    if (index.column() == 1)
+    if (index.column() == Columns::Amount)
     {
         return Qt::AlignVCenter + Qt::AlignRight;
     }

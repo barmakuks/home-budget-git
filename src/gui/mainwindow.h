@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "core.h"
 #include "models/balance-model.h"
+#include "models/documents-model.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,7 @@ private slots:
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
+    DocumentsModel          m_documentsModel;
 
     bool                    m_changeDateInterval;
 

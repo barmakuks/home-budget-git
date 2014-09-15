@@ -9,8 +9,9 @@ namespace core
 class IFilter;
 class IStorage;
 
-class BalanceRow;
+class Account;
 
+class BalanceRow;
 } // namespace core
 } // namespace hb
 
