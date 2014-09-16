@@ -1,13 +1,13 @@
 #ifndef DOCUMENTSMODEL_H
 #define DOCUMENTSMODEL_H
 
-#include <QAbstractItemModel>
+#include <QAbstractTableModel>
 
 #include "account.h"
 #include "currency.h"
 #include "document.h"
 
-class DocumentsModel: public QAbstractItemModel
+class DocumentsModel: public QAbstractTableModel
 {
 public:
     DocumentsModel();
@@ -15,10 +15,8 @@ public:
     void Reload(const QDate& minDate, const QDate& maxDate);
     void Reload(const std::string& minDate, const std::string& maxDate);
 
-    // QAbstractItemModel interface
+    // QAbstractTableModel interface
 public:
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -35,10 +33,10 @@ private:
 
 private:
 
-    hb::core::AccountMapPtr     m_accounts;
-    hb::core::CurrencyMapPtr    m_currencies;
-    hb::core::DocumentsPtr      m_documents;
-
+    hb::core::AccountMapPtr         m_accounts;
+    hb::core::CurrencyMapPtr        m_currencies;
+    hb::core::DocumentsPtr          m_documents;
+    hb::core::DocumentTypeListPtr   m_docTypes;
 };
 
 #endif // DOCUMENTSMODEL_H

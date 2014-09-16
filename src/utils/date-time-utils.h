@@ -22,6 +22,7 @@ struct DatePeriod
         LastQuarter,
         ThisYear,
         LastYear,
+        AllPeriod,
         ByDates
     };
 };
@@ -44,6 +45,8 @@ DateInterval GetDateInterval(DatePeriod::Period period,
 
 DatePeriod::Period GetDatePeriod(const DateInterval& dateInterval,
                                  const Date& baseDate = Now());
+
+std::string GetWeekDay(const Date& date);
 
 } // namespace utils
 } // namespace hb

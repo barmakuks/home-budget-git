@@ -43,6 +43,7 @@ DocumentTypeListPtr Model::GetTypeList(DocumentType::TypeSign documentType)
 
 DocumentTypeListPtr Model::GetTypeList()
 {
+    return m_storage->GetTypeList(DocTypeFilter());
 }
 
 DocumentsPtr Model::GetDocuments(const Date& from, const Date& to)

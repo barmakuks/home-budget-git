@@ -12,7 +12,26 @@ namespace hb
 namespace storage
 {
 
-class DocTypeSignFilter: public AllValuesFilter
+class DocTypeFilter: public AllValuesFilter
+{
+public:
+    DocTypeFilter()
+    {
+    }
+
+    std::string WhereCondition() const
+    {
+        return "";
+    }
+
+    std::string From() const
+    {
+        return "doc_types";
+    }
+};
+
+
+class DocTypeSignFilter: public DocTypeFilter
 {
 public:
     DocTypeSignFilter(core::DocumentType::TypeSign sign):
@@ -26,11 +45,6 @@ public:
         where_string << "operation_sign = " << m_sign;
 
         return where_string.str();
-    }
-
-    std::string From() const
-    {
-        return "doc_types";
     }
 
 private:

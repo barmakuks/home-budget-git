@@ -32,6 +32,21 @@ std::time_t DateToRawTime(const Date& date)
     return t;
 }
 
+std::string GetWeekDay(const Date& date)
+{
+    std::time_t rawtime = DateToRawTime(date);
+
+    struct tm* timeinfo;
+    timeinfo = localtime (&rawtime);
+
+    char buf[4];
+
+    std::strftime(buf, 4, "%a", timeinfo);
+
+    return buf;
+}
+
+
 Date Now()
 {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
@@ -145,6 +160,12 @@ DateInterval GetDateInterval(DatePeriod::Period period,
     {
         interval.from = RawTimeToDate(FirstMonthDay(year - 1, 0));
         interval.to = RawTimeToDate(LastMonthDay(year - 1, 11));
+        break;
+    }
+    case DatePeriod::AllPeriod:
+    {
+        interval.from = "19990101";
+        interval.to = RawTimeToDate(rawBaseTime);
         break;
     }
     default:

@@ -5,6 +5,7 @@
 #include <iomanip>
 
 #include "account.h"
+#include "date-time-utils.h"
 
 namespace hb
 {
@@ -20,7 +21,7 @@ std::string FormatMoney(hb::Money money)
 
 std::string FormatDate(const hb::Date& date)
 {
-    return date.substr(6, 2) + "." + date.substr(4, 2) + "." + date.substr(0, 4);
+    return date.substr(6, 2) + "." + date.substr(4, 2) + "." + date.substr(0, 4) + " " + GetWeekDay(date);
 }
 
 std::string FormatAccountName(const hb::core::Account& account)

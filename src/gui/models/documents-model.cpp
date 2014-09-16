@@ -16,6 +16,8 @@ DocumentsModel::DocumentsModel()
 
     m_currencies = model.GetCurrencies();
 
+    m_docTypes = model.GetTypeList();
+
     Reload(QDate::currentDate(), QDate::currentDate());
 }
 
@@ -35,21 +37,11 @@ void DocumentsModel::Reload(const std::string& minDate, const std::string& maxDa
     reset();
 }
 
-QModelIndex DocumentsModel::index(int row, int column, const QModelIndex &parent) const
-{
-    return createIndex(row, column);
-}
-
-QModelIndex DocumentsModel::parent(const QModelIndex &child) const
-{
-
-}
-
 namespace
 {
 struct Columns
 {
-    enum {Date = 0, AccountFrom, AccountTo, AmountFrom, AmountTo, Note, Shop, Count};
+    enum {Date = 0, DocType, AccountFrom, AccountTo, AmountFrom, AmountTo, Note, Shop, Count};
 };
 }
 
@@ -101,6 +93,8 @@ QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/
         {
         case Columns::Date:
             return QObject::tr("Дата");
+        case Columns::DocType:
+            return QObject::tr("Описание");
         case Columns::AccountFrom:
             return QObject::tr("Сч. расх.");
         case Columns::AccountTo:
@@ -119,6 +113,7 @@ QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/
     return QVariant();
 }
 
+
 const hb::core::Document& DocumentsModel::GetDocumentItem(int index) const
 {
     return *(m_documents->at(index));
@@ -135,6 +130,17 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
     case Columns::Date:
     {
         return QObject::tr(hb::utils::FormatDate(doc.DocDate()).c_str());
+    }
+    case Columns::DocType:
+    {
+        const auto it = m_docTypes->find(doc.DocType());
+
+        if (it != m_docTypes->end())
+        {
+            return QObject::tr(it->second->Name().c_str());
+        }
+
+        return QVariant();
     }
     case Columns::AccountFrom:
     {
