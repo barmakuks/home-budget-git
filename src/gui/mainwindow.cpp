@@ -78,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->documentsTableView->setColumnWidth(6, m * 4);
     ui->documentsTableView->setColumnWidth(7, m * 4);
 
+    ui->accountComboBox->setModel(&m_accountsModel);
+
     m_changeDateInterval = true;
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate());

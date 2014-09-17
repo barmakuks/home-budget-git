@@ -5,6 +5,7 @@
 #include "core.h"
 #include "models/balance-model.h"
 #include "models/documents-model.h"
+#include "models/accounts-model.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,7 @@ private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
     DocumentsModel          m_documentsModel;
+    AccountsModel           m_accountsModel;
 
     bool                    m_changeDateInterval;
 
