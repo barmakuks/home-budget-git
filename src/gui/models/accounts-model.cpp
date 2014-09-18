@@ -1,4 +1,8 @@
 #include "accounts-model.h"
+
+#include <QColor>
+#include <QFont>
+
 #include "model.h"
 #include "string-format.h"
 
@@ -26,9 +30,7 @@ public:
         }
     }
 };
-
 }
-
 
 void AccountsModel::Reload()
 {
@@ -77,6 +79,16 @@ QVariant AccountsModel::data(const QModelIndex& index, int role) const
     }
 }
 
+const hb::AccountId AccountsModel::GetAccountItemId(int index) const
+{
+    if (index && index <= m_accounts.size())
+    {
+        return m_accounts.at(index - 1)->Id();
+    }
+
+    return hb::EmptyId;
+}
+
 const hb::core::Account& AccountsModel::GetAccountItem(int index) const
 {
     return *(m_accounts.at(index));
@@ -94,6 +106,20 @@ QVariant AccountsModel::GetCellString(const QModelIndex &index) const
 
 QVariant AccountsModel::GetCellForecolor(const QModelIndex &index) const
 {
+    if (index.row() > 0)
+    {
+        const hb::core::Account& account = GetAccountItem(index.row() - 1);
+
+        if (account.IsActive())
+        {
+            return QColor(account.ForegroundColor());
+        }
+        else
+        {
+            return QColor(0xA0A0A0);
+        }
+
+    }
     return QVariant();
 }
 
@@ -101,3 +127,4 @@ QVariant AccountsModel::GetCellBackColor(const QModelIndex &index) const
 {
     return QVariant();
 }
+

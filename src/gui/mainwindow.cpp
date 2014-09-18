@@ -33,7 +33,7 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_changeDateInterval(false)
+    m_filterSetupInProgress(true)
 {
     ui->setupUi(this);
     const QDesktopWidget& desktop = *QApplication::desktop();
@@ -80,10 +80,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->accountComboBox->setModel(&m_accountsModel);
 
-    m_changeDateInterval = true;
+    ui->currencyComboBox->setModel(&m_currenciesModel);
+
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate());
-    m_changeDateInterval = false;
+
+    m_filterSetupInProgress = false;
+
+    ApplyDocumentsFilter();
 }
 
 MainWindow::~MainWindow()
@@ -100,12 +104,12 @@ void MainWindow::on_periodComboBox_currentIndexChanged(int index)
 {
     using namespace hb::utils;
 
-    if (m_changeDateInterval)
+    if (m_filterSetupInProgress)
     {
         return;
     }
 
-    m_changeDateInterval = true;
+    m_filterSetupInProgress = true;
 
     const DatePeriod::Period period = static_cast<DatePeriod::Period>(index);
 
@@ -116,16 +120,16 @@ void MainWindow::on_periodComboBox_currentIndexChanged(int index)
     const QDate to = QDate::fromString(QString::fromUtf8(interval.to.c_str()), "yyyyMMdd");
     ui->endDateEdit->setDate(to);
 
-    m_changeDateInterval = false;
+    m_filterSetupInProgress = false;
 
-    m_documentsModel.Reload(from, to);
+    ApplyDocumentsFilter();
 }
 
 void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
 {
     using namespace hb::utils;
 
-    if (m_changeDateInterval)
+    if (m_filterSetupInProgress)
     {
         return;
     }
@@ -135,11 +139,22 @@ void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
 
     const DatePeriod::Period period = GetDatePeriod(interval);
 
-    m_changeDateInterval = true;
+    m_filterSetupInProgress = true;
     ui->periodComboBox->setCurrentIndex(period);
-    m_changeDateInterval = false;
+    m_filterSetupInProgress = false;
 
-    m_documentsModel.Reload(dateFrom, dateTo);
+    ApplyDocumentsFilter();
+}
+
+void MainWindow::ApplyDocumentsFilter()
+{
+    hb::AccountId accountId = m_accountsModel.GetAccountItemId(ui->accountComboBox->currentIndex());
+    hb::CurrencyId currencyId = m_currenciesModel.GetCurrencyItemId(ui->currencyComboBox->currentIndex());
+
+    m_documentsModel.Reload(ui->startDateEdit->date(),
+                            ui->endDateEdit->date(),
+                            accountId,
+                            currencyId);
 }
 
 
@@ -151,4 +166,20 @@ void MainWindow::on_startDateEdit_dateChanged(const QDate& /*date*/)
 void MainWindow::on_endDateEdit_dateChanged(const QDate& /*date*/)
 {
     SetPeriodComboBox(ui->startDateEdit->date(), ui->endDateEdit->date());
+}
+
+void MainWindow::on_accountComboBox_currentIndexChanged(int /*index*/)
+{
+    if (!m_filterSetupInProgress)
+    {
+        ApplyDocumentsFilter();
+    }
+}
+
+void MainWindow::on_currencyComboBox_currentIndexChanged(int index)
+{
+    if (!m_filterSetupInProgress)
+    {
+        ApplyDocumentsFilter();
+    }
 }

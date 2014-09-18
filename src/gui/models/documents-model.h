@@ -12,8 +12,15 @@ class DocumentsModel: public QAbstractTableModel
 public:
     DocumentsModel();
 
-    void Reload(const QDate& minDate, const QDate& maxDate);
-    void Reload(const std::string& minDate, const std::string& maxDate);
+    void Reload(const QDate& minDate,
+                const QDate& maxDate,
+                const hb::AccountId accountId,
+                const hb::CurrencyId currencyId);
+
+    void Reload(const std::string& minDate,
+                const std::string& maxDate,
+                const hb::AccountId accountId,
+                const hb::CurrencyId currencyId);
 
     // QAbstractTableModel interface
 public:

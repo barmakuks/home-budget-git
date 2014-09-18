@@ -18,21 +18,28 @@ DocumentsModel::DocumentsModel()
 
     m_docTypes = model.GetTypeList();
 
-    Reload(QDate::currentDate(), QDate::currentDate());
+    Reload(QDate::currentDate(), QDate::currentDate(), hb::EmptyId, hb::EmptyId);
 }
 
-void DocumentsModel::Reload(const QDate& minDate, const QDate& maxDate)
+void DocumentsModel::Reload(const QDate& minDate,
+                            const QDate& maxDate,
+                            const hb::AccountId accountId,
+                            const hb::CurrencyId currencyId)
 {
     Reload(minDate.toString("yyyyMMdd").toUtf8().constData(),
-           maxDate.toString("yyyyMMdd").toUtf8().constData());
-
+           maxDate.toString("yyyyMMdd").toUtf8().constData(),
+           accountId,
+           currencyId);
 }
 
-void DocumentsModel::Reload(const std::string& minDate, const std::string& maxDate)
+void DocumentsModel::Reload(const std::string& minDate,
+                            const std::string& maxDate,
+                            const hb::AccountId accountId,
+                            const hb::CurrencyId currencyId)
 {
     using namespace hb::core;
 
-    m_documents = Model::GetInstance().GetDocuments(minDate, maxDate);
+    m_documents = Model::GetInstance().GetDocuments(minDate, maxDate, accountId, currencyId);
 
     reset();
 }

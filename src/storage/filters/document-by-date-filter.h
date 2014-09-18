@@ -16,13 +16,28 @@ class DocByDateFilter: public AllValuesFilter
 public:
     DocByDateFilter(const std::string& after):
         m_minDate(after),
-        m_maxDate("")
+        m_maxDate(""),
+        m_accountId(hb::EmptyId),
+        m_currencyId(hb::EmptyId)
     {
     }
 
     DocByDateFilter(const std::string& after, const std::string& before):
         m_minDate(after),
-        m_maxDate(before)
+        m_maxDate(before),
+        m_accountId(hb::EmptyId),
+        m_currencyId(hb::EmptyId)
+    {
+    }
+
+    DocByDateFilter(const std::string& after,
+                    const std::string& before,
+                    const hb::AccountId accountId,
+                    const hb::CurrencyId currencyId):
+        m_minDate(after),
+        m_maxDate(before),
+        m_accountId(accountId),
+        m_currencyId(currencyId)
     {
     }
 
@@ -42,6 +57,16 @@ public:
             where_string << " and doc_date <= " << m_maxDate;
         }
 
+        if (m_accountId != hb::EmptyId)
+        {
+            where_string << " and (account_from_id = " << m_accountId << " or account_to_id = " << m_accountId << ")";
+        }
+
+        if (m_currencyId != hb::EmptyId)
+        {
+            where_string << " and (account_from_cur = " << m_currencyId << " or account_to_cur = " << m_currencyId << ")";
+        }
+
         return where_string.str();
     }
 
@@ -51,8 +76,10 @@ public:
     }
 
 private:
-    const std::string m_minDate;
-    const std::string m_maxDate;
+    const std::string       m_minDate;
+    const std::string       m_maxDate;
+    const hb::AccountId     m_accountId;
+    const hb::CurrencyId    m_currencyId;
 };
 
 } // namespace storage

@@ -21,7 +21,10 @@ public:
     DocumentTypeListPtr GetTypeList(DocumentType::TypeSign documentType);
     DocumentTypeListPtr GetTypeList();
 
-    DocumentsPtr GetDocuments(const Date& from, const Date& to);
+    DocumentsPtr GetDocuments(const Date& from,
+                              const Date& to,
+                              const hb::AccountId accountId,
+                              const hb::CurrencyId currencyId);
 
     AccountMapPtr GetAccounts();
 

@@ -46,9 +46,12 @@ DocumentTypeListPtr Model::GetTypeList()
     return m_storage->GetTypeList(DocTypeFilter());
 }
 
-DocumentsPtr Model::GetDocuments(const Date& from, const Date& to)
+DocumentsPtr Model::GetDocuments(const Date& from,
+                                 const Date& to,
+                                 const AccountId accountId,
+                                 const CurrencyId currencyId)
 {
-    return m_storage->GetDocuments(DocByDateFilter(from, to));
+    return m_storage->GetDocuments(DocByDateFilter(from, to, accountId, currencyId));
 }
 
 AccountMapPtr Model::GetAccounts()

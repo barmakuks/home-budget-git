@@ -18,6 +18,8 @@ public:
     int rowCount(const QModelIndex& parent) const;
     QVariant data(const QModelIndex& index, int role) const;
 
+    const hb::AccountId GetAccountItemId(int index) const;
+
 private:
     const hb::core::Account& GetAccountItem(int index) const;
 
