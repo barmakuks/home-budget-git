@@ -14,7 +14,7 @@
 
 using namespace std;
 
-void Print(const hb::core::DocumentTypeList& list, const hb::core::DocTypeIdList& head, int level = 0)
+void Print(hb::core::DocumentTypeList& list, hb::core::DocTypeIdList& head, int level = 0)
 {
     using namespace hb::core;
 

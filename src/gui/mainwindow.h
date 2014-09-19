@@ -12,6 +12,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class DocumentDialog;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -37,6 +39,10 @@ private slots:
 
     void on_currencyComboBox_currentIndexChanged(int index);
 
+    void on_creditButton_clicked();
+
+    void on_debitButton_clicked();
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
@@ -46,6 +52,7 @@ private:
 
     bool                    m_filterSetupInProgress;
 
+    DocumentDialog*  m_doc_dlg;
 };
 
 #endif // MAINWINDOW_H

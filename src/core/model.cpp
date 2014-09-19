@@ -38,7 +38,11 @@ Model::Model(const IStoragePtr& storage):
 
 DocumentTypeListPtr Model::GetTypeList(DocumentType::TypeSign documentType)
 {
-    return m_storage->GetTypeList(DocTypeSignFilter(documentType));
+    DocumentTypeListPtr docTypeList = m_storage->GetTypeList(DocTypeSignFilter(documentType));
+
+    SortByName(docTypeList->Head(), *docTypeList);
+
+    return docTypeList;
 }
 
 DocumentTypeListPtr Model::GetTypeList()

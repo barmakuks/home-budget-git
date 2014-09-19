@@ -6,7 +6,8 @@
 #include "model.h"
 #include "string-format.h"
 
-AccountsModel::AccountsModel()
+AccountsModel::AccountsModel(bool allAccountsFirst):
+    m_accountsStartIndex(allAccountsFirst ? 1 : 0)
 {
     Reload();
 }
@@ -53,7 +54,7 @@ void AccountsModel::Reload()
 
 int AccountsModel::rowCount(const QModelIndex& /*parent*/) const
 {
-    return m_accounts.size() + 1;
+    return m_accounts.size() + m_accountsStartIndex;
 }
 
 QVariant AccountsModel::data(const QModelIndex& index, int role) const
@@ -83,7 +84,7 @@ const hb::AccountId AccountsModel::GetAccountItemId(int index) const
 {
     if (index && index <= m_accounts.size())
     {
-        return m_accounts.at(index - 1)->Id();
+        return m_accounts.at(index - m_accountsStartIndex)->Id();
     }
 
     return hb::EmptyId;
@@ -96,19 +97,19 @@ const hb::core::Account& AccountsModel::GetAccountItem(int index) const
 
 QVariant AccountsModel::GetCellString(const QModelIndex &index) const
 {
-    if (index.row() == 0)
+    if (index.row() < m_accountsStartIndex)
     {
         return QObject::tr("Все счета");
     }
 
-    return QObject::tr(hb::utils::FormatAccountName(GetAccountItem(index.row() - 1)).c_str());
+    return QObject::tr(hb::utils::FormatAccountName(GetAccountItem(index.row() - m_accountsStartIndex)).c_str());
 }
 
 QVariant AccountsModel::GetCellForecolor(const QModelIndex &index) const
 {
-    if (index.row() > 0)
+    if (index.row() >= m_accountsStartIndex)
     {
-        const hb::core::Account& account = GetAccountItem(index.row() - 1);
+        const hb::core::Account& account = GetAccountItem(index.row() - m_accountsStartIndex);
 
         if (account.IsActive())
         {

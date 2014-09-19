@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "date-time-utils.h"
+#include "document-dialog.h"
 
 namespace
 {
@@ -33,7 +34,8 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_filterSetupInProgress(true)
+    m_filterSetupInProgress(true),
+    m_doc_dlg(NULL)
 {
     ui->setupUi(this);
     const QDesktopWidget& desktop = *QApplication::desktop();
@@ -92,6 +94,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if (m_doc_dlg)
+    {
+        delete m_doc_dlg;
+        m_doc_dlg = NULL;
+    }
+
     delete ui;
 }
 
@@ -182,4 +190,24 @@ void MainWindow::on_currencyComboBox_currentIndexChanged(int index)
     {
         ApplyDocumentsFilter();
     }
+}
+
+void MainWindow::on_creditButton_clicked()
+{
+    if (!m_doc_dlg)
+    {
+        m_doc_dlg = new DocumentDialog(this);
+    }
+
+    m_doc_dlg->show(hb::core::DocumentType::Credit);
+}
+
+void MainWindow::on_debitButton_clicked()
+{
+    if (!m_doc_dlg)
+    {
+        m_doc_dlg = new DocumentDialog(this);
+    }
+
+    m_doc_dlg->show(hb::core::DocumentType::Debit);
 }

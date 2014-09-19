@@ -9,7 +9,7 @@
 class AccountsModel: public QAbstractListModel
 {
 public:
-    AccountsModel();
+    AccountsModel(bool allAccountsFirst = true);
 
     void Reload();
 
@@ -28,6 +28,7 @@ private:
     QVariant GetCellBackColor(const QModelIndex& index) const;
 
 private:
+    const int                          m_accountsStartIndex;
     std::vector<hb::core::AccountPtr>  m_accounts;
 };
 

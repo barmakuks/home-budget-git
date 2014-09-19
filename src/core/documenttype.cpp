@@ -67,34 +67,22 @@ private:
     bool less_ci(const std::string& a, const std::string& b)
     {
         return a < b;  // TODO implement case insensitive comparision
-//        std::string name_a = a;
-//        std::string name_b = b;
-
-//        std::transform(name_a.begin(), name_a.end(), name_a.begin(),
-//                       [](unsigned char c) { return ::tolower(c); });
-//        std::transform(name_b.begin(), name_b.end(), name_b.begin(),
-//                       [](unsigned char c) { return ::tolower(c); });
-
-//        return name_a < name_b;
-
-//        boost::is_iless comp;
-//        std::locale::global(boost::locale::generator().generate("ru_RU.UTF-8"));
-
-//        return comp(a, b);
-//        boost::locale::generator gen;
-//        std::locale loc(gen(""));
-
-//        return std::tolower(a, loc) < std::tolower(b, loc);
     }
 
     const DocumentTypeList&     m_docTypes;
 } ;
 } // namespace
 
-void SortByName(DocTypeIdList& idList, const DocumentTypeList& docTypes)
+void SortByName(DocTypeIdList& idList, DocumentTypeList& docTypes)
 {
     CompareDocTypeByName compare(docTypes);
     std::sort(idList.begin(), idList.end(), compare);
+
+    for (auto id: idList)
+    {
+        DocumentTypePtr item = (docTypes)[id];
+        SortByName(item->Subtypes(), docTypes);
+    }
 }
 
 } // namespace core

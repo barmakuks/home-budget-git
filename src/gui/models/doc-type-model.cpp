@@ -1,0 +1,132 @@
+#include "doc-type-model.h"
+#include "model.h"
+
+using namespace hb;
+using namespace hb::core;
+
+
+DocTypeModel::DocTypeModel()
+{
+}
+
+void DocTypeModel::Reload(DocumentType::TypeSign sign)
+{
+    m_doctypes = Model::GetInstance().GetTypeList(sign);
+    reset();
+}
+
+QModelIndex DocTypeModel::index(int row, int column, const QModelIndex& parent) const
+{
+    if (!m_doctypes || !hasIndex(row, column, parent))
+    {
+        return QModelIndex();
+    }
+
+    DocTypeIdList brothers;
+
+    if (!parent.isValid())
+    {
+        brothers = m_doctypes->Head();
+    }
+    else
+    {
+        DocTypeId itemId = static_cast<DocTypeId>(parent.internalId());
+        brothers = (*m_doctypes)[itemId]->Subtypes();
+    }
+
+    if (brothers.size() > row)
+    {
+        return createIndex(row, column, brothers[row]);
+    }
+    else
+    {
+        return QModelIndex();
+    }
+}
+
+QModelIndex DocTypeModel::parent(const QModelIndex& child) const
+{
+    if (!m_doctypes || !child.isValid())
+    {
+        return QModelIndex();
+    }
+
+    DocTypeId childId = static_cast<DocTypeId>(child.internalId());
+    DocumentTypePtr childItem = (*m_doctypes)[childId];
+    DocTypeId parentId = childItem->ParentId();
+
+    if (parentId == EmptyId)
+    {
+        return QModelIndex();
+    }
+
+    DocTypeId grandparent = (*m_doctypes)[parentId]->ParentId();
+
+    DocTypeIdList parent_brothers;
+
+    if (grandparent != EmptyId)
+    {
+        parent_brothers = (*m_doctypes)[grandparent]->Subtypes();
+    }
+    else
+    {
+        parent_brothers = m_doctypes->Head();
+    }
+
+    int parentRow = 0;
+
+    for (auto it = parent_brothers.begin();
+         it != parent_brothers.end();
+         ++it, ++parentRow)
+    {
+        if (*it == parentId)
+        {
+            return createIndex(parentRow, 0, parentId);
+        }
+    }
+
+    return QModelIndex();
+}
+
+int DocTypeModel::rowCount(const QModelIndex& parent) const
+{
+    if (!m_doctypes || parent.column() > 0)
+    {
+        return 0;
+    }
+
+    DocTypeIdList brothers;
+
+    if (!parent.isValid())
+    {
+        brothers = m_doctypes->Head();
+    }
+    else
+    {
+        brothers = (*m_doctypes)[static_cast<DocTypeId>(parent.internalId())]->Subtypes();
+    }
+
+    return brothers.size();
+}
+
+int DocTypeModel::columnCount(const QModelIndex& parent) const
+{
+    return 1;
+}
+
+QVariant DocTypeModel::data(const QModelIndex& index, int role) const
+{
+    if (!m_doctypes || !index.isValid())
+    {
+        return QVariant();
+    }
+
+    if (role != Qt::DisplayRole)
+    {
+        return QVariant();
+    }
+
+    DocTypeId docTypeId = static_cast<DocTypeId>(index.internalId());
+
+    return QObject::tr((*m_doctypes)[docTypeId]->Name().c_str());
+}

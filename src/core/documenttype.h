@@ -54,6 +54,11 @@ public:
         return m_subtypes;
     }
 
+    DocTypeIdList& Subtypes()
+    {
+        return m_subtypes;
+    }
+
     void AddSubtype(DocTypeId subtypeId)
     {
         m_subtypes.push_back(subtypeId);
@@ -103,13 +108,18 @@ public:
         return m_head;
     }
 
+    DocTypeIdList& Head()
+    {
+        return m_head;
+    }
+
 private:
     DocTypeIdList m_head;
 };
 
 typedef std::shared_ptr<DocumentTypeList> DocumentTypeListPtr;
 
-void SortByName(DocTypeIdList& idList, const DocumentTypeList& docTypes);
+void SortByName(DocTypeIdList& idList, DocumentTypeList& docTypes);
 
 } // namespace core
 } // namespace hb
