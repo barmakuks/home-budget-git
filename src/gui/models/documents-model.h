@@ -22,16 +22,19 @@ public:
                 const hb::AccountId accountId,
                 const hb::CurrencyId currencyId);
 
+    const hb::core::DocumentPtr& GetDocumentItemPtr(int index) const;
+
     // QAbstractTableModel interface
 public:
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int rowCount(const QModelIndex& parent) const;
+    int columnCount(const QModelIndex& parent) const;
+    QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
 
 private:
 
-    const hb::core::Document& GetDocumentItem(int index) const;
+    const hb::core::Document& GetDocumentItemRef(int index) const;
 
     QVariant GetCellString(const QModelIndex& index) const;
     QVariant GetCellAlignment(const QModelIndex& index) const;

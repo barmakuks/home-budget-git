@@ -3,7 +3,7 @@
 #include <QColor>
 #include <QFont>
 
-#include "model.h"
+#include "engine.h"
 #include "string-format.h"
 
 AccountsModel::AccountsModel(bool allAccountsFirst):
@@ -12,49 +12,15 @@ AccountsModel::AccountsModel(bool allAccountsFirst):
     Reload();
 }
 
-namespace
-{
-class AccountOrderComporator
-{
-public:
-    bool operator()(const hb::core::AccountPtr& first, const hb::core::AccountPtr& second)
-    {
-        using namespace hb::core;
-
-        if (first && second)
-        {
-            return first->SortOrder() < second->SortOrder();
-        }
-        else
-        {
-            return second != NULL;
-        }
-    }
-};
-}
-
 void AccountsModel::Reload()
 {
     using namespace hb::core;
-
-    hb::core::AccountMapPtr accounts = Model::GetInstance().GetAccounts();
-
-    m_accounts.clear();
-    m_accounts.reserve(accounts->size());
-
-    foreach (auto item, *accounts)
-    {
-        m_accounts.push_back(item.second);
-    }
-
-    AccountOrderComporator comporator;
-
-    std::sort(m_accounts.begin(), m_accounts.end(), comporator);
+    m_accounts = Engine::GetInstance().GetAccountsList(true);
 }
 
 int AccountsModel::rowCount(const QModelIndex& /*parent*/) const
 {
-    return m_accounts.size() + m_accountsStartIndex;
+    return m_accounts ? m_accounts->size() + m_accountsStartIndex : 0;
 }
 
 QVariant AccountsModel::data(const QModelIndex& index, int role) const
@@ -82,17 +48,38 @@ QVariant AccountsModel::data(const QModelIndex& index, int role) const
 
 const hb::AccountId AccountsModel::GetAccountItemId(int index) const
 {
-    if (index && index <= m_accounts.size())
+    if (index && m_accounts && index <= m_accounts->size())
     {
-        return m_accounts.at(index - m_accountsStartIndex)->Id();
+        return m_accounts->at(index - m_accountsStartIndex)->Id();
     }
 
     return hb::EmptyId;
 }
 
+int AccountsModel::GetIndexOfAccount(hb::AccountId accountId) const
+{
+    using namespace hb::core;
+    int index = 0;
+
+    if (m_accounts)
+    {
+        for (AccountList::const_iterator it = m_accounts->begin();
+             it != m_accounts->end();
+             ++it, ++index)
+        {
+            if ((*it)->Id() == accountId)
+            {
+                return index;
+            }
+        }
+    }
+
+    return -1;
+}
+
 const hb::core::Account& AccountsModel::GetAccountItem(int index) const
 {
-    return *(m_accounts.at(index));
+    return *(m_accounts->at(index));
 }
 
 QVariant AccountsModel::GetCellString(const QModelIndex &index) const

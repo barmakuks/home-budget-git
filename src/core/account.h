@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 
 #include <map>
+#include <vector>
 #include <memory>
 
 #include "raw-types.h"
@@ -54,7 +55,9 @@ private:
 typedef std::shared_ptr<Account> AccountPtr;
 
 typedef std::map<AccountId, AccountPtr> AccountMap;
+typedef std::vector<hb::core::AccountPtr>  AccountList;
 typedef std::shared_ptr<AccountMap> AccountMapPtr;
+typedef std::shared_ptr<AccountList> AccountListPtr;
 
 } // namespace core
 } // namespace hb

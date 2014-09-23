@@ -21,9 +21,9 @@ class DocumentType
 public:
     enum TypeSign
     {
-        Debit = -1,
+        Outcome = -1,
         Movement = 0,
-        Credit = 1
+        Income = 1
     };
 
 public:

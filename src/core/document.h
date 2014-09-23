@@ -84,8 +84,8 @@ typedef std::shared_ptr<Document> DocumentPtr;
 typedef std::vector<DocumentPtr> Documents;
 typedef std::shared_ptr<Documents> DocumentsPtr;
 
-//typedef std::map<DocId, DocumentPtr> DocumentsMap;
-//typedef std::shared_ptr<DocumentsMap> DocumentsMapPtr;
+typedef std::vector<std::string> ShopList;
+typedef std::shared_ptr<ShopList> ShopListPtr;
 
 } // namespace core
 } // namespace hb

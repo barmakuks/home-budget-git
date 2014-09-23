@@ -25,6 +25,7 @@ public:
 private:
     void SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo);
     void ApplyDocumentsFilter();
+    void EditDocument();
 
 private slots:
     void on_calendarWidget_clicked(const QDate& date);
@@ -42,6 +43,8 @@ private slots:
     void on_creditButton_clicked();
 
     void on_debitButton_clicked();
+
+    void on_editButton_clicked();
 
 private:
     Ui::MainWindow*         ui;

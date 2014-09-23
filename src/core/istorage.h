@@ -41,11 +41,12 @@ public:
 
     virtual BalancePtr GetBalance(const IFilter& filter) const  = 0;
 
+    virtual ShopListPtr GetShopList(const IFilter& filter) const = 0;
+
     virtual bool Write(Document& doc) const = 0;
     virtual bool Write(DocumentType& docType) const = 0;
     virtual bool Write(Account& account) const = 0;
     virtual bool Write(Currency& currency) const = 0;
-
 };
 
 typedef std::shared_ptr<IStorage> IStoragePtr;

@@ -18,6 +18,8 @@ public:
     virtual int columnCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
 
+public:
+    QModelIndex getDocTypeIndex(const hb::DocTypeId docTypeId) const;
 private:
     hb::core::DocumentTypeListPtr m_doctypes;
 };

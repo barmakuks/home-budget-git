@@ -1,5 +1,5 @@
 #include "currencies-model.h"
-#include "model.h"
+#include "engine.h"
 
 CurrenciesModel::CurrenciesModel()
 {
@@ -31,7 +31,7 @@ void CurrenciesModel::Reload()
 {
     using namespace hb::core;
 
-    hb::core::CurrencyMapPtr currencies = Model::GetInstance().GetCurrencies();
+    hb::core::CurrencyMapPtr currencies = Engine::GetInstance().GetCurrencies();
 
     m_currencies.clear();
     m_currencies.reserve(currencies->size());

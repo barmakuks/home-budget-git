@@ -7,6 +7,7 @@
 #include "strategies/fill-currency-map-strategy.h"
 #include "strategies/last-id-strategy.h"
 #include "strategies/fill-balance-map-strategy.h"
+#include "strategies/fill-shop-list-strategy.h"
 
 #include "sql-builder.h"
 #include "data-fields-description.h"
@@ -37,10 +38,10 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
     const std::string order_by = filter.OrderBy();
 
     const std::string query_string = "SELECT " + fields + " FROM " + filter.From()
-                                    + ((where.empty()) ? std::string("") : std::string(" WHERE ") + where)
-                                    + ((group_by.empty()) ? std::string("") : std::string(" GROUP BY ") + group_by)
-                                    + ((having.empty()) ? std::string("") : std::string(" HAVING ") + having)
-                                    + ((order_by.empty()) ? std::string("") : std::string(" ORDER BY ") + order_by);
+                                     + ((where.empty()) ? std::string("") : std::string(" WHERE ") + where)
+                                     + ((group_by.empty()) ? std::string("") : std::string(" GROUP BY ") + group_by)
+                                     + ((having.empty()) ? std::string("") : std::string(" HAVING ") + having)
+                                     + ((order_by.empty()) ? std::string("") : std::string(" ORDER BY ") + order_by);
 
     engine.ExecuteQuery(query_string, strategy);
 
@@ -76,7 +77,10 @@ class class_has_id
 {
 private:
     typedef char Small;
-    struct Large { char a[2];};
+    struct Large
+    {
+        char a[2];
+    };
 
     template <typename C> static Small test(decltype(C::Id));
     template <typename C> static Large test(...);
@@ -125,12 +129,12 @@ bool WriteData(IDatabaseEngine& engine, T& data)
 
 } // namespace
 
-DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter &filter) const
+DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter& filter) const
 {
     return GetData<FillDocumentTypeListStrategy>(m_databaseEngine, filter);
 }
 
-DocumentsPtr DatabaseStorage::GetDocuments(const IFilter &filter) const
+DocumentsPtr DatabaseStorage::GetDocuments(const IFilter& filter) const
 {
     return GetData<FillDocumentsMapStrategy>(m_databaseEngine, filter);
 }
@@ -150,6 +154,10 @@ BalancePtr DatabaseStorage::GetBalance(const core::IFilter& filter) const
     return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
 }
 
+ShopListPtr DatabaseStorage::GetShopList(const core::IFilter& filter) const
+{
+    return GetData<FillShopListStrategy>(m_databaseEngine, filter);
+}
 
 bool DatabaseStorage::Write(core::Document& doc) const
 {
@@ -173,3 +181,5 @@ bool DatabaseStorage::Write(core::Currency& currency) const
 
 } // namespace storage
 } // namespace hb
+
+

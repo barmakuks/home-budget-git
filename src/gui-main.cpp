@@ -4,7 +4,7 @@
 
 #include "database-storage.h"
 #include "sqlite/sqlite-engine.h"
-#include "model.h"
+#include "engine.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     hb::sqlite::SqliteEngine engine("/home/vitalii/development/barma-home-budget/data/budget.sqlite");
     IStoragePtr storage(new DatabaseStorage(engine));
 
-    Model::CreateInstance(storage);
+    Engine::CreateInstance(storage);
 
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 

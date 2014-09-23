@@ -3,7 +3,7 @@
 #include <QColor>
 #include <QDate>
 
-#include "model.h"
+#include "engine.h"
 #include "string-format.h"
 #include "balance.h"
 #include "assert_macro.h"
@@ -12,7 +12,7 @@ BalanceModel::BalanceModel()
 {
     using namespace hb::core;
 
-    Model& model = Model::GetInstance();
+    Engine& model = Engine::GetInstance();
 
     m_accounts = model.GetAccounts();
 
@@ -72,7 +72,7 @@ private:
 void BalanceModel::Recalculate(const std::string& date)
 {
     using namespace hb::core;
-    m_balance = Model::GetInstance().GetBalance(date);
+    m_balance = Engine::GetInstance().GetBalance(date);
     m_total_balance = m_balance->GetTotalBalance();
 
     AccountOrderComporator comporator(m_accounts);

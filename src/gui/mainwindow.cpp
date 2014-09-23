@@ -9,6 +9,8 @@
 
 #include "date-time-utils.h"
 #include "document-dialog.h"
+#include "document.h"
+#include "engine.h"
 
 namespace
 {
@@ -165,6 +167,16 @@ void MainWindow::ApplyDocumentsFilter()
                             currencyId);
 }
 
+void MainWindow::EditDocument()
+{
+    QModelIndexList indexes = ui->documentsTableView->selectionModel()->selectedRows();
+
+    if (indexes.size() == 1)
+    {
+        hb::core::DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
+        DocumentDialog::EditDocument(doc);
+    }
+}
 
 void MainWindow::on_startDateEdit_dateChanged(const QDate& /*date*/)
 {
@@ -194,20 +206,19 @@ void MainWindow::on_currencyComboBox_currentIndexChanged(int index)
 
 void MainWindow::on_creditButton_clicked()
 {
-    if (!m_doc_dlg)
-    {
-        m_doc_dlg = new DocumentDialog(this);
-    }
+    using namespace hb::core;
 
-    m_doc_dlg->show(hb::core::DocumentType::Credit);
+    DocumentPtr doc = DocumentDialog::CreateDocument(hb::core::DocumentType::Income);
+    hb::core::Engine::GetInstance().Write(*doc);
+    ApplyDocumentsFilter();
 }
 
 void MainWindow::on_debitButton_clicked()
 {
-    if (!m_doc_dlg)
-    {
-        m_doc_dlg = new DocumentDialog(this);
-    }
+    /*DocumentPtr doc = */DocumentDialog::CreateDocument(hb::core::DocumentType::Outcome);
+}
 
-    m_doc_dlg->show(hb::core::DocumentType::Debit);
+void MainWindow::on_editButton_clicked()
+{
+    EditDocument();
 }

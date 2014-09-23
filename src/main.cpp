@@ -135,7 +135,7 @@ int main()
 
     cout << "Hello World!" << endl;
 
-    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Debit));
+    DocumentTypeListPtr docTypes = storage.GetTypeList(DocTypeSignFilter(DocumentType::TypeSign::Outcome));
 //    const DocTypeIdList& head = docTypes->Head();
 //    Print(*docTypes, head);
 

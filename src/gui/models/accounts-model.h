@@ -19,6 +19,7 @@ public:
     QVariant data(const QModelIndex& index, int role) const;
 
     const hb::AccountId GetAccountItemId(int index) const;
+    int GetIndexOfAccount(hb::AccountId accountId) const;
 
 private:
     const hb::core::Account& GetAccountItem(int index) const;
@@ -28,8 +29,8 @@ private:
     QVariant GetCellBackColor(const QModelIndex& index) const;
 
 private:
-    const int                          m_accountsStartIndex;
-    std::vector<hb::core::AccountPtr>  m_accounts;
+    const int                   m_accountsStartIndex;
+    hb::core::AccountListPtr    m_accounts;
 };
 
 #endif // ACCOUNTSMODEL_H

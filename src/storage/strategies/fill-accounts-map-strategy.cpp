@@ -14,7 +14,6 @@ FillAccountsMapStrategy::FillAccountsMapStrategy():
 void FillAccountsMapStrategy::NewRecord()
 {
     m_account.reset(new account_type());
-
 }
 
 void FillAccountsMapStrategy::ApplyRecord()

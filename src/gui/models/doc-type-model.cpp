@@ -1,5 +1,8 @@
 #include "doc-type-model.h"
-#include "model.h"
+
+#include <stack>
+
+#include "engine.h"
 
 using namespace hb;
 using namespace hb::core;
@@ -11,7 +14,7 @@ DocTypeModel::DocTypeModel()
 
 void DocTypeModel::Reload(DocumentType::TypeSign sign)
 {
-    m_doctypes = Model::GetInstance().GetTypeList(sign);
+    m_doctypes = Engine::GetInstance().GetTypeList(sign);
     reset();
 }
 
@@ -55,37 +58,39 @@ QModelIndex DocTypeModel::parent(const QModelIndex& child) const
     DocumentTypePtr childItem = (*m_doctypes)[childId];
     DocTypeId parentId = childItem->ParentId();
 
-    if (parentId == EmptyId)
-    {
-        return QModelIndex();
-    }
+    return getDocTypeIndex(parentId);
 
-    DocTypeId grandparent = (*m_doctypes)[parentId]->ParentId();
+//    if (parentId == EmptyId)
+//    {
+//        return QModelIndex();
+//    }
 
-    DocTypeIdList parent_brothers;
+//    DocTypeId grandparent = (*m_doctypes)[parentId]->ParentId();
 
-    if (grandparent != EmptyId)
-    {
-        parent_brothers = (*m_doctypes)[grandparent]->Subtypes();
-    }
-    else
-    {
-        parent_brothers = m_doctypes->Head();
-    }
+//    DocTypeIdList parent_brothers;
 
-    int parentRow = 0;
+//    if (grandparent != EmptyId)
+//    {
+//        parent_brothers = (*m_doctypes)[grandparent]->Subtypes();
+//    }
+//    else
+//    {
+//        parent_brothers = m_doctypes->Head();
+//    }
 
-    for (auto it = parent_brothers.begin();
-         it != parent_brothers.end();
-         ++it, ++parentRow)
-    {
-        if (*it == parentId)
-        {
-            return createIndex(parentRow, 0, parentId);
-        }
-    }
+//    int parentRow = 0;
 
-    return QModelIndex();
+//    for (auto it = parent_brothers.begin();
+//         it != parent_brothers.end();
+//         ++it, ++parentRow)
+//    {
+//        if (*it == parentId)
+//        {
+//            return createIndex(parentRow, 0, parentId);
+//        }
+//    }
+
+//    return QModelIndex();
 }
 
 int DocTypeModel::rowCount(const QModelIndex& parent) const
@@ -129,4 +134,58 @@ QVariant DocTypeModel::data(const QModelIndex& index, int role) const
     DocTypeId docTypeId = static_cast<DocTypeId>(index.internalId());
 
     return QObject::tr((*m_doctypes)[docTypeId]->Name().c_str());
+}
+
+QModelIndex DocTypeModel::getDocTypeIndex(const DocTypeId docTypeId) const
+{
+    if (docTypeId == EmptyId)
+    {
+        return QModelIndex();
+    }
+
+    typedef std::stack<DocTypeId> DocTypeIdStack;
+    DocTypeIdStack parents;
+
+    DocTypeId id = docTypeId;
+
+    while (id != hb::EmptyId)
+    {
+        parents.push(id);
+        const DocumentTypePtr docType = (*m_doctypes)[id];
+        id = docType->ParentId();
+    }
+
+    QModelIndex result;
+
+    DocTypeIdList parent_brothers = m_doctypes->Head();
+
+    do
+    {
+        id = parents.top();
+
+        DocTypeIdList::const_iterator it = std::find(parent_brothers.begin(), parent_brothers.end(), id);
+
+        if (it != parent_brothers.end())
+        {
+            int row = it - parent_brothers.begin();
+            result = index(row, 0, result);
+            parent_brothers = (*m_doctypes)[id]->Subtypes();
+        }
+        else
+        {
+            return QModelIndex();
+        }
+
+        parents.pop();
+    } while (id != docTypeId);
+
+    return result;
+
+//    std::cout << "Parents: ";
+//    while (!parents.empty())
+//    {
+//        std::cout << parents.top() << " ";
+//        parents.pop();
+//    }
+//    std::cout << std::endl;
 }

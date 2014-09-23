@@ -45,7 +45,7 @@ TEST(SqlBuilderSuite, testInsertDocumentTypeSql)
     using namespace hb::core;
     DocumentType docType;
     docType.SetParentId(1);
-    docType.SetSign(DocumentType::Debit);
+    docType.SetSign(DocumentType::Outcome);
     docType.SetName("Test name");
 
     const std::string expectedStatement = "INSERT INTO doc_types (parent_id, operation_sign, name) VALUES (1, -1, 'Test name')";
@@ -59,7 +59,7 @@ TEST(SqlBuilderSuite, testUpdateDocumentTypeSql)
     DocumentType docType;
     docType.SetId(2);
     docType.SetParentId(1);
-    docType.SetSign(DocumentType::Debit);
+    docType.SetSign(DocumentType::Outcome);
     docType.SetName("Test name");
 
     const std::string expectedStatement = "UPDATE doc_types SET parent_id=1, operation_sign=-1, name='Test name' WHERE id=2";

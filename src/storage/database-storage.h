@@ -18,15 +18,19 @@ class DatabaseStorage : public core::IStorage
 public:
     DatabaseStorage(core::IDatabaseEngine& engine);
 
-    core::DocumentTypeListPtr GetTypeList(const core::IFilter& filter) const;
+    // IStorage interface
+public:
+    virtual core::DocumentTypeListPtr GetTypeList(const core::IFilter& filter) const;
 
-    core::DocumentsPtr GetDocuments(const core::IFilter &filter) const;
+    virtual core::DocumentsPtr GetDocuments(const core::IFilter &filter) const;
 
-    core::AccountMapPtr GetAccounts(const core::IFilter& filter) const;
+    virtual core::AccountMapPtr GetAccounts(const core::IFilter& filter) const;
 
-    core::CurrencyMapPtr GetCurrencies(const core::IFilter& filter) const;
+    virtual core::CurrencyMapPtr GetCurrencies(const core::IFilter& filter) const;
 
-    core::BalancePtr GetBalance(const core::IFilter& filter) const;
+    virtual core::BalancePtr GetBalance(const core::IFilter& filter) const;
+
+    virtual core::ShopListPtr GetShopList(const core::IFilter &filter) const;
 
     bool Write(core::Document& doc) const;
     bool Write(core::DocumentType& docType) const;
@@ -36,6 +40,7 @@ public:
 private:
 
     core::IDatabaseEngine&    m_databaseEngine;
+
 };
 
 } // namespace storage
