@@ -18,6 +18,7 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 {
     int index = 0;
     int max_square = 0;
+
     for (int i = 0; i < desktop.screenCount(); ++i)
     {
         int square = desktop.screenGeometry(i).width() * desktop.screenGeometry().height();
@@ -33,7 +34,7 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 }
 }
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_filterSetupInProgress(true),
@@ -63,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     const int y = screenTop + (screenHeight - height) / 2;
 
     resize(width, height);
-    move( x, y );
+    move(x, y);
 
     ui->balanceTableView->setModel(&m_balanceModel);
     ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -221,4 +222,12 @@ void MainWindow::on_debitButton_clicked()
 void MainWindow::on_editButton_clicked()
 {
     EditDocument();
+}
+
+void MainWindow::on_documentsTableView_doubleClicked(const QModelIndex& index)
+{
+    if (index.isValid())
+    {
+        EditDocument();
+    }
 }

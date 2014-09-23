@@ -8,7 +8,8 @@
 #include "models/accounts-model.h"
 #include "models/currencies-model.h"
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
@@ -19,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
 private:
@@ -34,7 +35,7 @@ private slots:
 
     void on_startDateEdit_dateChanged(const QDate& date);
 
-    void on_endDateEdit_dateChanged(const QDate &date);
+    void on_endDateEdit_dateChanged(const QDate& date);
 
     void on_accountComboBox_currentIndexChanged(int index);
 
@@ -45,6 +46,8 @@ private slots:
     void on_debitButton_clicked();
 
     void on_editButton_clicked();
+
+    void on_documentsTableView_doubleClicked(const QModelIndex& index);
 
 private:
     Ui::MainWindow*         ui;

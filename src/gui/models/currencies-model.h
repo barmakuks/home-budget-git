@@ -9,11 +9,12 @@
 class CurrenciesModel: public QAbstractListModel
 {
 public:
-    CurrenciesModel();
+    CurrenciesModel(bool allCurrenciesFirst = true);
 
     void Reload();
 
     hb::CurrencyId GetCurrencyItemId(int index);
+    QModelIndex GetCurrencyIndex(hb::CurrencyId currencyId);
 
     // QAbstractItemModel interface
 public:
@@ -26,7 +27,10 @@ private:
     QVariant GetCellString(const QModelIndex& index) const;
 
 private:
-    std::vector<hb::core::CurrencyPtr>  m_currencies;
+    const int       m_currenciesStartIndex;
+
+    typedef std::vector<hb::core::CurrencyPtr> CurrencyList;
+    CurrencyList    m_currencies;
 };
 
 #endif // CURRENCIESMODEL_H

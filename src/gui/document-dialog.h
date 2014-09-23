@@ -5,6 +5,7 @@
 
 #include "models/doc-type-model.h"
 #include "models/accounts-model.h"
+#include "models/currencies-model.h"
 #include "models/shops-model.h"
 #include "document.h"
 
@@ -57,6 +58,7 @@ private:
 
     DocTypeModel    m_docTypesModel;
     AccountsModel   m_accountsModel;
+    CurrenciesModel m_currencyModel;
     ShopsModel      m_shopsModel;
 //    hb::core::DocumentPtr   m_document;
 

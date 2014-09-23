@@ -14,12 +14,14 @@ DocumentDialog* DocumentDialog::dlg = NULL;
 DocumentDialog::DocumentDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::DocumentDialog),
-    m_accountsModel(false)
+    m_accountsModel(false),
+    m_currencyModel(false)
 {
     ui->setupUi(this);
     ui->docTypeTreeView->setModel(&m_docTypesModel);
     ui->accountComboBox->setModel(&m_accountsModel);
     ui->shopComboBox->setModel(&m_shopsModel);
+    ui->currencyComboBox->setModel(&m_currencyModel);
 }
 
 hb::core::DocumentPtr DocumentDialog::CreateDocument(hb::core::DocumentType::TypeSign docType)
@@ -44,6 +46,7 @@ void DocumentDialog::SetDocument(hb::core::DocumentPtr& document)
     m_docTypesModel.Reload(docType->Sign());
     m_accountsModel.Reload();
     m_shopsModel.Reload();
+    m_currencyModel.Reload();
 
     Amount& amount = docType->Sign() == DocumentType::Income ? document->AmountTo().get() : document->AmountFrom().get();
     ui->amountEdit->setText(QObject::tr(hb::utils::FormatMoney(amount.Value()).c_str()));
@@ -51,18 +54,12 @@ void DocumentDialog::SetDocument(hb::core::DocumentPtr& document)
     ui->accountComboBox->setCurrentIndex(m_accountsModel.GetIndexOfAccount(amount.Account()));
 
     ui->shopComboBox->setEditText(QObject::tr(document->Shop().c_str()));
+    ui->currencyComboBox->setCurrentIndex(m_currencyModel.GetCurrencyIndex(amount.Currency()).row());
 
     const QModelIndex docTypeIndex = m_docTypesModel.getDocTypeIndex(docType->Id());
     ui->docTypeTreeView->selectionModel()->select(docTypeIndex, QItemSelectionModel::Select);
 
     ExpandToIndex(docTypeIndex);
-
-//    ui->docTypeTreeView->selectionModel()->select(m_shopsModel.index(2,0), QItemSelectionModel::Select);
-    //    m_document = document;
-
-//    Amount amount = m_document->
-
-//    ui->amountEdit->setText(document->)
 }
 
 void DocumentDialog::GetDocument(hb::core::DocumentPtr& document)

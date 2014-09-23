@@ -94,6 +94,29 @@
          <item>
           <widget class="QComboBox" name="accountComboBox"/>
          </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Валюта</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignRight">
+          <widget class="QComboBox" name="currencyComboBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
          <item alignment="Qt::AlignTop">
           <widget class="QLabel" name="label_3">
            <property name="text">

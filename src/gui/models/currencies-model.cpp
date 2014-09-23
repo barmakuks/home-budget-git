@@ -1,7 +1,8 @@
 #include "currencies-model.h"
 #include "engine.h"
 
-CurrenciesModel::CurrenciesModel()
+CurrenciesModel::CurrenciesModel(bool allCurrenciesFirst):
+    m_currenciesStartIndex(allCurrenciesFirst ? 1 : 0)
 {
     Reload();
 }
@@ -36,7 +37,7 @@ void CurrenciesModel::Reload()
     m_currencies.clear();
     m_currencies.reserve(currencies->size());
 
-    foreach (auto item, *currencies)
+    foreach(auto item, *currencies)
     {
         m_currencies.push_back(item.second);
     }
@@ -50,15 +51,32 @@ hb::CurrencyId CurrenciesModel::GetCurrencyItemId(int index)
 {
     if (index && index <= m_currencies.size())
     {
-        return m_currencies.at(index - 1)->Code();
+        return m_currencies.at(index - m_currenciesStartIndex)->Code();
     }
 
     return hb::EmptyId;
 }
 
+QModelIndex CurrenciesModel::GetCurrencyIndex(hb::CurrencyId currencyId)
+{
+    int row = 0;
+
+    for (CurrencyList::const_iterator it = m_currencies.begin();
+         it != m_currencies.end();
+         ++it, ++row)
+    {
+        if ((*it)->Code() == currencyId)
+        {
+            return index(row + m_currenciesStartIndex, 0);
+        }
+    }
+
+    return QModelIndex();
+}
+
 int CurrenciesModel::rowCount(const QModelIndex& /*parent*/) const
 {
-    return m_currencies.size() + 1;
+    return m_currencies.size() + m_currenciesStartIndex;
 }
 
 QVariant CurrenciesModel::data(const QModelIndex& index, int role) const
@@ -76,17 +94,19 @@ QVariant CurrenciesModel::data(const QModelIndex& index, int role) const
     }
 }
 
-const hb::core::Currency &CurrenciesModel::GetCurrencyItem(int index) const
+const hb::core::Currency& CurrenciesModel::GetCurrencyItem(int index) const
 {
     return *(m_currencies.at(index));
 }
 
-QVariant CurrenciesModel::GetCellString(const QModelIndex &index) const
+QVariant CurrenciesModel::GetCellString(const QModelIndex& index) const
 {
-    if (index.row() == 0)
+    if (index.row() < m_currenciesStartIndex)
     {
         return QObject::tr("Все валюты");
     }
 
-    return QObject::tr(GetCurrencyItem(index.row() - 1).ShortName().c_str());
+    hb::core::Currency cur = GetCurrencyItem(index.row() - m_currenciesStartIndex);
+
+    return QObject::tr((cur.Symbol() + " - " + cur.ShortName()).c_str());
 }
