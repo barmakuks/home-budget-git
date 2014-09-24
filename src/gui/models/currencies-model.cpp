@@ -1,5 +1,6 @@
 #include "currencies-model.h"
 #include "engine.h"
+#include "../convert-utils.h"
 
 CurrenciesModel::CurrenciesModel(bool allCurrenciesFirst):
     m_currenciesStartIndex(allCurrenciesFirst ? 1 : 0)
@@ -101,12 +102,14 @@ const hb::core::Currency& CurrenciesModel::GetCurrencyItem(int index) const
 
 QVariant CurrenciesModel::GetCellString(const QModelIndex& index) const
 {
+    using namespace hb::utils;
+
     if (index.row() < m_currenciesStartIndex)
     {
-        return QObject::tr("Все валюты");
+        return Tr("Все валюты");
     }
 
     hb::core::Currency cur = GetCurrencyItem(index.row() - m_currenciesStartIndex);
 
-    return QObject::tr((cur.Symbol() + " - " + cur.ShortName()).c_str());
+    return Tr((cur.Symbol() + " - " + cur.ShortName()));
 }

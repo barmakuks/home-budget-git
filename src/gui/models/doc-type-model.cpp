@@ -1,11 +1,12 @@
 #include "doc-type-model.h"
-
 #include <stack>
 
 #include "engine.h"
+#include "../convert-utils.h"
 
 using namespace hb;
 using namespace hb::core;
+using namespace hb::utils;
 
 DocTypeModel::DocTypeModel()
 {
@@ -132,7 +133,7 @@ QVariant DocTypeModel::data(const QModelIndex& index, int role) const
 
     DocTypeId docTypeId = static_cast<DocTypeId>(index.internalId());
 
-    return QObject::tr((*m_doctypes)[docTypeId]->Name().c_str());
+    return Tr((*m_doctypes)[docTypeId]->Name());
 }
 
 QModelIndex DocTypeModel::getDocTypeIndex(const DocTypeId docTypeId) const

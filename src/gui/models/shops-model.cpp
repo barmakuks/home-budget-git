@@ -1,5 +1,6 @@
 #include "shops-model.h"
 #include "engine.h"
+#include "../convert-utils.h"
 
 ShopsModel::ShopsModel()
 {
@@ -41,5 +42,5 @@ const std::string ShopsModel::GetShopItemId(int index) const
 
 QVariant ShopsModel::GetCellString(const QModelIndex& index) const
 {
-    return QObject::tr(GetShopItemId(index.row()).c_str());
+    return hb::utils::Tr(GetShopItemId(index.row()));
 }

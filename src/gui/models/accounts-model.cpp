@@ -5,6 +5,8 @@
 
 #include "engine.h"
 #include "string-format.h"
+#include "../convert-utils.h"
+using namespace hb::utils;
 
 AccountsModel::AccountsModel(bool allAccountsFirst):
     m_accountsStartIndex(allAccountsFirst ? 1 : 0)
@@ -86,10 +88,10 @@ QVariant AccountsModel::GetCellString(const QModelIndex &index) const
 {
     if (index.row() < m_accountsStartIndex)
     {
-        return QObject::tr("Все счета");
+        return Tr("Все счета");
     }
 
-    return QObject::tr(hb::utils::FormatAccountName(GetAccountItem(index.row() - m_accountsStartIndex)).c_str());
+    return Tr(FormatAccountName(GetAccountItem(index.row() - m_accountsStartIndex)));
 }
 
 QVariant AccountsModel::GetCellForecolor(const QModelIndex &index) const

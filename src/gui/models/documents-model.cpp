@@ -99,33 +99,44 @@ QVariant DocumentsModel::data(const QModelIndex& index, int role) const
 
 QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/, int role) const
 {
+    using namespace hb::utils;
+
     if (role == Qt::DisplayRole)
     {
         switch (section)
         {
         case Columns::Date:
-            return QObject::tr("Дата");
-
+        {
+            return Tr("Дата");
+        }
         case Columns::DocType:
-            return QObject::tr("Описание");
-
+        {
+            return Tr("Описание");
+        }
         case Columns::AccountFrom:
-            return QObject::tr("Сч. расх.");
-
+        {
+            return Tr("Сч. расх.");
+        }
         case Columns::AccountTo:
-            return QObject::tr("Сч. дох.");
-
+        {
+            return Tr("Сч. дох.");
+        }
         case Columns::AmountFrom:
-            return QObject::tr("Сумма расх.");
-
+        {
+            return Tr("Сумма расх.");
+        }
         case Columns::AmountTo:
-            return QObject::tr("Сумма дох.");
-
+        {
+            return Tr("Сумма дох.");
+        }
         case Columns::Note:
-            return QObject::tr("Прим.");
-
+        {
+            return Tr("Прим.");
+        }
         case Columns::Shop:
+        {
             return QVariant();
+        }
         }
     }
 
@@ -145,6 +156,7 @@ const hb::core::DocumentPtr& DocumentsModel::GetDocumentItemPtr(int index) const
 QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 {
     using namespace hb::core;
+    using namespace hb::utils;
 
     const Document& doc = GetDocumentItemRef(index.row());
 
@@ -152,7 +164,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
     {
     case Columns::Date:
     {
-        return QObject::tr(hb::utils::FormatDate(doc.DocDate()).c_str());
+        return Tr(hb::utils::FormatDate(doc.DocDate()));
     }
 
     case Columns::DocType:
@@ -161,7 +173,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 
         if (it != m_docTypes->end())
         {
-            return QObject::tr(it->second->Name().c_str());
+            return Tr(it->second->Name());
         }
 
         return QVariant();
@@ -173,7 +185,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
         {
             const hb::AccountId account = doc.AmountFrom().get().Account();
 
-            return QObject::tr(hb::utils::FormatAccountName(*(m_accounts->at(account))).c_str());
+            return Tr(hb::utils::FormatAccountName(*(m_accounts->at(account))));
         }
 
         return QVariant();
@@ -185,7 +197,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
         {
             const hb::AccountId account = doc.AmountTo().get().Account();
 
-            return QObject::tr(hb::utils::FormatAccountName(*(m_accounts->at(account))).c_str());
+            return Tr(hb::utils::FormatAccountName(*(m_accounts->at(account))));
         }
 
         return QVariant();
@@ -200,7 +212,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 
             value = value + " " + m_currencies->at(cur)->Symbol();
 
-            return QObject::tr(value.c_str());
+            return Tr(value);
         }
 
         return QVariant();
@@ -214,7 +226,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
             const hb::CurrencyId cur = doc.AmountTo().get().Currency();
 
             value = value + " " + m_currencies->at(cur)->Symbol();
-            return QObject::tr(value.c_str());
+            return Tr(value);
         }
 
         return QVariant();
@@ -222,12 +234,12 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 
     case Columns::Note:
     {
-        return QObject::tr(doc.Note().c_str());
+        return Tr(doc.Note());
     }
 
     case Columns::Shop:
     {
-        return QObject::tr(doc.Shop().c_str());
+        return Tr(doc.Shop());
     }
 
     default:

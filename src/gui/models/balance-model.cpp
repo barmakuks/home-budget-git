@@ -171,6 +171,7 @@ const hb::core::BalanceRow& BalanceModel::GetBalanceItem(int index) const
 QVariant BalanceModel::GetCellString(const QModelIndex& index) const
 {
     using namespace hb::core;
+    using namespace hb::utils;
 
     const BalanceRow& prev_balance = GetBalanceItem(index.row() - 1);
     const BalanceRow& balance = GetBalanceItem(index.row());
@@ -184,18 +185,18 @@ QVariant BalanceModel::GetCellString(const QModelIndex& index) const
         {
             const AccountPtr& account = m_accounts->at(accountId);
 
-            return QObject::tr(hb::utils::FormatAccountName(*account).c_str());
+            return Tr(hb::utils::FormatAccountName(*account));
         }
 
         return QVariant();
     }
     case Columns::Amount:
     {
-        return QObject::tr(hb::utils::FormatMoney(balance.Amount()).c_str());
+        return Tr(hb::utils::FormatMoney(balance.Amount()));
     }
     case Columns::Currency:
     {
-        return QObject::tr(m_currencies->at(balance.Currency())->Symbol().c_str());
+        return Tr(m_currencies->at(balance.Currency())->Symbol());
     }
     default:
     {

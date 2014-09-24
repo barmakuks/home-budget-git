@@ -14,6 +14,7 @@
 DocumentDialog* DocumentDialog::dlg = NULL;
 
 using namespace hb::core;
+using namespace hb::utils;
 
 DocumentDialog::DocumentDialog(QWidget* parent) :
     QDialog(parent),
@@ -43,22 +44,22 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     // setup dialog title
     if (docType->Sign() == DocumentType::Income)
     {
-        this->setWindowTitle(QObject::tr("Доходы"));
+        this->setWindowTitle(Tr("Доходы"));
     }
     else if (docType->Sign() == DocumentType::Outcome)
     {
-        this->setWindowTitle(QObject::tr("Расходы"));
+        this->setWindowTitle(Tr("Расходы"));
     }
 
     // set amount
     Amount& amount = docType->Sign() == DocumentType::Income ? document->AmountTo().get() : document->AmountFrom().get();
-    ui->amountEdit->setText(QObject::tr(hb::utils::FormatMoney(amount.Value()).c_str()));
+    ui->amountEdit->setText(Tr(FormatMoney(amount.Value())));
 
     // set account
     ui->accountComboBox->setCurrentIndex(m_accountsModel.GetIndexOfAccount(amount.Account()));
 
     // set shop
-    ui->shopComboBox->setEditText(QObject::tr(document->Shop().c_str()));
+    ui->shopComboBox->setEditText(Tr(document->Shop()));
 
     // set currency
     ui->currencyComboBox->setCurrentIndex(m_currencyModel.GetCurrencyIndex(amount.Currency()).row());
@@ -68,10 +69,10 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     ui->docTypeTreeView->selectionModel()->select(docTypeIndex, QItemSelectionModel::Select);
 
     // set note
-    ui->noteEdit->setText(QObject::tr(document->Note().c_str()));
+    ui->noteEdit->setText(Tr(document->Note()));
 
     // set date
-    const QDate date = hb::utils::QDatefromNormalizedDate(document->DocDate());
+    const QDate date = QDatefromNormalizedDate(document->DocDate());
     ui->dateEdit->setDate(date);
 
     ExpandToIndex(docTypeIndex);
@@ -109,8 +110,8 @@ bool DocumentDialog::GetDataFromUI()
 
     m_document->SetDocDate(hb::utils::NormalizeDate(ui->dateEdit->date()));
     m_document->SetDocType(docTypeId);
-    m_document->SetShop(ui->shopComboBox->currentText().toUtf8().data());
-    m_document->SetNote(ui->noteEdit->text().toUtf8().data());
+    m_document->SetShop(Convert(ui->shopComboBox->currentText()));
+    m_document->SetNote(Convert(ui->noteEdit->text()));
 
     return true;
 }
@@ -172,8 +173,8 @@ void DocumentDialog::on_moreButton_clicked()
     {
         Engine::GetInstance().Write(*m_document);
         m_document = m_document->CreateTemplate();
-        ui->amountEdit->setText(QObject::tr(hb::utils::FormatMoney(0).c_str()));
-        ui->shopComboBox->setEditText(QObject::tr(m_document->Shop().c_str()));
+        ui->amountEdit->setText(Tr(hb::utils::FormatMoney(0)));
+        ui->shopComboBox->setEditText(Tr(m_document->Shop()));
     }
 }
 
@@ -184,7 +185,7 @@ void DocumentDialog::on_cancelButton_clicked()
 
 void DocumentDialog::on_shopComboBox_currentIndexChanged(int index)
 {
-    ui->shopComboBox->setEditText(QObject::tr(m_shopsModel.GetShopItemId(index).c_str()));
+    ui->shopComboBox->setEditText(Tr(m_shopsModel.GetShopItemId(index)));
 }
 
 void DocumentDialog::on_accountComboBox_currentIndexChanged(int index)
