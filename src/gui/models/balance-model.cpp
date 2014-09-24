@@ -7,6 +7,7 @@
 #include "string-format.h"
 #include "balance.h"
 #include "assert_macro.h"
+#include "../convert-utils.h"
 
 BalanceModel::BalanceModel()
 {
@@ -23,7 +24,7 @@ BalanceModel::BalanceModel()
 
 void BalanceModel::Recalculate(const QDate& date)
 {
-    Recalculate(date.toString("yyyyMMdd").toUtf8().constData());
+    Recalculate(hb::utils::NormalizeDate(date));
 }
 
 namespace

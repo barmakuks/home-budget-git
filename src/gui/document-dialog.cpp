@@ -9,6 +9,7 @@
 #include "engine.h"
 #include "document.h"
 #include "models/string-format.h"
+#include "convert-utils.h"
 
 DocumentDialog* DocumentDialog::dlg = NULL;
 
@@ -70,7 +71,7 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     ui->noteEdit->setText(QObject::tr(document->Note().c_str()));
 
     // set date
-    const QDate date = QDate::fromString(QString::fromUtf8(document->DocDate().c_str()), "yyyyMMdd");
+    const QDate date = hb::utils::QDatefromNormalizedDate(document->DocDate());
     ui->dateEdit->setDate(date);
 
     ExpandToIndex(docTypeIndex);
@@ -106,7 +107,7 @@ bool DocumentDialog::GetDataFromUI()
         m_document->ResetAmountTo();
     }
 
-    m_document->SetDocDate(ui->dateEdit->date().toString("yyyyMMdd").toUtf8().data());
+    m_document->SetDocDate(hb::utils::NormalizeDate(ui->dateEdit->date()));
     m_document->SetDocType(docTypeId);
     m_document->SetShop(ui->shopComboBox->currentText().toUtf8().data());
     m_document->SetNote(ui->noteEdit->text().toUtf8().data());

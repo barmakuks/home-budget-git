@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.1)
 enable_testing(true)
 
 #TODO separate include directories by executable targets
-include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies ./src/utils)
+include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies ./src/utils .src/gui)
 # TODO setup link directory for unit tests only
 #link_directories(${CMAKE_SOURCE_DIR}/../thirdparty/gtest/lib)
 

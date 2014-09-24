@@ -1,15 +1,13 @@
 #include "engine.h"
 #include "assert_macro.h"
 
-#include <QDate>
-
 #include "doc-type-sign-filter.h"
 #include "document-by-date-filter.h"
 #include "all-accounts-filter.h"
 #include "all-currency-filter.h"
 #include "balance-filter.h"
 #include "shop-filter.h"
-
+#include "date-time-utils.h"
 
 namespace hb
 {
@@ -58,7 +56,7 @@ DocumentPtr Engine::CreateDocument(DocumentType::TypeSign docType)
             doc->SetAmountFrom(amount);
         }
 
-        doc->SetDocDate(QDate::currentDate().toString("yyyyMMdd").toUtf8().data());
+        doc->SetDocDate(hb::utils::Now());
 
         return doc;
     }
@@ -180,7 +178,7 @@ CurrencyMapPtr Engine::GetCurrencies(bool reload)
 {
     if (reload || !m_currencies)
     {
-        m_currencies = m_storage->GetCurrencies(AllCurrencyFilter());;
+        m_currencies = m_storage->GetCurrencies(AllCurrencyFilter());
     }
 
     return m_currencies;

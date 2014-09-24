@@ -11,6 +11,7 @@
 #include "document-dialog.h"
 #include "document.h"
 #include "engine.h"
+#include "convert-utils.h"
 
 namespace
 {
@@ -126,9 +127,9 @@ void MainWindow::on_periodComboBox_currentIndexChanged(int index)
 
     DateInterval interval = GetDateInterval(period);
 
-    const QDate from = QDate::fromString(QString::fromUtf8(interval.from.c_str()), "yyyyMMdd");
+    const QDate from = hb::utils::QDatefromNormalizedDate(interval.from);
     ui->startDateEdit->setDate(from);
-    const QDate to = QDate::fromString(QString::fromUtf8(interval.to.c_str()), "yyyyMMdd");
+    const QDate to = hb::utils::QDatefromNormalizedDate(interval.to);
     ui->endDateEdit->setDate(to);
 
     m_filterSetupInProgress = false;
@@ -145,8 +146,8 @@ void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
         return;
     }
 
-    DateInterval interval(dateFrom.toString("yyyyMMdd").toUtf8().constData(),
-                          dateTo.toString("yyyyMMdd").toUtf8().constData());
+    DateInterval interval(hb::utils::NormalizeDate(dateFrom),
+                          hb::utils::NormalizeDate(dateTo));
 
     const DatePeriod::Period period = GetDatePeriod(interval);
 

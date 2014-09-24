@@ -5,6 +5,7 @@
 
 #include "engine.h"
 #include "string-format.h"
+#include "../convert-utils.h"
 
 DocumentsModel::DocumentsModel()
 {
@@ -26,8 +27,8 @@ void DocumentsModel::Reload(const QDate& minDate,
                             const hb::AccountId accountId,
                             const hb::CurrencyId currencyId)
 {
-    Reload(minDate.toString("yyyyMMdd").toUtf8().constData(),
-           maxDate.toString("yyyyMMdd").toUtf8().constData(),
+    Reload(hb::utils::NormalizeDate(minDate),
+           hb::utils::NormalizeDate(maxDate),
            accountId,
            currencyId);
 }

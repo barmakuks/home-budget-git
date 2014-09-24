@@ -20,8 +20,6 @@ typedef unsigned int Color;
 typedef int Money;
 typedef std::string Date;
 
-const std::string  StoreDateFormat;
-
 } // namespace hb
 
 #endif // RAWTYPES_H
