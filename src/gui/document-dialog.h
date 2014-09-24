@@ -19,24 +19,29 @@ class DocumentDialog : public QDialog
     Q_OBJECT
 
 public:
-    struct DialogResult
-    {
-        enum {Canceled = 0, Accepted, More};
-    };
-
-public:
     explicit DocumentDialog(QWidget* parent = 0);
     ~DocumentDialog();
 
-    static bool EditDocument(hb::core::DocumentPtr& document);
-    static hb::core::DocumentPtr CreateDocument(hb::core::DocumentType::TypeSign docType);
+    /** Open dialog to edit document
+      @param document Document to edit
+      @return true if document was changed successfully
+    */
+    static bool EditDocument(const hb::core::DocumentPtr& document);
+
+    /** Creates new empty document and opens dialog to edit it
+      @param docType Type of document
+      @return true if document was created and changed successfully
+    */
+    static bool CreateDocument(hb::core::DocumentType::TypeSign docType);
 
 protected:
-    void SetDocument(hb::core::DocumentPtr& document);
-    void GetDocument(hb::core::DocumentPtr& document);
+    /** Set data from document to UI controls */
+    void SetupUI(const hb::core::DocumentPtr& document);
 
-    bool CheckRequiredFields();
+    /** Reads data from UI controls and set them into m_document*/
+    bool GetDataFromUI();
 
+    /** Expands tree view to set index visible*/
     void ExpandToIndex(const QModelIndex& index);
 
 private slots:
@@ -48,19 +53,27 @@ private slots:
 
     void on_shopComboBox_currentIndexChanged(int index);
 
+    void on_accountComboBox_currentIndexChanged(int index);
+
 private:
     void show()
     {
         QDialog::show();
     }
 
+private:
     Ui::DocumentDialog* ui;
+
+    struct DialogResult
+    {
+        enum {Canceled = 0, Accepted, More};
+    };
 
     DocTypeModel    m_docTypesModel;
     AccountsModel   m_accountsModel;
     CurrenciesModel m_currencyModel;
     ShopsModel      m_shopsModel;
-//    hb::core::DocumentPtr   m_document;
+    hb::core::DocumentPtr m_document;
 
 private:
     static DocumentDialog*  dlg;

@@ -37,6 +37,10 @@ private:
     Money       m_value;
 };
 
+class Document;
+
+typedef std::shared_ptr<Document> DocumentPtr;
+
 class Document
 {
 public:
@@ -66,6 +70,7 @@ public:
     std::string Shop() const { return m_shop; }
     void SetShop(const std::string& shop) { m_shop = shop; }
 
+    const DocumentPtr CreateTemplate() const;
 private:
     DocId                   m_id;
     Date                    m_doc_date;
@@ -77,8 +82,6 @@ private:
     std::string             m_note;
     std::string             m_shop;
 };
-
-typedef std::shared_ptr<Document> DocumentPtr;
 
 //typedef std::map<DocId, DocumentPtr> Documents;
 typedef std::vector<DocumentPtr> Documents;

@@ -194,6 +194,5 @@ DatePeriod::Period GetDatePeriod(const DateInterval& dateInterval,
     return DatePeriod::ByDates;
 }
 
-
 } // namespace utils
 } // namespace hb

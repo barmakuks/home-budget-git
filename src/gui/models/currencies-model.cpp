@@ -49,7 +49,7 @@ void CurrenciesModel::Reload()
 
 hb::CurrencyId CurrenciesModel::GetCurrencyItemId(int index)
 {
-    if (index && index <= m_currencies.size())
+    if (index >= m_currenciesStartIndex && index <= m_currencies.size())
     {
         return m_currencies.at(index - m_currenciesStartIndex)->Code();
     }

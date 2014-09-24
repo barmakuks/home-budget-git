@@ -6,7 +6,6 @@
 
 #include "account.h"
 #include "date-time-utils.h"
-
 namespace hb
 {
 namespace utils
@@ -39,7 +38,6 @@ std::string FormatAccountName(const hb::core::Account& account)
 
     return buf.str();
 }
-
 
 }
 }

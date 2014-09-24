@@ -26,7 +26,10 @@ public:
 private:
     void SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo);
     void ApplyDocumentsFilter();
+    void UpdateBalance();
     void EditDocument();
+
+    void CreateDocument(hb::core::DocumentType::TypeSign docType);
 
 private slots:
     void on_calendarWidget_clicked(const QDate& date);

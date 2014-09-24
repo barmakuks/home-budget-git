@@ -1,12 +1,15 @@
 #include "engine.h"
 #include "assert_macro.h"
 
+#include <QDate>
+
 #include "doc-type-sign-filter.h"
 #include "document-by-date-filter.h"
 #include "all-accounts-filter.h"
 #include "all-currency-filter.h"
 #include "balance-filter.h"
 #include "shop-filter.h"
+
 
 namespace hb
 {
@@ -41,9 +44,10 @@ DocumentPtr Engine::CreateDocument(DocumentType::TypeSign docType)
         doc->SetDocType(rootDocTypeId);
 
         Amount amount;
-        amount.SetAccount((*GetAccountsList()->begin())->Id());
+        const AccountPtr defaultAccount = *(GetAccountsList()->begin());
+        amount.SetAccount(defaultAccount->Id());
         amount.SetValue(0);
-        amount.SetCurrency(GetCurrencies()->begin()->first);
+        amount.SetCurrency(defaultAccount->DefaultCurrency());
 
         if (docType == DocumentType::Income)
         {
@@ -53,6 +57,8 @@ DocumentPtr Engine::CreateDocument(DocumentType::TypeSign docType)
         {
             doc->SetAmountFrom(amount);
         }
+
+        doc->SetDocDate(QDate::currentDate().toString("yyyyMMdd").toUtf8().data());
 
         return doc;
     }

@@ -106,9 +106,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_calendarWidget_clicked(const QDate& date)
+void MainWindow::on_calendarWidget_clicked(const QDate& /*date*/)
 {
-    m_balanceModel.Recalculate(date);
+    UpdateBalance();
 }
 
 void MainWindow::on_periodComboBox_currentIndexChanged(int index)
@@ -168,14 +168,38 @@ void MainWindow::ApplyDocumentsFilter()
                             currencyId);
 }
 
+void MainWindow::UpdateBalance()
+{
+    m_balanceModel.Recalculate(ui->calendarWidget->selectedDate());
+}
+
 void MainWindow::EditDocument()
 {
+    using namespace hb::core;
+
     QModelIndexList indexes = ui->documentsTableView->selectionModel()->selectedRows();
 
     if (indexes.size() == 1)
     {
-        hb::core::DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
-        DocumentDialog::EditDocument(doc);
+        DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
+
+        if (DocumentDialog::EditDocument(doc))
+        {
+            hb::core::Engine::GetInstance().Write(*doc);
+            ApplyDocumentsFilter();
+            UpdateBalance();
+        }
+    }
+}
+
+void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
+{
+    using namespace hb::core;
+
+    if (DocumentDialog::CreateDocument(docType))
+    {
+        ApplyDocumentsFilter();
+        UpdateBalance();
     }
 }
 
@@ -207,16 +231,12 @@ void MainWindow::on_currencyComboBox_currentIndexChanged(int index)
 
 void MainWindow::on_creditButton_clicked()
 {
-    using namespace hb::core;
-
-    DocumentPtr doc = DocumentDialog::CreateDocument(hb::core::DocumentType::Income);
-    hb::core::Engine::GetInstance().Write(*doc);
-    ApplyDocumentsFilter();
+    CreateDocument(hb::core::DocumentType::Income);
 }
 
 void MainWindow::on_debitButton_clicked()
 {
-    /*DocumentPtr doc = */DocumentDialog::CreateDocument(hb::core::DocumentType::Outcome);
+    CreateDocument(hb::core::DocumentType::Outcome);
 }
 
 void MainWindow::on_editButton_clicked()

@@ -24,7 +24,7 @@ public:
 
     virtual std::string WhereCondition() const
     {
-        return m_date.empty() ? std::string("") : "doc_date < '" + m_date + "'";
+        return m_date.empty() ? std::string("") : "doc_date <= '" + m_date + "'";
     }
 
     virtual std::string GroupByCondition() const
