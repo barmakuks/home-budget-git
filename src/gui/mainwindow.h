@@ -14,6 +14,7 @@ class MainWindow;
 }
 
 class DocumentDialog;
+class QItemSelection;
 
 class MainWindow : public QMainWindow
 {
@@ -30,6 +31,8 @@ private:
     void EditDocument();
 
     void CreateDocument(hb::core::DocumentType::TypeSign docType);
+
+    void SetButtonsEnabled();
 
 private slots:
     void on_calendarWidget_clicked(const QDate& date);
@@ -51,6 +54,10 @@ private slots:
     void on_editButton_clicked();
 
     void on_documentsTableView_doubleClicked(const QModelIndex& index);
+
+    void on_removeButton_clicked();
+
+    void documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
     Ui::MainWindow*         ui;

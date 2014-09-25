@@ -219,5 +219,37 @@ bool Engine::Write(Currency& currency)
     return m_storage->Write(currency);
 }
 
+bool Engine::DeleteDocument(DocId id)
+{
+    Document doc;
+    doc.SetId(id);
+
+    return m_storage->Delete(doc);
+}
+
+bool Engine::DeleteDocumentType(DocTypeId id)
+{
+    DocumentType docType;
+    docType.SetId(id);
+
+    return m_storage->Delete(docType);
+}
+
+bool Engine::DeleteAccount(AccountId id)
+{
+    Account account;
+    account.SetId(id);
+
+    return m_storage->Delete(account);
+}
+
+bool Engine::DeleteCurrency(CurrencyId code)
+{
+    Currency currency;
+    currency.SetCode(code);
+
+    return m_storage->Delete(currency);
+}
+
 } // namespace core
 } // namespace hb

@@ -47,6 +47,11 @@ public:
     virtual bool Write(DocumentType& docType) const = 0;
     virtual bool Write(Account& account) const = 0;
     virtual bool Write(Currency& currency) const = 0;
+
+    virtual bool Delete(const core::Document& doc) const = 0;
+    virtual bool Delete(const core::DocumentType& docType) const = 0;
+    virtual bool Delete(const core::Account& account) const = 0;
+    virtual bool Delete(const core::Currency& currency) const = 0;
 };
 
 typedef std::shared_ptr<IStorage> IStoragePtr;

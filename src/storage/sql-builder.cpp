@@ -65,6 +65,15 @@ std::string BuildUpdateStatement(const std::string& table,
     return query_string.str();
 }
 
+std::string BuildDeleteStatement(const std::string& table,
+                                 const IFieldDescription& key)
+{
+    std::stringstream query_string;
+    query_string << "DELETE FROM "<< table << " WHERE " << key.Name() << "=" << key.Value();
+
+    return query_string.str();
+}
+
 } // namespace storage
 } // namespace hb
 

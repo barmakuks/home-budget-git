@@ -47,6 +47,11 @@ public:
     bool Write(Account& account);
     bool Write(Currency& currency);
 
+    bool DeleteDocument(DocId id);
+    bool DeleteDocumentType(DocTypeId id);
+    bool DeleteAccount(AccountId id);
+    bool DeleteCurrency(CurrencyId code);
+
 protected:
     Engine(const IStoragePtr& storage);
 

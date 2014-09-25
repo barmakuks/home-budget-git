@@ -16,13 +16,25 @@ std::string BuildUpdateStatement(const std::string& table,
                                  const IFieldDescription& key,
                                  const FieldDescriptionList& fields);
 
+std::string BuildDeleteStatement(const std::string& table,
+                                 const IFieldDescription& key);
+
+template <class T>
+std::string BuildDeleteSql(const T& data)
+{
+    const std::string table = TableName(data);
+    const FieldDescriptionPtr keyFieldDescription = KeyField(data);
+
+    return BuildDeleteStatement(table, *keyFieldDescription);
+}
+
 template <class T>
 std::string BuildSql(const T& data)
 {
-    FieldDescriptionList fieldsDescriptions = Fields(data);
+    const FieldDescriptionList fieldsDescriptions = Fields(data);
 
     const std::string table = TableName(data);
-    FieldDescriptionPtr keyFieldDescription = KeyField(data);
+    const FieldDescriptionPtr keyFieldDescription = KeyField(data);
 
     if (keyFieldDescription->Name() != "id" || keyFieldDescription->Value() == "0")
     {
@@ -37,10 +49,10 @@ std::string BuildSql(const T& data)
 template <>
 inline std::string BuildSql<hb::core::Currency>(const hb::core::Currency& data)
 {
-    FieldDescriptionList fieldsDescriptions = Fields(data);
+    const FieldDescriptionList fieldsDescriptions = Fields(data);
 
     const std::string table = TableName(data);
-    FieldDescriptionPtr keyFieldDescription = KeyField(data);
+    const FieldDescriptionPtr keyFieldDescription = KeyField(data);
 
     if (data.Id() <= EmptyId)
     {

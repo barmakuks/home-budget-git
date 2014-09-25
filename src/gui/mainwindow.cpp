@@ -6,6 +6,7 @@
 #include <QTableView>
 #include <QComboBox>
 #include <iostream>
+#include <QMessageBox>
 
 #include "date-time-utils.h"
 #include "document-dialog.h"
@@ -94,6 +95,11 @@ MainWindow::MainWindow(QWidget* parent) :
     m_filterSetupInProgress = false;
 
     ApplyDocumentsFilter();
+
+    connect(ui->documentsTableView->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
+            this,
+            SLOT(documentsTableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
 }
 
 MainWindow::~MainWindow()
@@ -167,6 +173,7 @@ void MainWindow::ApplyDocumentsFilter()
                             ui->endDateEdit->date(),
                             accountId,
                             currencyId);
+    SetButtonsEnabled();
 }
 
 void MainWindow::UpdateBalance()
@@ -202,6 +209,13 @@ void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
         ApplyDocumentsFilter();
         UpdateBalance();
     }
+}
+
+void MainWindow::SetButtonsEnabled()
+{
+    const bool enabled = ui->documentsTableView->selectionModel()->selectedRows().size() == 1;
+    ui->editButton->setEnabled(enabled);
+    ui->removeButton->setEnabled(enabled);
 }
 
 void MainWindow::on_startDateEdit_dateChanged(const QDate& /*date*/)
@@ -251,4 +265,34 @@ void MainWindow::on_documentsTableView_doubleClicked(const QModelIndex& index)
     {
         EditDocument();
     }
+}
+
+void MainWindow::on_removeButton_clicked()
+{
+    QModelIndexList indexes = ui->documentsTableView->selectionModel()->selectedRows();
+
+    if (indexes.size() == 1)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(hb::utils::Tr("Видалення документу"));
+        msgBox.setText(hb::utils::Tr("Видалення документу"));
+        msgBox.setInformativeText(hb::utils::Tr("Видалити цей документ?"));
+        msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+        msgBox.setDefaultButton(QMessageBox::No);
+
+        if (msgBox.exec() == QMessageBox::Yes)
+        {
+            hb::core::DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
+
+            if (doc && hb::core::Engine::GetInstance().DeleteDocument(doc->Id()))
+            {
+                ApplyDocumentsFilter();
+            }
+        }
+    }
+}
+
+void MainWindow::documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    SetButtonsEnabled();
 }

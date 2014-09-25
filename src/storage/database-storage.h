@@ -22,7 +22,7 @@ public:
 public:
     virtual core::DocumentTypeListPtr GetTypeList(const core::IFilter& filter) const;
 
-    virtual core::DocumentsPtr GetDocuments(const core::IFilter &filter) const;
+    virtual core::DocumentsPtr GetDocuments(const core::IFilter& filter) const;
 
     virtual core::AccountMapPtr GetAccounts(const core::IFilter& filter) const;
 
@@ -30,17 +30,21 @@ public:
 
     virtual core::BalancePtr GetBalance(const core::IFilter& filter) const;
 
-    virtual core::ShopListPtr GetShopList(const core::IFilter &filter) const;
+    virtual core::ShopListPtr GetShopList(const core::IFilter& filter) const;
 
     bool Write(core::Document& doc) const;
     bool Write(core::DocumentType& docType) const;
     bool Write(core::Account& account) const;
     bool Write(core::Currency& currency) const;
 
+    bool Delete(const core::Document& doc) const;
+    bool Delete(const core::DocumentType& docType) const;
+    bool Delete(const core::Account& account) const;
+    bool Delete(const core::Currency& currency) const;
+
 private:
 
     core::IDatabaseEngine&    m_databaseEngine;
-
 };
 
 } // namespace storage

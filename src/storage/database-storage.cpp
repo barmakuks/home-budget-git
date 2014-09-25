@@ -127,6 +127,15 @@ bool WriteData(IDatabaseEngine& engine, T& data)
     return DataWriter<T, class_has_id<T>::value>::Write(engine, data);
 }
 
+template <typename T>
+bool DeleteData(IDatabaseEngine& engine, T& data)
+{
+    const std::string sql_query = BuildDeleteSql<T>(data);
+    const bool result = engine.ExecuteNonQuery(sql_query);
+
+    return result;
+}
+
 } // namespace
 
 DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter& filter) const
@@ -149,34 +158,54 @@ CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
     return GetData<FillCurrencyMapStrategy>(m_databaseEngine, filter);
 }
 
-BalancePtr DatabaseStorage::GetBalance(const core::IFilter& filter) const
+BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
 {
     return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
 }
 
-ShopListPtr DatabaseStorage::GetShopList(const core::IFilter& filter) const
+ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const
 {
     return GetData<FillShopListStrategy>(m_databaseEngine, filter);
 }
 
-bool DatabaseStorage::Write(core::Document& doc) const
+bool DatabaseStorage::Write(Document& doc) const
 {
     return WriteData(m_databaseEngine, doc);
 }
 
-bool DatabaseStorage::Write(core::DocumentType& docType) const
+bool DatabaseStorage::Write(DocumentType& docType) const
 {
     return WriteData(m_databaseEngine, docType);
 }
 
-bool DatabaseStorage::Write(core::Account& account) const
+bool DatabaseStorage::Write(Account& account) const
 {
     return WriteData(m_databaseEngine, account);
 }
 
-bool DatabaseStorage::Write(core::Currency& currency) const
+bool DatabaseStorage::Write(Currency& currency) const
 {
     return WriteData(m_databaseEngine, currency);
+}
+
+bool DatabaseStorage::Delete(const Document& doc) const
+{
+    return DeleteData(m_databaseEngine, doc);
+}
+
+bool DatabaseStorage::Delete(const DocumentType& docType) const
+{
+    return DeleteData(m_databaseEngine, docType);
+}
+
+bool DatabaseStorage::Delete(const Account& account) const
+{
+    return DeleteData(m_databaseEngine, account);
+}
+
+bool DatabaseStorage::Delete(const Currency& currency) const
+{
+    return DeleteData(m_databaseEngine, currency);
 }
 
 } // namespace storage

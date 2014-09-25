@@ -19,7 +19,7 @@ TEST(SqlBuilderSuite, testInsertCurrencySql)
     cur.SetSymbol("$");
     cur.SetSymbolPlace(false);
 
-    const std::string expectedStatement = "INSERT INTO currency_list (code, iso_code, short_name, symbol, symbol_place) VALUES (980, 'UAH', 'uah', '$', 0)";
+    const std::string expectedStatement = "INSERT INTO currency_list (code, iso_code, short_name, symbol, symbol_place, fg_color) VALUES (980, 'UAH', 'uah', '$', 0, 0)";
 
     ASSERT_EQ(expectedStatement, BuildSql(cur));
 }
@@ -34,11 +34,24 @@ TEST(SqlBuilderSuite, testUpdateCurrencySql)
     cur.SetSymbol("$");
     cur.SetSymbolPlace(false);
 
-    const std::string expectedStatement = "UPDATE currency_list SET code=980, iso_code='UAH', short_name='uah', symbol='$', symbol_place=0 WHERE code=980";
+    const std::string expectedStatement = "UPDATE currency_list SET code=980, iso_code='UAH', short_name='uah', symbol='$', symbol_place=0, fg_color=0 WHERE code=980";
 
     ASSERT_EQ(expectedStatement, BuildSql(cur));
 }
 
+TEST(SqlBuilderSuite,testDeleteCurrencySql)
+{
+    Currency cur;
+    cur.SetId(980);
+    cur.SetCode(980);
+    cur.SetIsoCode("UAH");
+    cur.SetShortName("uah");
+    cur.SetSymbol("$");
+    cur.SetSymbolPlace(false);
+
+    const std::string expectedStatement = "DELETE FROM currency_list WHERE code=980";
+    ASSERT_EQ(expectedStatement, BuildDeleteSql(cur));
+}
 
 TEST(SqlBuilderSuite, testInsertDocumentTypeSql)
 {
@@ -65,6 +78,10 @@ TEST(SqlBuilderSuite, testUpdateDocumentTypeSql)
     const std::string expectedStatement = "UPDATE doc_types SET parent_id=1, operation_sign=-1, name='Test name' WHERE id=2";
 
     ASSERT_EQ(expectedStatement, BuildSql(docType));
+}
+
+TEST(SqlBuilderSuite,testDeleteDocumentTypeSql)
+{
 }
 
 TEST(SqlBuilderSuite, testInsertAccountSql)
@@ -103,6 +120,23 @@ TEST(SqlBuilderSuite, testUpdateAccountSql)
             "WHERE id=1";
 
     ASSERT_EQ(expectedStatement, BuildSql(account));
+}
+
+TEST(SqlBuilderSuite,testDeleteAccountSql)
+{
+    using namespace hb::core;
+    Account account;
+    account.SetId(1);
+    account.SetName("Test name");
+    account.SetDescription("Test description");
+    account.SetDefaultCurrency(980);
+    account.SetSortOrder(2);
+    account.SetBank("Test bank");
+    account.SetActive(true);
+    account.SetForegroundColor(12345678);
+
+    const std::string expectedStatement = "DELETE FROM accounts WHERE id=1";
+    ASSERT_EQ(expectedStatement, BuildDeleteSql(account));
 }
 
 TEST(SqlBuilderSuite, testInsertDocumentFrom)
@@ -228,6 +262,7 @@ TEST(SqlBuilderSuite, testUpdateDocumentTo)
 
     ASSERT_EQ(expectedStatement, BuildSql(doc));
 }
+
 TEST(SqlBuilderSuite, testUpdateDocumentFromTo)
 {
     using namespace hb::core;
@@ -257,4 +292,30 @@ TEST(SqlBuilderSuite, testUpdateDocumentFromTo)
             "WHERE id=18553";
 
     ASSERT_EQ(expectedStatement, BuildSql(doc));
+}
+
+TEST(SqlBuilderSuite,testDeleteDocumentSql)
+{
+    using namespace hb::core;
+    Document doc;
+    doc.SetId(18553);
+    doc.SetDocDate("20140814");
+    doc.SetDocType(2);
+    doc.SetNote("Test note 1");
+    doc.SetShop("Test shop 2");
+
+    Amount amount_from;
+    amount_from.SetAccount(1);
+    amount_from.SetCurrency(980);
+    amount_from.SetValue(150000);
+    doc.SetAmountFrom(amount_from);
+
+    Amount amount_to;
+    amount_to.SetAccount(1);
+    amount_to.SetCurrency(980);
+    amount_to.SetValue(150000);
+    doc.SetAmountTo(amount_to);
+
+    const std::string expectedStatement = "DELETE FROM documents WHERE id=18553";
+    ASSERT_EQ(expectedStatement, BuildDeleteSql(doc));
 }
