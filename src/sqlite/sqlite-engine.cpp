@@ -24,7 +24,7 @@ bool SqliteEngine::IsDbExists(const std::string& path)
 
 bool SqliteEngine::CreateNewDb(const std::string& path)
 {
-
+    return false;
 }
 
 

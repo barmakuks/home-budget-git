@@ -41,9 +41,9 @@ std::string GetWeekDay(const Date& date)
 
     char buf[4];
 
-    std::strftime(buf, 4, "%a", timeinfo);
+    static const std::string week[] = {"Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"};
 
-    return buf;
+    return week[timeinfo->tm_wday];
 }
 
 

@@ -91,7 +91,7 @@ QModelIndex BalanceModel::index(int row, int column, const QModelIndex& parent) 
 
 QModelIndex BalanceModel::parent(const QModelIndex& child) const
 {
-
+    return QModelIndex();
 }
 
 namespace
