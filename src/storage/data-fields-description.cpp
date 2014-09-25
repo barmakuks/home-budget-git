@@ -56,6 +56,7 @@ FieldDescriptionList Fields<hb::core::Currency>(hb::core::Currency data)
     list.push_back(CreateFieldDescription("short_name", data.ShortName()));
     list.push_back(CreateFieldDescription("symbol", data.Symbol()));
     list.push_back(CreateFieldDescription("symbol_place", data.SymbolPlace()));
+    list.push_back(CreateFieldDescription("fg_color", data.ForegroundColor()));
     return list;
 }
 
