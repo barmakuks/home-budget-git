@@ -88,7 +88,7 @@ QVariant AccountsModel::GetCellString(const QModelIndex &index) const
 {
     if (index.row() < m_accountsStartIndex)
     {
-        return Tr("Все счета");
+        return Tr("Всі рахунки");
     }
 
     return Tr(FormatAccountName(GetAccountItem(index.row() - m_accountsStartIndex)));

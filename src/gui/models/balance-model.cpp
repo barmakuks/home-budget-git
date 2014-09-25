@@ -234,8 +234,17 @@ QVariant BalanceModel::GetCellForecolor(const QModelIndex& index) const
 
     const BalanceRow& balance = GetBalanceItem(index.row());
 
-    const AccountPtr account = m_accounts->at(balance.Account());
+    if (index.column() == 0)
+    {
+        const AccountPtr account = m_accounts->at(balance.Account());
+        return QColor(account->ForegroundColor());
+    }
+    else if (index.column() == 1)
+    {
+        const CurrencyPtr currency = m_currencies->at(balance.Currency());
+        return QColor(currency->ForegroundColor());
+    }
 
-    return QColor(account->ForegroundColor());
+    return QVariant();
 }
 

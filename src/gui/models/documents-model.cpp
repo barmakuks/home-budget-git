@@ -111,27 +111,27 @@ QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/
         }
         case Columns::DocType:
         {
-            return Tr("Описание");
+            return Tr("Опис");
         }
         case Columns::AccountFrom:
         {
-            return Tr("Сч. расх.");
+            return Tr("Рах. витр.");
         }
         case Columns::AccountTo:
         {
-            return Tr("Сч. дох.");
+            return Tr("Рах. дох.");
         }
         case Columns::AmountFrom:
         {
-            return Tr("Сумма расх.");
+            return Tr("Сума витрат");
         }
         case Columns::AmountTo:
         {
-            return Tr("Сумма дох.");
+            return Tr("Сума дохід");
         }
         case Columns::Note:
         {
-            return Tr("Прим.");
+            return Tr("Примітка");
         }
         case Columns::Shop:
         {

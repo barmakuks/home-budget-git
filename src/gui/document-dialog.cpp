@@ -44,11 +44,11 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     // setup dialog title
     if (docType->Sign() == DocumentType::Income)
     {
-        this->setWindowTitle(Tr("Доходы"));
+        this->setWindowTitle(Tr("Дохiд"));
     }
     else if (docType->Sign() == DocumentType::Outcome)
     {
-        this->setWindowTitle(Tr("Расходы"));
+        this->setWindowTitle(Tr("Витрати"));
     }
 
     // set amount

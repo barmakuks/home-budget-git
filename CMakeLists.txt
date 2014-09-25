@@ -38,12 +38,14 @@ target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME}  ${Boo
 FIND_PACKAGE(Qt4 REQUIRED)
 set(GUI_PROJECT_NAME home-budget-gui)
 set(GUI_MAIN_SRC ./src/gui-main.cpp)
+set(ICONS_RCS ./res/icons.qrc)
 file(GLOB_RECURSE GUI_SRC src/gui/*.cpp)
 file(GLOB GUI_HEADERS src/gui/*.h)
 file(GLOB_RECURSE GUI_FORMS src/gui/forms/*.ui)
 
 qt4_wrap_ui(GENERATED_FORMS_HEADERS ${GUI_FORMS})
 qt4_wrap_cpp(GENERATED_HEADERS_MOC ${GUI_HEADERS})
+qt4_add_resources(ICONS_RC_SRCS ${ICONS_RCS})
 
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
@@ -51,7 +53,7 @@ add_definitions(${QT_DEFINITIONS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${GUI_HEADERS})
 
-add_executable(${GUI_PROJECT_NAME} ${GUI_MAIN_SRC} ${GUI_SRC} ${GENERATED_HEADERS_MOC} ${GENERATED_FORMS_HEADERS})
+add_executable(${GUI_PROJECT_NAME} ${GUI_MAIN_SRC} ${GUI_SRC} ${GENERATED_HEADERS_MOC} ${GENERATED_FORMS_HEADERS} ${ICONS_RC_SRCS})
 target_link_libraries(${GUI_PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME}  ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} ${QT_LIBRARIES} pthread)
 
 #Tests

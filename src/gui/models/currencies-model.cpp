@@ -106,7 +106,7 @@ QVariant CurrenciesModel::GetCellString(const QModelIndex& index) const
 
     if (index.row() < m_currenciesStartIndex)
     {
-        return Tr("Все валюты");
+        return Tr("Всі валюти");
     }
 
     hb::core::Currency cur = GetCurrencyItem(index.row() - m_currenciesStartIndex);

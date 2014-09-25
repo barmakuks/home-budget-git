@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="coins.ico">icons/coins.ico</file>
+        <file alias="credit_card.ico">icons/credit_card.ico</file>
+    </qresource>
+</RCC>

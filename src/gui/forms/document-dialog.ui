@@ -93,7 +93,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Сумма</string>
+            <string>Сума</string>
            </property>
           </widget>
          </item>
@@ -107,7 +107,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Счет</string>
+            <string>Рахунок</string>
            </property>
           </widget>
          </item>
@@ -154,7 +154,7 @@
          <item>
           <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>Примечание</string>
+            <string>Примітка</string>
            </property>
           </widget>
          </item>
@@ -183,14 +183,14 @@
          <item>
           <widget class="QPushButton" name="moreButton">
            <property name="text">
-            <string>Ещё</string>
+            <string>Ще раз</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="cancelButton">
            <property name="text">
-            <string>Отмена</string>
+            <string>Відміна</string>
            </property>
           </widget>
          </item>
