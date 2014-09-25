@@ -38,6 +38,7 @@ void FillCurrencyMapStrategy::AddColumnValue(const std::string& fieldName, const
         FieldSetter<const std::string&, Currency, &Currency::SetShortName>::SetValue(m_currency, "short_name", name, value);
         FieldSetter<const std::string&, Currency, &Currency::SetSymbol>::SetValue(m_currency, "symbol", name, value);
         FieldSetter<bool, Currency, &Currency::SetSymbolPlace>::SetValue(m_currency, "symbol_place", name, value);
+        FieldSetter<Color, Currency, &Currency::SetForegroundColor>::SetValue(m_currency, "fg_color", name, value);
     }
 }
 

@@ -266,23 +266,44 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
 
     const Document& doc = GetDocumentItemRef(index.row());
 
-    if (index.column() == Columns::AccountFrom
-        || index.column() == Columns::AmountFrom)
+    switch (index.column())
+    {
+    case Columns::AccountFrom:
     {
         if (doc.AmountFrom().is_initialized())
         {
             const AccountPtr account = m_accounts->at(doc.AmountFrom()->Account());
             return QColor(account->ForegroundColor());
         }
+        break;
     }
-    else if (index.column() == Columns::AccountTo
-             || index.column() == Columns::AmountTo)
+    case Columns::AccountTo:
     {
         if (doc.AmountTo().is_initialized())
         {
             const AccountPtr account = m_accounts->at(doc.AmountTo()->Account());
             return QColor(account->ForegroundColor());
         }
+        break;
+    }
+    case Columns::AmountFrom:
+    {
+        if (doc.AmountFrom().is_initialized())
+        {
+            const CurrencyPtr cur = m_currencies->at(doc.AmountFrom()->Currency());
+            return QColor(cur->ForegroundColor());
+        }
+        break;
+    }
+    case Columns::AmountTo:
+    {
+        if (doc.AmountTo().is_initialized())
+        {
+            const CurrencyPtr cur = m_currencies->at(doc.AmountTo()->Currency());
+            return QColor(cur->ForegroundColor());
+        }
+        break;
+    }
     }
 
     return QVariant();

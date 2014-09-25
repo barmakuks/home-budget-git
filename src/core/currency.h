@@ -34,6 +34,9 @@ public:
     bool SymbolPlace() const { return m_symbol_place; }
     void SetSymbolPlace(bool symbol_place) { m_symbol_place = symbol_place; }
 
+    Color ForegroundColor() const {return m_color;}
+    void  SetForegroundColor(Color color) {m_color = color;}
+
 private:
     CurrencyId      m_id;
     CurrencyId      m_code;
@@ -41,6 +44,7 @@ private:
     std::string     m_short_name;
     std::string     m_symbol;
     bool            m_symbol_place;
+    Color           m_color;
 };
 
 typedef std::shared_ptr<Currency> CurrencyPtr;
