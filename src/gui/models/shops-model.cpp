@@ -37,6 +37,10 @@ QVariant ShopsModel::data(const QModelIndex& index, int role) const
 
 const std::string ShopsModel::GetShopItemId(int index) const
 {
+    if (index < 0 || !m_shops)
+    {
+        return "";
+    }
     return m_shops->at(index);
 }
 
