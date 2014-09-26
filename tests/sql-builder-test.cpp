@@ -82,6 +82,19 @@ TEST(SqlBuilderSuite, testUpdateDocumentTypeSql)
 
 TEST(SqlBuilderSuite,testDeleteDocumentTypeSql)
 {
+    using namespace hb::core;
+    DocumentType docType;
+    docType.SetId(2);
+    docType.SetParentId(1);
+    docType.SetSign(DocumentType::Outcome);
+    docType.SetName("Test name");
+
+    const std::string expectedStatement =
+            "UPDATE documents SET doc_type_id = (SELECT parent_id FROM doc_types WHERE id = 2) WHERE doc_type_id = 2;"
+            "UPDATE doc_types SET parent_id = (SELECT parent_id FROM doc_types WHERE id = 2) WHERE parent_id = 2;"
+            "DELETE FROM doc_types WHERE id = 2;";
+
+    ASSERT_EQ(expectedStatement, BuildDeleteSql(docType));
 }
 
 TEST(SqlBuilderSuite, testInsertAccountSql)

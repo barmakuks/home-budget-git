@@ -130,7 +130,7 @@ bool WriteData(IDatabaseEngine& engine, T& data)
 template <typename T>
 bool DeleteData(IDatabaseEngine& engine, T& data)
 {
-    const std::string sql_query = BuildDeleteSql<T>(data);
+    const std::string sql_query = BuildDeleteSql(data);
     const bool result = engine.ExecuteNonQuery(sql_query);
 
     return result;
