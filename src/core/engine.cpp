@@ -51,9 +51,14 @@ DocumentPtr Engine::CreateDocument(DocumentType::TypeSign docType)
         {
             doc->SetAmountTo(amount);
         }
+        else if (docType == DocumentType::Outcome)
+        {
+            doc->SetAmountFrom(amount);
+        }
         else
         {
             doc->SetAmountFrom(amount);
+            doc->SetAmountTo(amount);
         }
 
         doc->SetDocDate(hb::utils::Now());

@@ -59,6 +59,8 @@ private slots:
 
     void documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
+    void on_movementButton_clicked();
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;

@@ -10,6 +10,7 @@
 
 #include "date-time-utils.h"
 #include "document-dialog.h"
+#include "movement-dialog.h"
 #include "document.h"
 #include "engine.h"
 #include "convert-utils.h"
@@ -191,7 +192,11 @@ void MainWindow::EditDocument()
     {
         DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
 
-        if (DocumentDialog::EditDocument(doc))
+        DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(doc->DocType());
+
+        const bool result = docType->Sign() == DocumentType::Movement ? MovementDialog::EditDocument(doc) : DocumentDialog::EditDocument(doc);
+
+        if (result)
         {
             hb::core::Engine::GetInstance().Write(*doc);
             ApplyDocumentsFilter();
@@ -204,7 +209,17 @@ void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
 {
     using namespace hb::core;
 
-    if (DocumentDialog::CreateDocument(docType))
+    bool result = false;
+    if (docType == hb::core::DocumentType::Movement)
+    {
+        result = MovementDialog::CreateDocument(docType);
+    }
+    else
+    {
+        result = DocumentDialog::CreateDocument(docType);
+    }
+
+    if (result)
     {
         ApplyDocumentsFilter();
         UpdateBalance();
@@ -295,4 +310,9 @@ void MainWindow::on_removeButton_clicked()
 void MainWindow::documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     SetButtonsEnabled();
+}
+
+void MainWindow::on_movementButton_clicked()
+{
+    CreateDocument(hb::core::DocumentType::Movement);
 }

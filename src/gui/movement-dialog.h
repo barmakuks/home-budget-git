@@ -1,25 +1,24 @@
-#ifndef DOCUMENTDIALOG_H
-#define DOCUMENTDIALOG_H
+#ifndef MOVEMENTDIALOG_H
+#define MOVEMENTDIALOG_H
 
 #include <QDialog>
 
 #include "models/doc-type-model.h"
 #include "models/accounts-model.h"
 #include "models/currencies-model.h"
-#include "models/shops-model.h"
 #include "document.h"
 
 namespace Ui
 {
-class DocumentDialog;
+class MovementDialog;
 }
 
-class DocumentDialog : public QDialog
+class MovementDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    ~DocumentDialog();
+    ~MovementDialog();
 
     /** Open dialog to edit document
       @param document Document to edit
@@ -34,17 +33,13 @@ public:
     static bool CreateDocument(hb::core::DocumentType::TypeSign docType);
 
 protected:
-    explicit DocumentDialog(QWidget* parent = 0);
+    explicit MovementDialog(QWidget* parent = 0);
 
     /** Set data from document to UI controls */
     void SetupUI(const hb::core::DocumentPtr& document);
 
     /** Reads data from UI controls and set them into m_document*/
     bool GetDataFromUI();
-
-    /** Expands tree view to set index visible*/
-    void ExpandToIndex(const QModelIndex& index);
-
 private slots:
     void on_okButton_clicked();
 
@@ -52,12 +47,10 @@ private slots:
 
     void on_cancelButton_clicked();
 
-    void on_shopComboBox_currentIndexChanged(int index);
-
-    void on_accountComboBox_currentIndexChanged(int index);
+private:
 
 private:
-    Ui::DocumentDialog* ui;
+    Ui::MovementDialog* ui;
 
     struct DialogResult
     {
@@ -67,11 +60,11 @@ private:
     DocTypeModel    m_docTypesModel;
     AccountsModel   m_accountsModel;
     CurrenciesModel m_currencyModel;
-    ShopsModel      m_shopsModel;
     hb::core::DocumentPtr m_document;
 
 private:
-    static DocumentDialog*  dlg;
+    static MovementDialog*  dlg;
+
 };
 
-#endif // DOCUMENTDIALOG_H
+#endif // MOVEMENTDIALOG_H
