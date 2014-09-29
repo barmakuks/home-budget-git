@@ -25,6 +25,7 @@ private:
     const hb::core::Currency& GetCurrencyItem(int index) const;
 
     QVariant GetCellString(const QModelIndex& index) const;
+    QVariant GetCellForecolor(const QModelIndex& index) const;
 
 private:
     const int       m_currenciesStartIndex;

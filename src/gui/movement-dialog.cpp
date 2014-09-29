@@ -25,7 +25,7 @@ MovementDialog::MovementDialog(QWidget* parent) :
     ui->accountToComboBox->setModel(&m_accountsModel);
     ui->currencyFromComboBox->setModel(&m_currencyModel);
     ui->currencyToComboBox->setModel(&m_currencyModel);
-    ui->noteComboBox->setModel(&m_docTypesModel);
+    ui->docTypeComboBox->setModel(&m_docTypesModel);
 }
 
 void MovementDialog::SetupUI(const hb::core::DocumentPtr &document)
@@ -59,11 +59,14 @@ void MovementDialog::SetupUI(const hb::core::DocumentPtr &document)
 
     // set doc type
     const QModelIndex docTypeIndex = m_docTypesModel.getDocTypeIndex(docType->Id());
-    ui->noteComboBox->setCurrentIndex(docTypeIndex.row());
+    ui->docTypeComboBox->setCurrentIndex(docTypeIndex.row());
 
     // set date
     const QDate date = QDatefromNormalizedDate(document->DocDate());
     ui->dateEdit->setDate(date);
+
+    // set note
+    ui->noteEdit->setText(Tr(document->Note()));
 }
 
 bool MovementDialog::GetDataFromUI()
@@ -75,7 +78,7 @@ bool MovementDialog::GetDataFromUI()
         return false;
     }
 
-    const QModelIndex index = m_docTypesModel.index(ui->noteComboBox->currentIndex(), 0, QModelIndex());
+    const QModelIndex index = m_docTypesModel.index(ui->docTypeComboBox->currentIndex(), 0, QModelIndex());
     const DocTypeId docTypeId = index.internalId();
 
     Amount amountFrom;
@@ -84,7 +87,7 @@ bool MovementDialog::GetDataFromUI()
     amountFrom.SetCurrency(m_currencyModel.GetCurrencyItemId(ui->currencyFromComboBox->currentIndex()));
 
     Amount amountTo;
-    amountTo.SetValue(ui->amountFromEdit->text().toDouble() * 100);
+    amountTo.SetValue(ui->amountToEdit->text().toDouble() * 100);
     amountTo.SetAccount(m_accountsModel.GetAccountItemId(ui->accountToComboBox->currentIndex()));
     amountTo.SetCurrency(m_currencyModel.GetCurrencyItemId(ui->currencyToComboBox->currentIndex()));
 
@@ -93,7 +96,7 @@ bool MovementDialog::GetDataFromUI()
 
     m_document->SetDocDate(hb::utils::NormalizeDate(ui->dateEdit->date()));
     m_document->SetDocType(docTypeId);
-//    m_document->SetNote(Convert(ui->noteEdit->text()));
+    m_document->SetNote(Convert(ui->noteEdit->text()));
 
     return true;
 

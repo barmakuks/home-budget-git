@@ -1,4 +1,7 @@
 #include "currencies-model.h"
+
+#include <QColor>
+
 #include "engine.h"
 #include "../convert-utils.h"
 
@@ -88,6 +91,10 @@ QVariant CurrenciesModel::data(const QModelIndex& index, int role) const
     {
         return GetCellString(index);
     }
+    case Qt::TextColorRole:
+    {
+        return GetCellForecolor(index);
+    }
     default:
     {
         return QVariant();
@@ -112,4 +119,16 @@ QVariant CurrenciesModel::GetCellString(const QModelIndex& index) const
     hb::core::Currency cur = GetCurrencyItem(index.row() - m_currenciesStartIndex);
 
     return Tr((cur.Symbol() + " - " + cur.ShortName()));
+}
+
+QVariant CurrenciesModel::GetCellForecolor(const QModelIndex &index) const
+{
+    if (index.row() >= m_currenciesStartIndex)
+    {
+        const hb::core::Currency& currency = GetCurrencyItem(index.row() - m_currenciesStartIndex);
+
+        return QColor(currency.ForegroundColor());
+    }
+
+    return QVariant();
 }
