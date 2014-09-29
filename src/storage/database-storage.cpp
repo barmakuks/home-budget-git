@@ -8,6 +8,8 @@
 #include "strategies/last-id-strategy.h"
 #include "strategies/fill-balance-map-strategy.h"
 #include "strategies/fill-shop-list-strategy.h"
+#include "strategies/last-id-strategy.h"
+
 
 #include "sql-builder.h"
 #include "data-fields-description.h"
@@ -72,22 +74,37 @@ Identifier SetLastId<Currency>(IDatabaseEngine& engine, Currency& data)
 }
 
 
-template <class T>
+template<typename T>
 class class_has_id
 {
-private:
-    typedef char Small;
-    struct Large
-    {
-        char a[2];
-    };
-
-    template <typename C> static Small test(decltype(C::Id));
-    template <typename C> static Large test(...);
-
+        typedef char no;
+        typedef char yes[2];
+        template<class C> static yes& test(char (*)[sizeof(&C::Id)]);
+        template<class C> static no& test(...);
 public:
-    enum {value = sizeof(test<T>(0)) == sizeof(Small)};
+        enum{value = sizeof(test<T>(0)) == sizeof(yes&)};
 };
+
+//template <class T>
+//class class_has_id
+//{
+//private:
+//    typedef char Small;
+//    struct Large
+//    {
+//        char a[2];
+//    };
+
+//    template <typename U, U>
+//    class check
+//    { };
+
+//    template <typename C> static Small test(check<int (C::*)(), &C::Id> *);
+//    template <typename C> static Large test(...);
+
+//public:
+//    enum {value = sizeof(test<T>(0)) == sizeof(Small)};
+//};
 
 template <typename T, bool readId>
 class DataWriter

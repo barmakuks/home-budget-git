@@ -32,6 +32,8 @@ std::time_t DateToRawTime(const Date& date)
     return t;
 }
 
+const std::string WeekDays[] = {"Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"};
+
 std::string GetWeekDay(const Date& date)
 {
     std::time_t rawtime = DateToRawTime(date);
@@ -41,9 +43,7 @@ std::string GetWeekDay(const Date& date)
 
     char buf[4];
 
-    static const std::string week[] = {"Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"};
-
-    return week[timeinfo->tm_wday];
+    return WeekDays[timeinfo->tm_wday];
 }
 
 
@@ -112,6 +112,12 @@ DateInterval GetDateInterval(DatePeriod::Period period,
         rawBaseTime -= SecondsPerDay;
         interval.from = RawTimeToDate(rawBaseTime);
         interval.to = interval.from;
+        break;
+    }
+    case DatePeriod::LastTwoDays:
+    {
+        interval.from = RawTimeToDate(rawBaseTime - SecondsPerDay);
+        interval.to  = RawTimeToDate(rawBaseTime);
         break;
     }
     case DatePeriod::ThisWeek:

@@ -15,7 +15,9 @@ class LastIdStrategy: public hb::core::IDatabaseEngine::ICallbackStrategy
 public:
     typedef Identifier ResultType;
 
-    LastIdStrategy();
+    LastIdStrategy(): m_lastId(EmptyId)
+    {
+    }
 
     virtual void NewRecord()
     {

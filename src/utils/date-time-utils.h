@@ -14,6 +14,7 @@ struct DatePeriod
     {
         Today,
         Yesterday,
+        LastTwoDays,
         ThisWeek,
         LastWeek,
         ThisMonth,
@@ -29,7 +30,7 @@ struct DatePeriod
 
 struct DateInterval
 {
-    DateInterval(){}
+    DateInterval() {}
     DateInterval(const Date& from, const Date& to):
         from(from),
         to(to)
@@ -47,6 +48,9 @@ DatePeriod::Period GetDatePeriod(const DateInterval& dateInterval,
                                  const Date& baseDate = Now());
 
 std::string GetWeekDay(const Date& date);
+
+enum Week {Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday};
+extern const std::string WeekDays[];
 
 } // namespace utils
 } // namespace hb

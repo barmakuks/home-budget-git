@@ -5,6 +5,9 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QDateEdit>
+#include <QMenu>
+#include <QInputDialog>
+#include <QMessageBox>
 
 #include "engine.h"
 #include "document.h"
@@ -20,7 +23,8 @@ DocumentDialog::DocumentDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::DocumentDialog),
     m_accountsModel(false),
-    m_currencyModel(false)
+    m_currencyModel(false),
+    m_has_changes(false)
 {
     ui->setupUi(this);
     ui->docTypeTreeView->setModel(&m_docTypesModel);
@@ -64,10 +68,6 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     // set currency
     ui->currencyComboBox->setCurrentIndex(m_currencyModel.GetCurrencyIndex(amount.Currency()).row());
 
-    // set doc type
-    const QModelIndex docTypeIndex = m_docTypesModel.getDocTypeIndex(docType->Id());
-    ui->docTypeTreeView->selectionModel()->select(docTypeIndex, QItemSelectionModel::Select);
-
     // set note
     ui->noteEdit->setText(Tr(document->Note()));
 
@@ -75,7 +75,8 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     const QDate date = QDatefromNormalizedDate(document->DocDate());
     ui->dateEdit->setDate(date);
 
-    ExpandToIndex(docTypeIndex);
+    // set doc type
+    SelectDocType(docType->Id());
 }
 
 bool DocumentDialog::GetDataFromUI()
@@ -116,6 +117,15 @@ bool DocumentDialog::GetDataFromUI()
     return true;
 }
 
+void DocumentDialog::SelectDocType(hb::DocTypeId docTypeId)
+{
+    // set doc type
+    const QModelIndex docTypeIndex = m_docTypesModel.getDocTypeIndex(docTypeId);
+    ui->docTypeTreeView->selectionModel()->select(docTypeIndex, QItemSelectionModel::Select);
+
+    ExpandToIndex(docTypeIndex);
+}
+
 void DocumentDialog::ExpandToIndex(const QModelIndex &index)
 {
     QModelIndex parent = m_docTypesModel.parent(index);
@@ -134,6 +144,7 @@ DocumentDialog::~DocumentDialog()
 
 bool DocumentDialog::EditDocument(const DocumentPtr& document)
 {
+
     if (!document)
     {
         return false;
@@ -144,11 +155,14 @@ bool DocumentDialog::EditDocument(const DocumentPtr& document)
         dlg = new DocumentDialog(NULL);
     }
 
+    dlg->m_has_changes = false;
     dlg->SetupUI(document);
 
     const int result = dlg->exec();
 
-    return result != DialogResult::Canceled || document != dlg->m_document;
+    return result != DialogResult::Canceled
+            || document != dlg->m_document
+            || dlg->m_has_changes;
 }
 
 bool DocumentDialog::CreateDocument(DocumentType::TypeSign docType)
@@ -193,4 +207,121 @@ void DocumentDialog::on_accountComboBox_currentIndexChanged(int index)
     hb::AccountId accountId = m_accountsModel.GetAccountItemId(index);
     AccountPtr account = Engine::GetInstance().GetAccounts()->at(accountId);
     ui->currencyComboBox->setCurrentIndex(m_currencyModel.GetCurrencyIndex(account->DefaultCurrency()).row());
+}
+
+void DocumentDialog::on_docTypeTreeView_customContextMenuRequested(const QPoint &pos)
+{
+    std::unique_ptr<QMenu> menu(new QMenu(this));
+    menu->addAction(Tr("Додати"), this, SLOT(add_docType()));
+    menu->addAction(Tr("Перейменувати"), this, SLOT(edit_docType()));
+    menu->addAction(Tr("Видалити"), this, SLOT(remove_docType()));
+    menu->exec(ui->docTypeTreeView->mapToGlobal(pos));
+}
+
+void DocumentDialog::add_docType()
+{
+    const QModelIndexList selectedDoctypes = ui->docTypeTreeView->selectionModel()->selectedIndexes();
+
+    if (selectedDoctypes.size() != 1)
+    {
+        return;
+    }
+    const hb::DocTypeId parentDocTypeId = static_cast<hb::DocTypeId>(selectedDoctypes.begin()->internalId());
+
+    if (parentDocTypeId == hb::EmptyId)
+    {
+        return;
+    }
+
+    const DocumentTypePtr parentDocType = Engine::GetInstance().GetTypeList()->at(parentDocTypeId);
+
+    QInputDialog dlg;
+    dlg.setLabelText(Tr("Введить назву"));
+    dlg.setWindowTitle(Tr("Тип документу"));
+    dlg.setTextValue(Tr(""));
+
+    if (dlg.exec() == QInputDialog::DialogCode::Accepted)
+    {
+
+        DocumentType docType;
+        docType.SetParentId(parentDocTypeId);
+        docType.SetName(Convert(dlg.textValue()));
+        docType.SetSign(parentDocType->Sign());
+
+        Engine::GetInstance().Write(docType);
+
+        Engine::GetInstance().GetTypeList(true);
+        m_docTypesModel.Reload(parentDocType->Sign());
+
+        SelectDocType(docType.Id());
+    }
+}
+
+void DocumentDialog::edit_docType()
+{
+    const QModelIndexList selectedDoctypes = ui->docTypeTreeView->selectionModel()->selectedIndexes();
+
+    if (selectedDoctypes.size() != 1)
+    {
+        return;
+    }
+
+    QInputDialog dlg;
+    dlg.setLabelText(Tr("Введить назву"));
+    dlg.setWindowTitle(Tr("Тип документу"));
+    const hb::DocTypeId docTypeId = static_cast<hb::DocTypeId>(selectedDoctypes.begin()->internalId());
+    const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
+    dlg.setTextValue(Tr(docType->Name()));
+
+    if (dlg.exec() == QInputDialog::DialogCode::Accepted)
+    {
+        docType->SetName(Convert(dlg.textValue()));
+        Engine::GetInstance().Write(*docType);
+        m_docTypesModel.Reload(docType->Sign());
+        SelectDocType(docType->Id());
+    }
+}
+
+void DocumentDialog::remove_docType()
+{
+    const QModelIndexList selectedDoctypes = ui->docTypeTreeView->selectionModel()->selectedIndexes();
+
+    if (selectedDoctypes.size() != 1)
+    {
+        return;
+    }
+    const hb::DocTypeId docTypeId = static_cast<hb::DocTypeId>(selectedDoctypes.begin()->internalId());
+    const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
+
+    if (docType->ParentId() == hb::EmptyId)
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(hb::utils::Tr("Видалення документу"));
+        msgBox.setText(hb::utils::Tr("Видалення документу"));
+        msgBox.setInformativeText(hb::utils::Tr("Неможливо видалити цей тип документу"));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+
+        return;
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(hb::utils::Tr("Видалення документу"));
+        msgBox.setText(hb::utils::Tr("Видалення документу"));
+        msgBox.setInformativeText(hb::utils::Tr("Видалити цей тип документу?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+
+        if (msgBox.exec() == QMessageBox::Yes)
+        {
+            Engine::GetInstance().DeleteDocumentType(docType->Id());
+            Engine::GetInstance().GetTypeList(true);
+            m_docTypesModel.Reload(docType->Sign());
+
+            SelectDocType(docType->ParentId());
+
+            m_has_changes = true;
+        }
+    }
 }

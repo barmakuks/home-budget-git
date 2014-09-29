@@ -46,7 +46,6 @@ private:
     hb::core::AccountMapPtr         m_accounts;
     hb::core::CurrencyMapPtr        m_currencies;
     hb::core::DocumentsPtr          m_documents;
-    hb::core::DocumentTypeListPtr   m_docTypes;
 };
 
 #endif // DOCUMENTSMODEL_H

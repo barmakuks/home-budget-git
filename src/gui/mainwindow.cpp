@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget* parent) :
         screenHeight = desktop.screenGeometry(screenNo).height();
     }
 
-    const int width = screenWidth * 3 / 4;
+    const int width = screenWidth * 4 / 5;
     const int height = screenHeight * 3 / 4;
     const int x = screenLeft + (screenWidth - width) / 2;
     const int y = screenTop + (screenHeight - height) / 2;
@@ -77,12 +77,12 @@ MainWindow::MainWindow(QWidget* parent) :
 
     const int m = 25;
 
-    ui->documentsTableView->setColumnWidth(0, m * 4);
+    ui->documentsTableView->setColumnWidth(0, m * 3.5);
     ui->documentsTableView->setColumnWidth(1, m * 8);
-    ui->documentsTableView->setColumnWidth(2, m * 8);
-    ui->documentsTableView->setColumnWidth(3, m * 8);
-    ui->documentsTableView->setColumnWidth(4, m * 3);
-    ui->documentsTableView->setColumnWidth(5, m * 3);
+    ui->documentsTableView->setColumnWidth(2, m * 4);
+    ui->documentsTableView->setColumnWidth(3, m * 4);
+    ui->documentsTableView->setColumnWidth(4, m * 8);
+    ui->documentsTableView->setColumnWidth(5, m * 8);
     ui->documentsTableView->setColumnWidth(6, m * 4);
     ui->documentsTableView->setColumnWidth(7, m * 4);
 
@@ -170,10 +170,18 @@ void MainWindow::ApplyDocumentsFilter()
     hb::AccountId accountId = m_accountsModel.GetAccountItemId(ui->accountComboBox->currentIndex());
     hb::CurrencyId currencyId = m_currenciesModel.GetCurrencyItemId(ui->currencyComboBox->currentIndex());
 
+    QModelIndexList selection = ui->documentsTableView->selectionModel()->selectedRows();
+
     m_documentsModel.Reload(ui->startDateEdit->date(),
                             ui->endDateEdit->date(),
                             accountId,
                             currencyId);
+
+    if (!selection.empty())
+    {
+        ui->documentsTableView->selectRow(selection.begin()->row());
+    }
+
     SetButtonsEnabled();
 }
 

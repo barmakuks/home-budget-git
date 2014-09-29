@@ -6,6 +6,7 @@
 #include "engine.h"
 #include "string-format.h"
 #include "../convert-utils.h"
+#include "date-time-utils.h"
 
 DocumentsModel::DocumentsModel()
 {
@@ -16,8 +17,6 @@ DocumentsModel::DocumentsModel()
     m_accounts = model.GetAccounts();
 
     m_currencies = model.GetCurrencies();
-
-    m_docTypes = model.GetTypeList();
 
     Reload(QDate::currentDate(), QDate::currentDate(), hb::EmptyId, hb::EmptyId);
 }
@@ -49,7 +48,7 @@ namespace
 {
 struct Columns
 {
-    enum {Date = 0, DocType, AccountFrom, AccountTo, AmountFrom, AmountTo, Note, Shop, Count};
+    enum {Date = 0, DocType, AmountFrom, AmountTo, AccountFrom, AccountTo, Note, Shop, Count};
 };
 }
 
@@ -169,9 +168,11 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 
     case Columns::DocType:
     {
-        const auto it = m_docTypes->find(doc.DocType());
+        hb::core::DocumentTypeListPtr   docTypes = Engine::GetInstance().GetTypeList();
 
-        if (it != m_docTypes->end())
+        const auto it = docTypes->find(doc.DocType());
+
+        if (it != docTypes->end())
         {
             return Tr(it->second->Name());
         }
@@ -263,11 +264,20 @@ QVariant DocumentsModel::GetCellAlignment(const QModelIndex& index) const
 QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
 {
     using namespace hb::core;
+    using namespace hb::utils;
 
     const Document& doc = GetDocumentItemRef(index.row());
 
     switch (index.column())
     {
+    case Columns::Date:
+    {
+        if (GetWeekDay(doc.DocDate()) == WeekDays[Sunday])
+        {
+            return QColor(0xB00000);
+        }
+        break;
+    }
     case Columns::AccountFrom:
     {
         if (doc.AmountFrom().is_initialized())

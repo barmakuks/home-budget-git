@@ -42,6 +42,8 @@ protected:
     /** Reads data from UI controls and set them into m_document*/
     bool GetDataFromUI();
 
+    void SelectDocType(hb::DocTypeId docTypeId);
+
     /** Expands tree view to set index visible*/
     void ExpandToIndex(const QModelIndex& index);
 
@@ -56,6 +58,12 @@ private slots:
 
     void on_accountComboBox_currentIndexChanged(int index);
 
+    void on_docTypeTreeView_customContextMenuRequested(const QPoint &pos);
+
+    void add_docType();
+    void edit_docType();
+    void remove_docType();
+
 private:
     Ui::DocumentDialog* ui;
 
@@ -69,6 +77,7 @@ private:
     CurrenciesModel m_currencyModel;
     ShopsModel      m_shopsModel;
     hb::core::DocumentPtr m_document;
+    bool             m_has_changes;
 
 private:
     static DocumentDialog*  dlg;
