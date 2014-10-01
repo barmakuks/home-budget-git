@@ -8,9 +8,12 @@
 #include "strategies/last-id-strategy.h"
 #include "strategies/fill-balance-map-strategy.h"
 #include "strategies/fill-payments-balance-strategy.h"
+#include "strategies/fill-payments-strategy.h"
+#include "strategies/fill-payment-types-strategy.h"
 #include "strategies/fill-shop-list-strategy.h"
 #include "strategies/last-id-strategy.h"
 
+#include "payment-document.h"
 
 #include "sql-builder.h"
 #include "data-fields-description.h"
@@ -186,6 +189,16 @@ BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
 PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter &filter) const
 {
     return GetData<FillPaymentsBalanceStrategy>(m_databaseEngine, filter);
+}
+
+PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const IFilter &filter) const
+{
+    return GetData<FillPaymentTypesStrategy>(m_databaseEngine, filter);
+}
+
+PaymentsPtr DatabaseStorage::GetPayments(const IFilter &filter) const
+{
+    return GetData<FillPaymentsStrategy>(m_databaseEngine, filter);
 }
 
 ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const

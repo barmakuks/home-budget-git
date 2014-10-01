@@ -11,7 +11,7 @@ namespace storage
 class AllValuesFilter: public core::IFilter
 {
 public:
-    virtual std::string Fields() const {return "";}
+    virtual std::string Fields() const {return "*";}
     virtual std::string WhereCondition() const {return "";}
     virtual std::string GroupByCondition() const {return "";}
     virtual std::string HavingCondition() const {return "";}

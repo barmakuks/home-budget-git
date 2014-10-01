@@ -7,8 +7,11 @@
 #include "all-currency-filter.h"
 #include "balance-filter.h"
 #include "payments-balance-filter.h"
+#include "payments-filter.h"
 #include "shop-filter.h"
 #include "date-time-utils.h"
+#include "payment-document.h"
+#include "payment-type.h"
 
 namespace hb
 {
@@ -201,6 +204,21 @@ BalancePtr Engine::GetBalance(const Date& date)
 PaymentsBalancePtr Engine::GetPaymentsBalance(const Date& date)
 {
     return m_storage->GetPaymentsBalance(PaymentsBalanceFilter(date));
+}
+
+PaymentTypesMapPtr Engine::GetPaymentTypes(bool reload)
+{
+    if (reload || !m_paymentTypes)
+    {
+        m_paymentTypes = m_storage->GetPaymentTypes(PaymentsBalanceFilter(""));
+    }
+
+    return m_paymentTypes;
+}
+
+PaymentsPtr Engine::GetPayments(const Date& from, const Date& to)
+{
+    return m_storage->GetPayments(PaymentsByDateFilter(from, to));
 }
 
 ShopListPtr Engine::GetShops(bool reload)

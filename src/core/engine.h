@@ -5,6 +5,8 @@
 
 #include "istorage.h"
 
+#include "payment-type.h"
+
 namespace hb
 {
 namespace core
@@ -42,6 +44,11 @@ public:
 
     PaymentsBalancePtr GetPaymentsBalance(const Date& date);
 
+    PaymentTypesMapPtr GetPaymentTypes(bool reload = false);
+
+    PaymentsPtr GetPayments(const Date& from,
+                            const Date& to);
+
     ShopListPtr GetShops(bool reload = false);
 
     bool Write(Document& doc);
@@ -69,6 +76,7 @@ private:
     CurrencyMapPtr      m_currencies;
     DocumentTypeListPtr m_typelist;
     ShopListPtr         m_shops;
+    PaymentTypesMapPtr  m_paymentTypes;
 
     typedef std::map<DocumentType::TypeSign, DocTypeId> DocTypeRootsMap;
     DocTypeRootsMap     m_docTypeRoots;

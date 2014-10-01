@@ -32,6 +32,10 @@ public:
 
     virtual core::PaymentsBalancePtr GetPaymentsBalance(const core::IFilter &filter) const;
 
+    virtual core::PaymentTypesMapPtr GetPaymentTypes(const core::IFilter &filter) const;
+
+    virtual core::PaymentsPtr GetPayments(const core::IFilter &filter) const;
+
     virtual core::ShopListPtr GetShopList(const core::IFilter& filter) const;
 
     bool Write(core::Document& doc) const;

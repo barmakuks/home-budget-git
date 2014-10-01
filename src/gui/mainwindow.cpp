@@ -72,8 +72,9 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->balanceTableView->setModel(&m_balanceModel);
     ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
-    ui->paymentsTableView->setModel(&m_paymentsBalanceModel);
+    ui->paymentsBalanceTableView->setModel(&m_paymentsBalanceModel);
 //    ui->paymentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    ui->paymentsTableView->setModel(&m_paymentsModel);
 
     ui->documentsTableView->setModel(&m_documentsModel);
     ui->documentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
@@ -179,6 +180,9 @@ void MainWindow::ApplyDocumentsFilter()
                             ui->endDateEdit->date(),
                             accountId,
                             currencyId);
+
+    m_paymentsModel.Reload(ui->startDateEdit->date(),
+                           ui->endDateEdit->date());
 
     if (!selection.empty())
     {

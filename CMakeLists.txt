@@ -7,7 +7,7 @@ include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/s
 # TODO setup link directory for unit tests only
 #link_directories(${CMAKE_SOURCE_DIR}/../thirdparty/gtest/lib)
 
-find_package(Boost COMPONENTS locale REQUIRED)
+find_package(Boost COMPONENTS REQUIRED)
 
 add_definitions(-g -std=c++11 -O0)
 

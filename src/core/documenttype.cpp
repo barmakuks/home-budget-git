@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <locale>
 #include <cctype>
-//#include <boost/locale.hpp>
-//#include <boost/algorithm/string.hpp>
 
 namespace hb
 {

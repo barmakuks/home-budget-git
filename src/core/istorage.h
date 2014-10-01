@@ -1,17 +1,23 @@
 #ifndef ISTORAGE_H
 #define ISTORAGE_H
 
+// TODO remove include, replace with forward declaration
+
 #include "documenttype.h"
 #include "document.h"
 #include "account.h"
 #include "currency.h"
 #include "balance.h"
 #include "payments-balance.h"
+//#include "payment-document.h"
 
 namespace hb
 {
 namespace core
 {
+
+class PaymentsPtr;
+class PaymentTypesMapPtr;
 
 class IFilter
 {
@@ -43,6 +49,10 @@ public:
     virtual BalancePtr GetBalance(const IFilter& filter) const  = 0;
 
     virtual PaymentsBalancePtr GetPaymentsBalance(const IFilter& filter) const  = 0;
+
+    virtual PaymentsPtr GetPayments(const IFilter& filter) const  = 0;
+
+    virtual PaymentTypesMapPtr GetPaymentTypes(const IFilter& filter) const  = 0;
 
     virtual ShopListPtr GetShopList(const IFilter& filter) const = 0;
 

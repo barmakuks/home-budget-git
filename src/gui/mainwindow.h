@@ -8,6 +8,7 @@
 #include "models/accounts-model.h"
 #include "models/currencies-model.h"
 #include "models/payments-balance-model.h"
+#include "models/payments-model.h"
 
 namespace Ui
 {
@@ -69,6 +70,7 @@ private:
     AccountsModel           m_accountsModel;
     CurrenciesModel         m_currenciesModel;
     PaymentsBalanceModel    m_paymentsBalanceModel;
+    PaymentsModel           m_paymentsModel;
 
     bool                    m_filterSetupInProgress;
 
