@@ -33,12 +33,12 @@ void FillCurrencyMapStrategy::AddColumnValue(const std::string& fieldName, const
 
     if (m_currency)
     {
-        FieldSetter<CurrencyId, Currency, &Currency::SetCode>::SetValue(m_currency, "code", name, value);
-        FieldSetter<const std::string&, Currency, &Currency::SetIsoCode>::SetValue(m_currency, "iso_code", name, value);
-        FieldSetter<const std::string&, Currency, &Currency::SetShortName>::SetValue(m_currency, "short_name", name, value);
-        FieldSetter<const std::string&, Currency, &Currency::SetSymbol>::SetValue(m_currency, "symbol", name, value);
-        FieldSetter<bool, Currency, &Currency::SetSymbolPlace>::SetValue(m_currency, "symbol_place", name, value);
-        FieldSetter<Color, Currency, &Currency::SetForegroundColor>::SetValue(m_currency, "fg_color", name, value);
+        SetFieldValue(m_currency, &Currency::SetCode, "code", name, value);
+        SetFieldValue(m_currency, &Currency::SetIsoCode, "iso_code", name, value);
+        SetFieldValue(m_currency, &Currency::SetShortName, "short_name", name, value);
+        SetFieldValue(m_currency, &Currency::SetSymbol, "symbol", name, value);
+        SetFieldValue(m_currency, &Currency::SetSymbolPlace, "symbol_place", name, value);
+        SetFieldValue(m_currency, &Currency::SetForegroundColor, "fg_color", name, value);
     }
 }
 

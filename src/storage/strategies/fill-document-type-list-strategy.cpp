@@ -35,10 +35,10 @@ void FillDocumentTypeListStrategy::AddColumnValue(const std::string& fieldName, 
 
     if (m_currentDocType)
     {
-        FieldSetter<DocTypeId, DocumentType, &DocumentType::SetId>::SetValue(m_currentDocType, "id", name, value);
-        FieldSetter<const std::string&, DocumentType, &DocumentType::SetName>::SetValue(m_currentDocType, "name", name, value);
-        FieldSetter<DocTypeId, DocumentType, &DocumentType::SetParentId>::SetValue(m_currentDocType, "parent_id", name, value);
-        FieldSetter<DocumentType::TypeSign, DocumentType, &DocumentType::SetSign>::SetValue(m_currentDocType, "operation_sign", name, value);
+        SetFieldValue(m_currentDocType, &DocumentType::SetId, "id", name, value);
+        SetFieldValue(m_currentDocType, &DocumentType::SetName, "name", name, value);
+        SetFieldValue(m_currentDocType, &DocumentType::SetParentId, "parent_id", name, value);
+        SetFieldValue(m_currentDocType, &DocumentType::SetSign, "operation_sign", name, value);
     }
 }
 

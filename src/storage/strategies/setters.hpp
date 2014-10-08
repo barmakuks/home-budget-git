@@ -3,45 +3,53 @@
 
 #include <boost/lexical_cast.hpp>
 
-template<typename T, class D, void (D::*Setter)(T)>
-class FieldSetter
+template<typename value_type>
+typename std::remove_reference<value_type>::type ParseValue(const std::string& valueStr,
+                                                            bool& result)
 {
-    typedef std::shared_ptr<D> type_ptr;
-public:
-    static void SetValue(type_ptr& doc,
-                         const std::string& expectedField,
-                         const std::string& field, const std::string& value)
+    try
     {
-        if (doc && field == expectedField && !value.empty())
-        {
-            try
-            {
-                long long id = boost::lexical_cast<long long>(value);
-                ((*doc).*Setter)(static_cast<T>(id));
-            }
-            catch(boost::bad_lexical_cast const& )
-            {
-                doc.reset();
-                return;
-            }
-        }
+        long long parsed = boost::lexical_cast<long long>(valueStr);
+        typename std::remove_reference<value_type>::type value = static_cast<value_type>(parsed);
+        result = true;
+        return value;
     }
-};
+    catch(boost::bad_lexical_cast const& )
+    {
+        result = false;
+        return typename std::remove_reference<value_type>::type();
+    }
+}
 
-template<typename D, void (D::*Setter)(const std::string&)>
-class FieldSetter<const std::string&, D, Setter>
+template<>
+inline const std::string ParseValue<const std::string&>(const std::string& valueStr,
+                                                        bool& result)
 {
-    typedef std::shared_ptr<D> type_ptr;
-public:
-    static void SetValue(type_ptr& doc,
-                         const std::string& expectedField,
-                         const std::string& field, const std::string& value)
+    result = true;
+    return valueStr;
+}
+
+template<class Object, typename value_type>
+void SetFieldValue(std::shared_ptr<Object>& obj,
+                   void (Object::*setter)(value_type),
+                   const std::string& expectedField,
+                   const std::string& field,
+                   const std::string& valueStr)
+{
+    if (obj && field == expectedField)
     {
-        if (doc && field == expectedField)
+        bool result = false;
+        value_type value = ParseValue<value_type>(valueStr, result);
+
+        if (result)
         {
-            ((*doc).*Setter)(value);
+            ((*obj).*setter)(value);
+        }
+        else
+        {
+            obj.reset();
         }
     }
-};
+}
 
 #endif // SETTERS_HPP

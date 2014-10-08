@@ -35,9 +35,10 @@ void FillBalanceMapStrategy::AddColumnValue(const std::string& fieldName,
 
     if (m_value)
     {
-        FieldSetter<AccountId, BalanceRow, &BalanceRow::SetAccount>::SetValue(m_value, "account_id", name, value);
-        FieldSetter<CurrencyId, BalanceRow, &BalanceRow::SetCurrency>::SetValue(m_value, "account_cur", name, value);
-        FieldSetter<Money, BalanceRow, &BalanceRow::SetAmount>::SetValue(m_value, "amount", name, value);
+        SetFieldValue(m_value, &BalanceRow::SetAccount, "account_id", name, value);
+        SetFieldValue(m_value, &BalanceRow::SetAccount, "account_id", name, value);
+        SetFieldValue(m_value, &BalanceRow::SetCurrency, "account_cur", name, value);
+        SetFieldValue(m_value, &BalanceRow::SetAmount, "amount", name, value);
     }
 }
 

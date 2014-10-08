@@ -596,7 +596,7 @@
      <item>
       <widget class="QTabWidget" name="mainTabWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabDocments">
         <attribute name="title">
@@ -621,7 +621,7 @@
             <bool>false</bool>
            </property>
            <attribute name="horizontalHeaderVisible">
-            <bool>false</bool>
+            <bool>true</bool>
            </attribute>
            <attribute name="horizontalHeaderHighlightSections">
             <bool>false</bool>

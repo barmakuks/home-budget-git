@@ -37,8 +37,8 @@ void FillPaymentTypesStrategy::AddColumnValue(const std::string& fieldName, cons
 
     if (m_value)
     {
-        FieldSetter<PaymentTypeId, PaymentType, &PaymentType::SetId>::SetValue(m_value, "id", name, value);
-        FieldSetter<const std::string&, PaymentType, &PaymentType::SetName>::SetValue(m_value, "name", name, value);
+        SetFieldValue(m_value, &PaymentType::SetId, "id", name, value);
+        SetFieldValue(m_value, &PaymentType::SetName, "name", name, value);
     }
 }
 

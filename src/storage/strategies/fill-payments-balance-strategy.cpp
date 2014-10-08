@@ -34,9 +34,9 @@ void FillPaymentsBalanceStrategy::AddColumnValue(const std::string& fieldName, c
 
     if (m_value)
     {
-        FieldSetter<PaymentTypeId, PaymentsBalanceRow, &PaymentsBalanceRow::SetPaymentType>::SetValue(m_value, "id", name, value);
-        FieldSetter<const std::string&, PaymentsBalanceRow, &PaymentsBalanceRow::SetPaymentName>::SetValue(m_value, "name", name, value);
-        FieldSetter<Money, PaymentsBalanceRow, &PaymentsBalanceRow::SetAmount>::SetValue(m_value, "amount", name, value);
+        SetFieldValue(m_value, &PaymentsBalanceRow::SetPaymentType, "id", name, value);
+        SetFieldValue(m_value, &PaymentsBalanceRow::SetPaymentName, "name", name, value);
+        SetFieldValue(m_value, &PaymentsBalanceRow::SetAmount, "amount", name, value);
     }
 }
 

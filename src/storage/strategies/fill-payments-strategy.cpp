@@ -34,15 +34,15 @@ void FillPaymentsStrategy::AddColumnValue(const std::string& fieldName, const st
 
     if (m_value)
     {
-        FieldSetter<Identifier, PaymentDocument, &PaymentDocument::SetId>::SetValue(m_value, "id", name, value);
-        FieldSetter<PaymentTypeId, PaymentDocument, &PaymentDocument::SetPaymentType>::SetValue(m_value, "payment_id", name, value);
-        FieldSetter<Money, PaymentDocument, &PaymentDocument::SetAmount>::SetValue(m_value, "amount", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetId, "id", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetPaymentType, "payment_id", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetAmount, "amount", name, value);
 
-        FieldSetter<const std::string&, PaymentDocument, &PaymentDocument::SetDocDate>::SetValue(m_value, "date", name, value);
-        FieldSetter<const std::string&, PaymentDocument, &PaymentDocument::SetPeriod>::SetValue(m_value, "period", name, value);
-        FieldSetter<const std::string&, PaymentDocument, &PaymentDocument::SetCounter1>::SetValue(m_value, "counter_1", name, value);
-        FieldSetter<const std::string&, PaymentDocument, &PaymentDocument::SetCounter2>::SetValue(m_value, "counter_2", name, value);
-        FieldSetter<const std::string&, PaymentDocument, &PaymentDocument::SetNote>::SetValue(m_value, "note", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetDocDate, "date", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetPeriod, "period", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetCounter1, "counter_1", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetCounter2, "counter_2", name, value);
+        SetFieldValue(m_value, &PaymentDocument::SetNote, "note", name, value);
     }
 }
 

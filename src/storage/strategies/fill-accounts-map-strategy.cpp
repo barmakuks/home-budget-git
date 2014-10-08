@@ -34,14 +34,14 @@ void FillAccountsMapStrategy::AddColumnValue(const std::string& fieldName,
 
     if (m_account)
     {
-        FieldSetter<AccountId, Account, &Account::SetId>::SetValue(m_account, "id", name, value);
-        FieldSetter<const std::string&, Account, &Account::SetName>::SetValue(m_account, "name", name, value);
-        FieldSetter<const std::string&, Account, &Account::SetDescription>::SetValue(m_account, "description", name, value);
-        FieldSetter<CurrencyId, Account, &Account::SetDefaultCurrency>::SetValue(m_account, "default_currency_code", name, value);
-        FieldSetter<int, Account, &Account::SetSortOrder>::SetValue(m_account, "sort_order", name, value);
-        FieldSetter<const std::string&, Account, &Account::SetBank>::SetValue(m_account, "bank", name, value);
-        FieldSetter<bool, Account, &Account::SetActive>::SetValue(m_account, "is_active", name, value);
-        FieldSetter<Color, Account, &Account::SetForegroundColor>::SetValue(m_account, "foreground_color", name, value);
+        SetFieldValue(m_account, &Account::SetId, "id", name, value);
+        SetFieldValue(m_account, &Account::SetName, "name", name, value);
+        SetFieldValue(m_account, &Account::SetDescription, "description", name, value);
+        SetFieldValue(m_account, &Account::SetDefaultCurrency, "default_currency_code", name, value);
+        SetFieldValue(m_account, &Account::SetSortOrder, "sort_order", name, value);
+        SetFieldValue(m_account, &Account::SetBank, "bank", name, value);
+        SetFieldValue(m_account, &Account::SetActive, "is_active", name, value);
+        SetFieldValue(m_account, &Account::SetForegroundColor, "foreground_color", name, value);
     }
 }
 

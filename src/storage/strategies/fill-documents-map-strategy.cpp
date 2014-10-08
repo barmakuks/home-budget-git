@@ -44,19 +44,19 @@ void FillDocumentsMapStrategy::AddColumnValue(const std::string& fieldName, cons
 
     if (m_currentDoc)
     {
-        FieldSetter<DocId, Document, &Document::SetId>::SetValue(m_currentDoc, "id", name, value);
-        FieldSetter<const std::string&, Document, &Document::SetDocDate>::SetValue(m_currentDoc, "doc_date", name, value);
-        FieldSetter<DocTypeId, Document, &Document::SetDocType>::SetValue(m_currentDoc, "doc_type_id", name, value);
-        FieldSetter<const std::string&, Document, &Document::SetShop>::SetValue(m_currentDoc, "shop", name, value);
-        FieldSetter<const std::string&, Document, &Document::SetNote>::SetValue(m_currentDoc, "note", name, value);
+        SetFieldValue(m_currentDoc, &Document::SetId, "id", name, value);
+        SetFieldValue(m_currentDoc, &Document::SetDocDate, "doc_date", name, value);
+        SetFieldValue(m_currentDoc, &Document::SetDocType, "doc_type_id", name, value);
+        SetFieldValue(m_currentDoc, &Document::SetShop, "shop", name, value);
+        SetFieldValue(m_currentDoc, &Document::SetNote, "note", name, value);
 
-        FieldSetter<AccountId, Amount, &Amount::SetAccount>::SetValue(m_fromAmount, "account_from_id", name, value);
-        FieldSetter<CurrencyId, Amount, &Amount::SetCurrency>::SetValue(m_fromAmount, "account_from_cur", name, value);
-        FieldSetter<Money, Amount, &Amount::SetValue>::SetValue(m_fromAmount, "amount_from", name, value);
+        SetFieldValue(m_fromAmount, &Amount::SetAccount, "account_from_id", name, value);
+        SetFieldValue(m_fromAmount, &Amount::SetCurrency, "account_from_cur", name, value);
+        SetFieldValue(m_fromAmount, &Amount::SetValue, "amount_from", name, value);
 
-        FieldSetter<AccountId, Amount, &Amount::SetAccount>::SetValue(m_toAmount, "account_to_id", name, value);
-        FieldSetter<CurrencyId, Amount, &Amount::SetCurrency>::SetValue(m_toAmount, "account_to_cur", name, value);
-        FieldSetter<Money, Amount, &Amount::SetValue>::SetValue(m_toAmount, "amount_to", name, value);
+        SetFieldValue(m_toAmount, &Amount::SetAccount, "account_to_id", name, value);
+        SetFieldValue(m_toAmount, &Amount::SetCurrency, "account_to_cur", name, value);
+        SetFieldValue(m_toAmount, &Amount::SetValue, "amount_to", name, value);
     }
 }
 
