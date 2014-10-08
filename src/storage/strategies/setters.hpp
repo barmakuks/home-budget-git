@@ -30,11 +30,36 @@ inline const std::string ParseValue<const std::string&>(const std::string& value
 }
 
 template<class Object, typename value_type>
-void SetFieldValue(std::shared_ptr<Object>& obj,
+bool SetFieldValue(Object& obj,
                    void (Object::*setter)(value_type),
                    const std::string& expectedField,
                    const std::string& field,
                    const std::string& valueStr)
+{
+    if (field == expectedField)
+    {
+        bool result = false;
+        value_type value = ParseValue<value_type>(valueStr, result);
+
+        if (result)
+        {
+            (obj.*setter)(value);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+
+template<class Object, typename value_type>
+inline void SetFieldValue(std::shared_ptr<Object>& obj,
+                          void (Object::*setter)(value_type),
+                          const std::string& expectedField,
+                          const std::string& field,
+                          const std::string& valueStr)
 {
     if (obj && field == expectedField)
     {

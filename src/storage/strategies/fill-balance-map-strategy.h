@@ -35,6 +35,8 @@ private:
     record_type m_value;
 };
 
+void SetValue(hb::core::BalanceRow& balance, const std::string& field, const std::string& value);
+
 } // namespace storage
 } // namespace hb
 

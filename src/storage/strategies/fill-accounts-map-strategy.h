@@ -35,6 +35,8 @@ private:
     record_type m_account;
 };
 
+void SetValue(hb::core::Account& account, const std::string& field, const std::string& value);
+
 } // namespace storage
 } // namespace hb
 

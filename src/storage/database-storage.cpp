@@ -18,6 +18,10 @@
 #include "sql-builder.h"
 #include "data-fields-description.h"
 
+#include "balance.h"
+#include "fill-strategy.hpp"
+
+
 namespace hb
 {
 namespace storage
@@ -171,7 +175,7 @@ DocumentsPtr DatabaseStorage::GetDocuments(const IFilter& filter) const
     return GetData<FillDocumentsMapStrategy>(m_databaseEngine, filter);
 }
 
-AccountMapPtr DatabaseStorage::GetAccounts(const core::IFilter& filter) const
+hb::core::AccountMapPtr DatabaseStorage::GetAccounts(const core::IFilter& filter) const
 {
     return GetData<FillAccountsMapStrategy>(m_databaseEngine, filter);
 }
@@ -183,7 +187,9 @@ CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
 
 BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
 {
-    return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::BalancePtr> >(m_databaseEngine, filter);
+
+//    return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
 }
 
 PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter &filter) const

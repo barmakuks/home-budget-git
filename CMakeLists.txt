@@ -26,7 +26,7 @@ aux_source_directory(./src/storage/strategies CORE_LIB_SRC)
 aux_source_directory(./src/storage/filters CORE_LIB_SRC)
 aux_source_directory(./src/utils CORE_LIB_SRC)
 
-add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CORE_HEADERS})
+add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CORE_HEADERS} ${CORE_TEMPLATES})
 target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES})
 
 #Executable console

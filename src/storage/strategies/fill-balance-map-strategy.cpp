@@ -42,5 +42,18 @@ void FillBalanceMapStrategy::AddColumnValue(const std::string& fieldName,
     }
 }
 
+void SetValue(core::BalanceRow& balance, const std::string& field, const std::string& value)
+{
+    using namespace hb::core;
+
+    std::string name = field;
+    std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
+    SetFieldValue(balance, &BalanceRow::SetAccount, "account_id", name, value);
+    SetFieldValue(balance, &BalanceRow::SetAccount, "account_id", name, value);
+    SetFieldValue(balance, &BalanceRow::SetCurrency, "account_cur", name, value);
+    SetFieldValue(balance, &BalanceRow::SetAmount, "amount", name, value);
+}
+
 } // namespace storage
 } // namespace hb

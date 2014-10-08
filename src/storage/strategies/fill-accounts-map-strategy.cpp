@@ -45,6 +45,23 @@ void FillAccountsMapStrategy::AddColumnValue(const std::string& fieldName,
     }
 }
 
+void SetValue(hb::core::Account& account, const std::string& field, const std::string& value)
+{
+    using namespace hb::core;
+    std::string name = field;
+    std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
+    SetFieldValue(account, &Account::SetId, "id", name, value);
+    SetFieldValue(account, &Account::SetName, "name", name, value);
+    SetFieldValue(account, &Account::SetDescription, "description", name, value);
+    SetFieldValue(account, &Account::SetDefaultCurrency, "default_currency_code", name, value);
+    SetFieldValue(account, &Account::SetSortOrder, "sort_order", name, value);
+    SetFieldValue(account, &Account::SetBank, "bank", name, value);
+    SetFieldValue(account, &Account::SetActive, "is_active", name, value);
+    SetFieldValue(account, &Account::SetForegroundColor, "foreground_color", name, value);
+}
+
+
 } // namespace storage
 } // namespace hb
 
