@@ -101,7 +101,11 @@ typedef std::shared_ptr<DocumentType> DocumentTypePtr;
 class DocumentTypeList: public std::map<DocTypeId, DocumentTypePtr>
 {
 public:
-    void AddType(DocumentTypePtr& docType);
+    // hide parent insert method
+    std::pair<iterator, bool> insert(const value_type& value);
+
+    /// Appends docType to list
+    void AddType(const DocumentTypePtr& docType);
 
     const DocTypeIdList& Head() const
     {

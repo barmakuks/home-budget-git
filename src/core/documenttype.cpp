@@ -16,7 +16,12 @@ DocumentType::DocumentType():
 {
 }
 
-void DocumentTypeList::AddType(DocumentTypePtr& docType)
+std::pair<DocumentTypeList::iterator, bool> DocumentTypeList::insert(const DocumentTypeList::value_type &value)
+{
+    AddType(value.second);
+}
+
+void DocumentTypeList::AddType(const DocumentTypePtr& docType)
 {
     for (iterator it = begin();
          it != end();
@@ -37,7 +42,7 @@ void DocumentTypeList::AddType(DocumentTypePtr& docType)
         parent->second->AddSubtype(docType->Id());
     }
 
-    insert(value_type(docType->Id(), docType));
+    std::map<DocTypeId, DocumentTypePtr>::insert(value_type(docType->Id(), docType));
 
     if (docType->ParentId() == EmptyId)
     {
