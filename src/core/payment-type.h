@@ -38,7 +38,12 @@ public:
     PaymentTypes GetList() const;
 };
 
-class PaymentTypesMapPtr: public std::shared_ptr<PaymentTypesMap>{};
+class PaymentTypesMapPtr: public std::shared_ptr<PaymentTypesMap>
+{
+public:
+    PaymentTypesMapPtr(){}
+    PaymentTypesMapPtr(PaymentTypesMap* ptr){reset(ptr);}
+};
 
 } // namespace core
 } // namespace hb

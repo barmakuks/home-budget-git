@@ -40,13 +40,13 @@ public:
     */
     virtual DocumentTypeListPtr GetTypeList(const IFilter& filter) const = 0;
 
-    virtual DocumentsPtr GetDocuments(const IFilter& filter) const = 0;
-
     virtual AccountMapPtr GetAccounts(const IFilter& filter) const = 0;
+
+    virtual BalancePtr GetBalance(const IFilter& filter) const  = 0;
 
     virtual CurrencyMapPtr GetCurrencies(const IFilter& filter) const = 0;
 
-    virtual BalancePtr GetBalance(const IFilter& filter) const  = 0;
+    virtual DocumentsPtr GetDocuments(const IFilter& filter) const = 0;
 
     virtual PaymentsBalancePtr GetPaymentsBalance(const IFilter& filter) const  = 0;
 

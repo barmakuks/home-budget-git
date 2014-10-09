@@ -36,7 +36,12 @@ typedef std::shared_ptr<PaymentsBalanceRow> PaymentsBalanceRowPtr;
 
 typedef std::vector<PaymentsBalanceRowPtr>  PaymentsBalance;
 
-class PaymentsBalancePtr : public std::shared_ptr<PaymentsBalance>{};
+class PaymentsBalancePtr : public std::shared_ptr<PaymentsBalance>
+{
+public:
+    PaymentsBalancePtr(){}
+    PaymentsBalancePtr(PaymentsBalance* ptr){ reset(ptr);}
+};
 
 } // namespace core
 } // namespace hb

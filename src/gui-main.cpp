@@ -6,7 +6,26 @@
 #include "sqlite/sqlite-engine.h"
 #include "engine.h"
 
-int main(int argc, char *argv[])
+class App: public QApplication
+{
+public:
+    App(int& argc, char* argv[]):QApplication(argc, argv){}
+
+    bool notify(QObject* receiver, QEvent* event)
+    {
+        try
+        {
+            return QApplication::notify(receiver, event);
+        }
+        catch (std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            return false;
+        }
+    }
+};
+
+int main(int argc, char* argv[])
 {
     using namespace hb::storage;
     using namespace hb::core;
@@ -18,7 +37,8 @@ int main(int argc, char *argv[])
 
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
-    QApplication a(argc, argv);
+    App a(argc, argv);
+
     MainWindow w;
     w.show();
 

@@ -19,11 +19,6 @@ public:
     {
     }
 
-    std::string WhereCondition() const
-    {
-        return "";
-    }
-
     std::string From() const
     {
         return "doc_types";

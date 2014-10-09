@@ -9,6 +9,11 @@ typename std::remove_reference<value_type>::type ParseValue(const std::string& v
 {
     try
     {
+        if (valueStr.empty())
+        {
+            result = false;
+            return typename std::remove_reference<value_type>::type();
+        }
         long long parsed = boost::lexical_cast<long long>(valueStr);
         typename std::remove_reference<value_type>::type value = static_cast<value_type>(parsed);
         result = true;

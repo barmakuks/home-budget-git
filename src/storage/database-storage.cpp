@@ -1,26 +1,16 @@
 #include "database-storage.h"
 
 #include "idatabase-engine.h"
-#include "strategies/fill-document-type-list-strategy.h"
-#include "strategies/fill-documents-map-strategy.h"
-#include "strategies/fill-accounts-map-strategy.h"
-#include "strategies/fill-currency-map-strategy.h"
-#include "strategies/last-id-strategy.h"
-#include "strategies/fill-balance-map-strategy.h"
-#include "strategies/fill-payments-balance-strategy.h"
-#include "strategies/fill-payments-strategy.h"
-#include "strategies/fill-payment-types-strategy.h"
-#include "strategies/fill-shop-list-strategy.h"
-#include "strategies/last-id-strategy.h"
 
 #include "payment-document.h"
+#include "payment-type.h"
 
 #include "sql-builder.h"
-#include "data-fields-description.h"
 
-#include "balance.h"
 #include "fill-strategy.hpp"
-
+#include "set-value-functions.h"
+#include "last-id-strategy.h"
+#include "fill-shop-list-strategy.h"
 
 namespace hb
 {
@@ -87,34 +77,13 @@ Identifier SetLastId<Currency>(IDatabaseEngine& engine, Currency& data)
 template<typename T>
 class class_has_id
 {
-        typedef char no;
-        typedef char yes[2];
-        template<class C> static yes& test(char (*)[sizeof(&C::Id)]);
-        template<class C> static no& test(...);
+    typedef char no;
+    typedef char yes[2];
+    template<class C> static yes& test(char (*)[sizeof(&C::Id)]);
+    template<class C> static no& test(...);
 public:
-        enum{value = sizeof(test<T>(0)) == sizeof(yes&)};
+    enum{value = sizeof(test<T>(0)) == sizeof(yes&)};
 };
-
-//template <class T>
-//class class_has_id
-//{
-//private:
-//    typedef char Small;
-//    struct Large
-//    {
-//        char a[2];
-//    };
-
-//    template <typename U, U>
-//    class check
-//    { };
-
-//    template <typename C> static Small test(check<int (C::*)(), &C::Id> *);
-//    template <typename C> static Large test(...);
-
-//public:
-//    enum {value = sizeof(test<T>(0)) == sizeof(Small)};
-//};
 
 template <typename T, bool readId>
 class DataWriter
@@ -167,48 +136,47 @@ bool DeleteData(IDatabaseEngine& engine, T& data)
 
 DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter& filter) const
 {
-    return GetData<FillDocumentTypeListStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::DocumentTypeListPtr, SetDocTypeValue> >(m_databaseEngine, filter);
 }
 
 DocumentsPtr DatabaseStorage::GetDocuments(const IFilter& filter) const
 {
-    return GetData<FillDocumentsMapStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::DocumentsPtr, SetDocumentValue> >(m_databaseEngine, filter);
 }
 
 hb::core::AccountMapPtr DatabaseStorage::GetAccounts(const core::IFilter& filter) const
 {
-    return GetData<FillAccountsMapStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::AccountMapPtr, SetAccountValue> >(m_databaseEngine, filter);
 }
 
 CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
 {
-    return GetData<FillCurrencyMapStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::CurrencyMapPtr, SetCurrencyValue> >(m_databaseEngine, filter);
 }
 
 BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
 {
-    return GetData<FillStrategy<hb::core::BalancePtr> >(m_databaseEngine, filter);
-
-//    return GetData<FillBalanceMapStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::BalancePtr, SetBalanceValue> >(m_databaseEngine, filter);
 }
 
 PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter &filter) const
 {
-    return GetData<FillPaymentsBalanceStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::PaymentsBalancePtr, SetPaymentsBalanceValue> >(m_databaseEngine, filter);
 }
 
 PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const IFilter &filter) const
 {
-    return GetData<FillPaymentTypesStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::PaymentTypesMapPtr, SetPaymentTypeValue> >(m_databaseEngine, filter);
 }
 
 PaymentsPtr DatabaseStorage::GetPayments(const IFilter &filter) const
 {
-    return GetData<FillPaymentsStrategy>(m_databaseEngine, filter);
+    return GetData<FillStrategy<hb::core::PaymentsPtr, SetPaymentValue> >(m_databaseEngine, filter);
 }
 
 ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const
 {
+    // TODO change strategy
     return GetData<FillShopListStrategy>(m_databaseEngine, filter);
 }
 

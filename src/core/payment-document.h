@@ -60,7 +60,18 @@ private:
 };
 
 typedef std::vector<PaymentDocumentPtr> Payments;
-class PaymentsPtr: public std::shared_ptr<Payments> {};
+class PaymentsPtr: public std::shared_ptr<Payments>
+{
+public:
+    PaymentsPtr()
+    {
+    }
+
+    PaymentsPtr(Payments* ptr)
+    {
+        reset(ptr);
+    }
+};
 
 } // namespace core
 } // namespace hb
