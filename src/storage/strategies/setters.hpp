@@ -56,6 +56,7 @@ bool SetFieldValue(Object& obj,
             return false;
         }
     }
+    return false;
 }
 
 

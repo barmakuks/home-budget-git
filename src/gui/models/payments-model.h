@@ -17,7 +17,7 @@ public:
     void Reload(const std::string& minDate,
                 const std::string& maxDate);
 
-    const hb::core::PaymentDocumentPtr& GetPaymentItemPtr(int index) const;
+//    const hb::core::PaymentDocumentPtr& GetPaymentItemPtr(int index) const;
 
     // QAbstractTableModel interface
 public:

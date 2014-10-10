@@ -25,11 +25,6 @@ void PaymentsModel::Reload(const std::string& minDate, const std::string& maxDat
     reset();
 }
 
-const hb::core::PaymentDocumentPtr& PaymentsModel::GetPaymentItemPtr(int index) const
-{
-
-}
-
 int PaymentsModel::rowCount(const QModelIndex& parent) const
 {
     return m_documents ? m_documents->size() : 0;

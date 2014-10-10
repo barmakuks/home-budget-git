@@ -35,6 +35,8 @@ void CurrencyExchangeRateProvider::OnWebResponseRecieved(IWebEngine::RequestId r
     tinyxml2::XMLPrinter printer(file);
     doc.Print(&printer);
 
+    fclose(file);
+
 //    std::cout << response << std::endl;
 }
 

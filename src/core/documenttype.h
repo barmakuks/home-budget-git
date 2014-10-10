@@ -105,7 +105,7 @@ public:
     std::pair<iterator, bool> insert(const value_type& value);
 
     /// Appends docType to list
-    void AddType(const DocumentTypePtr& docType);
+    std::pair<DocumentTypeList::iterator, bool> AddType(const DocumentTypePtr& docType);
 
     const DocTypeIdList& Head() const
     {
