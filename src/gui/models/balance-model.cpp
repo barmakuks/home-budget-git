@@ -42,14 +42,12 @@ public:
     {
         using namespace hb::core;
 
-
         if (first->Account() == second->Account())
         {
             return first->Currency() > second->Currency();
         }
         else
         {
-
             const AccountPtr first_account = first->Account() != hb::EmptyId ? m_accounts->at(first->Account()) : NULL;
             const AccountPtr second_account = second->Account() != hb::EmptyId ? m_accounts->at(second->Account()) : NULL;
 
@@ -68,7 +66,6 @@ private:
 };
 
 }
-
 
 void BalanceModel::Recalculate(const std::string& date)
 {
