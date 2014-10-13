@@ -7,7 +7,8 @@
 #include "engine.h"
 #include "web-engine.h"
 #include "gui/web/qt-web-engine.h"
-#include "currency-exchange-rate-provider.h"
+#include "currency-exchange-manager.h"
+#include "gui/web/privatbank-currency-rates-provider.h"
 
 class App: public QApplication
 {
@@ -37,7 +38,8 @@ int main(int argc, char* argv[])
     App a(argc, argv);
 
     WebEngine::Setup(IWebEnginePtr(new QtWebEngine()));
-    CurrencyExchangeRateProvider::RequestRates();
+    CurrencyExchangeManager::AddRatesProvider(ICurrencyExchangeRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
+    CurrencyExchangeManager::RequestRates("", NULL);
 
     hb::sqlite::SqliteEngine db_engine("/home/vitalii/development/barma-home-budget/data/budget.sqlite");
     IStoragePtr storage(new DatabaseStorage(db_engine));

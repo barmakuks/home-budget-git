@@ -30,7 +30,9 @@ public:
       @param callback reference to function which will be called on responce recieve
       @returns Unique request identifier. If error returns -1.
     */
-    virtual RequestId SendRequest(const std::string& url, const std::string& request, const IRequestListenerPtr& callback) = 0;
+    virtual RequestId SendRequest(const std::string& url,
+                                  const std::string& request,
+                                  const IRequestListenerPtr& callback) = 0;
 };
 
 typedef std::shared_ptr<IWebEngine> IWebEnginePtr;

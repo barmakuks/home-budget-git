@@ -14,8 +14,8 @@ void WebEngine::Setup(const IWebEnginePtr& impl)
 }
 
 IWebEngine::RequestId WebEngine::SendRequest(const std::string& url,
-        const std::string& request,
-        const IRequestListenerPtr &callback)
+                                             const std::string& request,
+                                             const IRequestListenerPtr& callback)
 {
     ASSERT_RETURN(m_impl, -1);
 

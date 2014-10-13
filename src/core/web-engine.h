@@ -22,7 +22,7 @@ public:
                                              const IRequestListenerPtr& callback);
 
 private:
-    WebEngine(){}
+    WebEngine() {}
 private:
     static IWebEnginePtr   m_impl;
 };

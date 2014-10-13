@@ -22,7 +22,7 @@ hb::core::IWebEngine::RequestId QtWebEngine::SendRequest(const std::string& url,
         const std::string& request,
         const core::IRequestListenerPtr& callback)
 {
-    const std::string qurl = url + request;
+    const std::string qurl = url + "?" + request;
 
     QNetworkReply* reply = m_manager->get(QNetworkRequest(QUrl(qurl.c_str())));
 
