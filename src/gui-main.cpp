@@ -39,7 +39,6 @@ int main(int argc, char* argv[])
 
     WebEngine::Setup(IWebEnginePtr(new QtWebEngine()));
     CurrencyExchangeManager::AddRatesProvider(ICurrencyExchangeRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
-    CurrencyExchangeManager::RequestRates("", NULL);
 
     hb::sqlite::SqliteEngine db_engine("/home/vitalii/development/barma-home-budget/data/budget.sqlite");
     IStoragePtr storage(new DatabaseStorage(db_engine));

@@ -9,7 +9,7 @@ namespace hb
 namespace core
 {
 typedef std::map<CurrencyId, double> ExchangeRate;
-typedef std::map<CurrencyId, ExchangeRate> ExchangeRateTable;
+class ExchangeRateTable: public std::map<CurrencyId, ExchangeRate>{};
 
 class ICurrencyExchangeRatesReceiver
 {

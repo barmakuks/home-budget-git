@@ -11,6 +11,8 @@ namespace hb
 namespace core
 {
 
+class ExchangeRateTable;
+
 class BalanceRow
 {
 public:
@@ -49,6 +51,8 @@ class Balance: public std::vector<BalanceRowPtr>
 {
 public:
     TotalBalancePtr GetTotalBalance() const;
+
+    TotalBalancePtr GetTotalBalanceInCurrency(CurrencyId currencyId, hb::core::ExchangeRateTable& ratesTable) const;
 };
 
 typedef std::shared_ptr<Balance>    BalancePtr;

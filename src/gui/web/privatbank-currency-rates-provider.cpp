@@ -1,6 +1,9 @@
 #include "privatbank-currency-rates-provider.h"
 #include "tinyxml2.h"
 
+#include <iostream>
+#include <boost/lexical_cast.hpp>
+
 PrivatbankCurrencyRatesProvider::PrivatbankCurrencyRatesProvider()
 {
 }
@@ -8,17 +11,46 @@ PrivatbankCurrencyRatesProvider::PrivatbankCurrencyRatesProvider()
 using namespace tinyxml2;
 class ExchangeRateFromPrivatbankXml: public tinyxml2::XMLVisitor
 {
+private:
+    typedef std::map<std::string, std::string> ParseMap;
+    typedef std::map<std::string, hb::CurrencyId> CurrencyMap;
+
 public:
+
+    ExchangeRateFromPrivatbankXml()
+    {
+        if (currencyMap.empty())
+        {
+            currencyMap["USD"] = 840;
+            currencyMap["UAH"] = 980;
+            currencyMap["EUR"] = 978;
+            currencyMap["RUR"] = 643;
+        }
+    }
+
     virtual bool VisitEnter( const XMLElement& element, const XMLAttribute* attribute )
     {
-//        std::cout << element.Value() << std::endl;
-        while ( attribute )
+        if (strcmp(element.Value(), "exchangerate") == 0)
         {
-//            std::cout << "\t" << attribute->Name() << "=" << attribute->Value();
-            attribute = attribute->Next();
-        }
+            ParseMap attrMap;
 
-//        std::cout << std::endl;
+            while ( attribute )
+            {
+                attrMap[attribute->Name()] = attribute->Value();
+                attribute = attribute->Next();
+            }
+
+            const hb::CurrencyId baseCurId = GetCurrencyId(attrMap["base_ccy"]);
+            const hb::CurrencyId curId = GetCurrencyId(attrMap["ccy"]);
+            const double buyRate = GetRateValue(attrMap["buy"]);
+            const double saleRate = GetRateValue(attrMap["sale"]);
+
+            if (baseCurId != hb::EmptyId && curId != hb::EmptyId && buyRate > 0.0 && saleRate > 0.0)
+            {
+                m_result[baseCurId][curId] = buyRate;
+                m_result[curId][baseCurId] = 1.0 / saleRate;
+            }
+        }
 
         return true;
     }
@@ -27,9 +59,37 @@ public:
     {
         return m_result;
     }
+
+private:
+    static hb::CurrencyId GetCurrencyId(const std::string& curName)
+    {
+        if (!curName.empty() && currencyMap.find(curName) != currencyMap.end())
+        {
+            return currencyMap[curName];
+        }
+
+        return hb::EmptyId;
+    }
+
+    static double GetRateValue(const std::string& rate)
+    {
+        try
+        {
+            return boost::lexical_cast<double>(rate);
+        }
+        catch (boost::bad_lexical_cast const&)
+        {
+        }
+        return -1.0;
+    }
+
 private:
     hb::core::ExchangeRateTable m_result;
+    static CurrencyMap          currencyMap;
 };
+
+ExchangeRateFromPrivatbankXml::CurrencyMap ExchangeRateFromPrivatbankXml::currencyMap;
+
 
 hb::core::ExchangeRateTable PrivatbankCurrencyRatesProvider::ParseResponse(const std::string& response)
 {

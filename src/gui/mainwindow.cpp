@@ -14,6 +14,8 @@
 #include "document.h"
 #include "engine.h"
 #include "convert-utils.h"
+#include "currency-exchange-manager.h"
+#include "models/string-format.h"
 
 namespace
 {
@@ -192,10 +194,36 @@ void MainWindow::ApplyDocumentsFilter()
     SetButtonsEnabled();
 }
 
+class CurEx: public hb::core::ICurrencyExchangeRatesReceiver
+{
+    // ICurrencyExchangeRatesReceiver interface
+public:
+    virtual void OnCurrencyExchangeRatesReceived(const hb::Date& date, const hb::core::ExchangeRateTable& rates)
+    {
+        using namespace hb::core;
+        BalancePtr balance = Engine::GetInstance().GetBalance(date);
+        TotalBalancePtr total_balance = balance->GetTotalBalance();
+
+        for (Balance::const_iterator it = total_balance->begin();
+             it != total_balance->end();
+             ++it)
+        {
+            std::cout << (*it)->Currency() << " : " << hb::utils::FormatMoney((*it)->Amount());
+            if ((*it)->Currency() != 980)
+            {
+                std::cout << " in UAH: " << hb::utils::FormatMoney(rates.at(980).at((*it)->Currency()) * (*it)->Amount()) << "uah";
+            }
+            std::cout << std::endl;
+        }
+    }
+} currency;
+
 void MainWindow::UpdateBalance()
 {
     m_balanceModel.Recalculate(ui->calendarWidget->selectedDate());
     m_paymentsBalanceModel.Recalculate(ui->calendarWidget->selectedDate());
+
+    hb::core::CurrencyExchangeManager::RequestRates(hb::utils::NormalizeDate(ui->calendarWidget->selectedDate()), &currency);
 }
 
 void MainWindow::EditDocument()

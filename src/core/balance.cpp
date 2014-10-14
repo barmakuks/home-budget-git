@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "i-exchange-rates.h"
+
 namespace hb
 {
 namespace core
@@ -39,6 +41,11 @@ TotalBalancePtr Balance::GetTotalBalance() const
     }
 
     return balance;
+}
+
+TotalBalancePtr Balance::GetTotalBalanceInCurrency(CurrencyId currencyId, hb::core::ExchangeRateTable& ratesTable) const
+{
+    return TotalBalancePtr();
 }
 
 } // namespace core
