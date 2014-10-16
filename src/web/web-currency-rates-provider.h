@@ -1,12 +1,12 @@
 #ifndef WEBCURRENCYRATESPROVIDER_H
 #define WEBCURRENCYRATESPROVIDER_H
 
-#include "i-exchange-rates.h"
+#include "currency-rates-interfaces.h"
 #include "iweb-engine.h"
 #include "raw-types.h"
 
 class WebCurrencyRatesProvider:
-        public hb::core::ICurrencyExchangeRatesProvider,
+        public hb::core::ICurrencyRatesProvider,
         public hb::core::IRequestListener
 {
 public:
@@ -15,7 +15,7 @@ public:
 public:
     // ICurrencyExchangeRatesProvider interface
     virtual void RequestRates(const hb::Date& date,
-                              hb::core::ICurrencyExchangeRatesReceiver* ratesReceiver);
+                              hb::core::ICurrencyRatesReceiver* ratesReceiver);
     // IRequestListener interface
     virtual void OnWebResponseRecieved(hb::core::IWebEngine::RequestId requestId, const std::string& response);
 
@@ -24,7 +24,7 @@ public:
     virtual std::string GetRequestParameters() const = 0;
 
 private:
-    hb::core::ICurrencyExchangeRatesReceiver* m_ratesReceiver;
+    hb::core::ICurrencyRatesReceiver* m_ratesReceiver;
     hb::Date  m_date;
 
 };

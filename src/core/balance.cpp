@@ -2,8 +2,6 @@
 
 #include <map>
 
-#include "i-exchange-rates.h"
-
 namespace hb
 {
 namespace core

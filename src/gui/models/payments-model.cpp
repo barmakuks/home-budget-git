@@ -1,7 +1,7 @@
 #include "payments-model.h"
 #include <QColor>
 
-#include "../convert-utils.h"
+#include "convert-utils.h"
 #include "string-format.h"
 #include "engine.h"
 

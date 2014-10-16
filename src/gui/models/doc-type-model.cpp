@@ -2,7 +2,7 @@
 #include <stack>
 
 #include "engine.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 
 using namespace hb;
 using namespace hb::core;
@@ -37,7 +37,7 @@ QModelIndex DocTypeModel::index(int row, int column, const QModelIndex& parent) 
         brothers = (*m_doctypes)[itemId]->Subtypes();
     }
 
-    if (brothers.size() > row)
+    if (brothers.size() > static_cast<size_t>(row))
     {
         return createIndex(row, column, brothers[row]);
     }

@@ -4,7 +4,7 @@
 #include <QColor>
 
 #include "payments-balance.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 #include "string-format.h"
 #include "engine.h"
 

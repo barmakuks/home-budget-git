@@ -194,7 +194,7 @@ void MainWindow::ApplyDocumentsFilter()
     SetButtonsEnabled();
 }
 
-class CurEx: public hb::core::ICurrencyExchangeRatesReceiver
+class CurEx: public hb::core::ICurrencyRatesReceiver
 {
     // ICurrencyExchangeRatesReceiver interface
 public:
@@ -223,7 +223,7 @@ void MainWindow::UpdateBalance()
     m_balanceModel.Recalculate(ui->calendarWidget->selectedDate());
     m_paymentsBalanceModel.Recalculate(ui->calendarWidget->selectedDate());
 
-    hb::core::CurrencyExchangeManager::RequestRates(hb::utils::NormalizeDate(ui->calendarWidget->selectedDate()), &currency);
+//    hb::core::CurrencyExchangeManager::RequestRates(hb::utils::NormalizeDate(ui->calendarWidget->selectedDate()), &currency);
 }
 
 void MainWindow::EditDocument()

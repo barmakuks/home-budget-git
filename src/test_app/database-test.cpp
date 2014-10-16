@@ -1,8 +1,6 @@
-#include <iostream>
-
-#include "core/istorage.h"
-#include "sqlite/sqlite-engine.h"
-#include "storage/database-storage.h"
+#include "istorage.h"
+#include "sqlite-engine.h"
+#include "database-storage.h"
 #include "doc-type-sign-filter.h"
 #include "document-by-date-filter.h"
 #include "all-accounts-filter.h"
@@ -121,7 +119,7 @@ void Print(const hb::core::Balance& balance,
     }
 }
 
-int main()
+void RunDataBaseTest()
 {
     using namespace hb::core;
     using namespace hb::sqlite;
@@ -151,8 +149,4 @@ int main()
 
 //    BalanceSetPtr balance = storage.GetBalance(BalanceFilter("20130101"));
 //    Print(*balance, *accounts, *currencies);
-
-    std::cout << "Finished" << std::endl;
-    return 0;
 }
-

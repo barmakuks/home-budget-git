@@ -30,7 +30,7 @@ std::shared_ptr<hb::core::IRequestListener> requestListener;
 }
 
 void WebCurrencyRatesProvider::RequestRates(const hb::Date& date,
-                                            hb::core::ICurrencyExchangeRatesReceiver* ratesReceiver)
+                                            hb::core::ICurrencyRatesReceiver* ratesReceiver)
 {
     if (m_ratesReceiver == NULL && !requestListener)
     {

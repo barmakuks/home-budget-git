@@ -41,8 +41,6 @@ std::string GetWeekDay(const Date& date)
     struct tm* timeinfo;
     timeinfo = localtime (&rawtime);
 
-    char buf[4];
-
     return WeekDays[timeinfo->tm_wday];
 }
 

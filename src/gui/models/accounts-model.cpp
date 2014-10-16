@@ -5,7 +5,7 @@
 
 #include "engine.h"
 #include "string-format.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 using namespace hb::utils;
 
 AccountsModel::AccountsModel(bool allAccountsFirst):
@@ -50,7 +50,7 @@ QVariant AccountsModel::data(const QModelIndex& index, int role) const
 
 const hb::AccountId AccountsModel::GetAccountItemId(int index) const
 {
-    if (index >= m_accountsStartIndex && m_accounts && index <= m_accounts->size())
+    if (index >= m_accountsStartIndex && m_accounts && static_cast<size_t>(index) <= m_accounts->size())
     {
         return m_accounts->at(index - m_accountsStartIndex)->Id();
     }

@@ -7,7 +7,7 @@
 #include "string-format.h"
 #include "balance.h"
 #include "assert_macro.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 
 BalanceModel::BalanceModel()
 {
@@ -155,7 +155,7 @@ const hb::core::BalanceRow& BalanceModel::GetBalanceItem(int index) const
         return fake_balance;
     }
 
-    if (index >= m_balance->size())
+    if (static_cast<size_t>(index) >= m_balance->size())
     {
         return *(m_total_balance->at(index - m_balance->size()));
     }
@@ -213,7 +213,7 @@ QVariant BalanceModel::GetCellAlignment(const QModelIndex& index) const
 
 QVariant BalanceModel::GetCellBackColor(const QModelIndex& index) const
 {
-    if (index.row() >= m_balance->size())
+    if (static_cast<size_t>(index.row()) >= m_balance->size())
     {
         return QColor(0xF5F5F5);
     }
@@ -224,7 +224,7 @@ QVariant BalanceModel::GetCellForecolor(const QModelIndex& index) const
 {
     using namespace hb::core;
 
-    if (index.row() >= m_balance->size())
+    if (static_cast<size_t>(index.row()) >= m_balance->size())
     {
         return QColor(Qt::GlobalColor::black);
     }

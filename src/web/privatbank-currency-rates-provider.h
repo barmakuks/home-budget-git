@@ -15,6 +15,4 @@ public:
     virtual std::string GetRequestParameters() const;
 };
 
-
-
 #endif // PRIVATBANKCURRENCYRATESPROVIDER_H

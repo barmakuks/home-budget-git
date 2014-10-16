@@ -1,6 +1,6 @@
 #include "shops-model.h"
 #include "engine.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 
 ShopsModel::ShopsModel()
 {

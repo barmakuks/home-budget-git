@@ -3,7 +3,7 @@
 #include <QColor>
 
 #include "engine.h"
-#include "../convert-utils.h"
+#include "convert-utils.h"
 
 CurrenciesModel::CurrenciesModel(bool allCurrenciesFirst):
     m_currenciesStartIndex(allCurrenciesFirst ? 1 : 0)
@@ -53,7 +53,7 @@ void CurrenciesModel::Reload()
 
 hb::CurrencyId CurrenciesModel::GetCurrencyItemId(int index)
 {
-    if (index >= m_currenciesStartIndex && index <= m_currencies.size())
+    if (index >= m_currenciesStartIndex && static_cast<size_t>(index) <= m_currencies.size())
     {
         return m_currencies.at(index - m_currenciesStartIndex)->Code();
     }
