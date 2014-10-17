@@ -33,6 +33,13 @@ void CurrencyExchangeManager::RequestRates(const Date& date, ICurrencyRatesRecei
     instance->SendRequest(date, listener);
 }
 
+bool CurrencyExchangeManager::IsThisLastRequest()
+{
+    ASSERT_RETURN(instance, false);
+    return instance->m_listeners.size() == 1;
+}
+
+
 /**************************************************************************************************************************/
 
 void CurrencyExchangeManager::AddProvider(const CurrencyRatesProviderPtr& ratesProvider)

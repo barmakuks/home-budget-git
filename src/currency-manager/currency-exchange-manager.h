@@ -23,6 +23,8 @@ public:
 
     static void RequestRates(const Date& date, ICurrencyRatesReceiver* listener);
 
+    static bool IsThisLastRequest();
+
 private:
     static std::shared_ptr<CurrencyExchangeManager> instance;
 

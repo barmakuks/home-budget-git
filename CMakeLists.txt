@@ -26,9 +26,10 @@ add_library(${XML_LIB_NAME} STATIC ${XML_LIB_SRC} )
 include_directories(./src/web)
 set(WEB_LIB_NAME web-services-lib)
 aux_source_directory(./src/web WEB_LIB_SRC)
+aux_source_directory(./src/utils UTILS_SRC)
 file(GLOB WEB_HEADERS ./src/web/*.h)
 qt4_wrap_cpp(GENERATED_WEB_HEADERS_MOC ./src/web/qt-web-engine.h)
-add_library(${WEB_LIB_NAME} STATIC ${WEB_LIB_SRC} ${GENERATED_WEB_HEADERS_MOC} )
+add_library(${WEB_LIB_NAME} STATIC ${WEB_LIB_SRC} ${UTILS_SRC} ${GENERATED_WEB_HEADERS_MOC} )
 target_link_libraries(${WEB_LIB_NAME} ${XML_LIB_NAME} ${QT_LIBRARIES})
 
 ############################################################ Main library #################################################################
@@ -42,9 +43,8 @@ aux_source_directory(./src/currency-manager CUR_LIB_SRC)
 aux_source_directory(./src/storage CORE_LIB_SRC)
 aux_source_directory(./src/storage/strategies CORE_LIB_SRC)
 aux_source_directory(./src/storage/filters CORE_LIB_SRC)
-aux_source_directory(./src/utils CORE_LIB_SRC)
 
-add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CUR_LIB_SRC} ${CORE_HEADERS} ${CORE_TEMPLATES})
+add_library(${CORE_LIB_NAME} STATIC ${CORE_LIB_SRC} ${CUR_LIB_SRC} ${CORE_HEADERS} ${CORE_TEMPLATES} ${UTILS_SRC})
 target_link_libraries(${CORE_LIB_NAME} ${Boost_LIBRARIES} ${XML_LIB_NAME})
 
 ############################################################ GUI application ##############################################################

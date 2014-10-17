@@ -2,6 +2,8 @@
 #include "tinyxml2.h"
 
 #include <boost/lexical_cast.hpp>
+#include <QDate>
+#include "convert-utils.h"
 
 PrivatbankCurrencyRatesProvider::PrivatbankCurrencyRatesProvider()
 {
@@ -95,11 +97,18 @@ hb::core::ExchangeRateTable PrivatbankCurrencyRatesProvider::ParseResponse(const
 {
     using namespace tinyxml2;
     tinyxml2::XMLDocument doc;
-    doc.Parse(response.c_str());
-    ExchangeRateFromPrivatbankXml privatParser;
-    doc.Accept(&privatParser);
 
-    return privatParser.Result();
+    if (doc.Parse(response.c_str()) == XML_SUCCESS)
+    {
+        ExchangeRateFromPrivatbankXml privatParser;
+        doc.Accept(&privatParser);
+
+        return privatParser.Result();
+    }
+    else
+    {
+        return hb::core::ExchangeRateTable();
+    }
 }
 
 std::string PrivatbankCurrencyRatesProvider::GetRequestUrl() const
@@ -109,5 +118,12 @@ std::string PrivatbankCurrencyRatesProvider::GetRequestUrl() const
 
 std::string PrivatbankCurrencyRatesProvider::GetRequestParameters(const hb::Date& date) const
 {
-    return "exchange&coursid=3";
+    if (date == hb::utils::NormalizeDate(QDate::currentDate()))
+    {
+        return "exchange&coursid=3";
+    }
+    else
+    {
+        return "";
+    }
 }

@@ -4,9 +4,11 @@
 #include "privatbank-currency-rates-provider.h"
 #include "pfsoft-currency-rates-provider.h"
 #include "currency-rates-interfaces.h"
+#include "convert-utils.h"
 
 #include <iostream>
 #include <QApplication>
+#include <QDate>
 
 using namespace hb::core;
 
@@ -52,7 +54,10 @@ public:
             }
         }
 
-        //application->exit();
+        if (CurrencyExchangeManager::IsThisLastRequest())
+        {
+            application->exit();
+        }
     }
 };
 }
@@ -66,9 +71,10 @@ void RunWebServiceTest()
 
     WebEngine::Setup(IWebEnginePtr(new hb::web::QtWebEngine()));
 
-    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PfSoftCurrencyRatesProvider()));
+//    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PfSoftCurrencyRatesProvider()));
+    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
 
-    CurrencyExchangeManager::RequestRates("20140101", &test);
+    CurrencyExchangeManager::RequestRates(hb::utils::NormalizeDate(QDate::currentDate()), &test);
     CurrencyExchangeManager::RequestRates("20140201", &test);
     CurrencyExchangeManager::RequestRates("20140301", &test);
     application->exec();
