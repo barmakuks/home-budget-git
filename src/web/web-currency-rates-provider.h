@@ -20,9 +20,11 @@ public:
     // IRequestListener interface
     virtual void OnWebResponseRecieved(hb::core::IWebEngine::RequestId requestId, const std::string& response);
 
+protected:
+
     virtual hb::core::ExchangeRateTable ParseResponse(const std::string& response) = 0;
     virtual std::string GetRequestUrl() const = 0;
-    virtual std::string GetRequestParameters() const = 0;
+    virtual std::string GetRequestParameters(const hb::Date& date) const = 0;
 
 private:
     typedef std::map<hb::Date, hb::core::ICurrencyRatesReceiver*>   CurrencyRatesReceivers;

@@ -40,7 +40,7 @@ void WebCurrencyRatesProvider::RequestRates(const hb::Date& date,
     {
         m_ratesReceivers[date] = ratesReceiver;
 
-        const hb::core::IWebEngine::RequestId requestId = hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(), requestListener);
+        const hb::core::IWebEngine::RequestId requestId = hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(date), requestListener);
         m_requests[requestId] = date;
     }
 }

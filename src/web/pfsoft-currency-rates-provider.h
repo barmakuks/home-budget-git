@@ -1,12 +1,12 @@
-#ifndef PRIVATBANKCURRENCYRATESPROVIDER_H
-#define PRIVATBANKCURRENCYRATESPROVIDER_H
+#ifndef PFSOFTCURRENCYRATESPROVIDER_H
+#define PFSOFTCURRENCYRATESPROVIDER_H
 
 #include "web-currency-rates-provider.h"
 
-class PrivatbankCurrencyRatesProvider: public WebCurrencyRatesProvider
+class PfSoftCurrencyRatesProvider: public WebCurrencyRatesProvider
 {
 public:
-    PrivatbankCurrencyRatesProvider();
+    PfSoftCurrencyRatesProvider();
 
     // WebCurrencyRatesProvider interface
 protected:
@@ -15,4 +15,4 @@ protected:
     virtual std::string GetRequestParameters(const hb::Date& date) const;
 };
 
-#endif // PRIVATBANKCURRENCYRATESPROVIDER_H
+#endif // PFSOFTCURRENCYRATESPROVIDER_H

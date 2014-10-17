@@ -1,7 +1,6 @@
 #include "privatbank-currency-rates-provider.h"
 #include "tinyxml2.h"
 
-#include <iostream>
 #include <boost/lexical_cast.hpp>
 
 PrivatbankCurrencyRatesProvider::PrivatbankCurrencyRatesProvider()
@@ -28,13 +27,13 @@ public:
         }
     }
 
-    virtual bool VisitEnter( const XMLElement& element, const XMLAttribute* attribute )
+    virtual bool VisitEnter(const XMLElement& element, const XMLAttribute* attribute)
     {
         if (strcmp(element.Value(), "exchangerate") == 0)
         {
             ParseMap attrMap;
 
-            while ( attribute )
+            while (attribute)
             {
                 attrMap[attribute->Name()] = attribute->Value();
                 attribute = attribute->Next();
@@ -80,6 +79,7 @@ private:
         catch (boost::bad_lexical_cast const&)
         {
         }
+
         return -1.0;
     }
 
@@ -107,7 +107,7 @@ std::string PrivatbankCurrencyRatesProvider::GetRequestUrl() const
     return "https://api.privatbank.ua/p24api/pubinfo";
 }
 
-std::string PrivatbankCurrencyRatesProvider::GetRequestParameters() const
+std::string PrivatbankCurrencyRatesProvider::GetRequestParameters(const hb::Date& date) const
 {
     return "exchange&coursid=3";
 }

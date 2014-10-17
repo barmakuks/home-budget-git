@@ -2,12 +2,33 @@
 #include "qt-web-engine.h"
 #include "currency-exchange-manager.h"
 #include "privatbank-currency-rates-provider.h"
+#include "pfsoft-currency-rates-provider.h"
 #include "currency-rates-interfaces.h"
 
 #include <iostream>
 #include <QApplication>
 
 using namespace hb::core;
+
+namespace{
+class App: public QApplication
+{
+public:
+    App(int& argc, char* argv[]):QApplication(argc, argv){}
+
+    bool notify(QObject* receiver, QEvent* event)
+    {
+        try
+        {
+            return QApplication::notify(receiver, event);
+        }
+        catch (std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+            return false;
+        }
+    }
+};
 
 QApplication* application;
 
@@ -34,21 +55,22 @@ public:
         //application->exit();
     }
 };
+}
 
 TestReceiver test;
 
 void RunWebServiceTest()
 {
     int argc = 0; char* argv[]= {};
-    application = new QApplication(argc, argv);
+    application = new App(argc, argv);
 
     WebEngine::Setup(IWebEnginePtr(new hb::web::QtWebEngine()));
 
-    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
+    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PfSoftCurrencyRatesProvider()));
 
-    CurrencyExchangeManager::RequestRates("01012014", &test);
-    CurrencyExchangeManager::RequestRates("01022014", &test);
-    CurrencyExchangeManager::RequestRates("01032014", &test);
+    CurrencyExchangeManager::RequestRates("20140101", &test);
+    CurrencyExchangeManager::RequestRates("20140201", &test);
+    CurrencyExchangeManager::RequestRates("20140301", &test);
     application->exec();
 
     delete application;
