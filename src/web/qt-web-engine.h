@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <map>
+#include <pthread.h>
 
 class QNetworkReply;
 class QNetworkAccessManager;
@@ -34,9 +35,12 @@ private slots:
 private:
     std::shared_ptr<QNetworkAccessManager> m_manager;
     typedef std::map<QNetworkReply*, core::IRequestListenerPtr> CallbackMap;
+    typedef std::map<QNetworkReply*, RequestId>                 RequestsMap;
 
     CallbackMap m_callbacks;
+    RequestsMap m_requests;
     RequestId   m_index;
+    pthread_mutex_t m_locker;
 };
 
 } // namespace web

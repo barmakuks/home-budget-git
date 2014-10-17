@@ -1,8 +1,7 @@
 #include "web-currency-rates-provider.h"
 #include "web-engine.h"
 
-WebCurrencyRatesProvider::WebCurrencyRatesProvider():
-    m_ratesReceiver(NULL)
+WebCurrencyRatesProvider::WebCurrencyRatesProvider()
 {
 }
 
@@ -26,30 +25,42 @@ public:
     }
 };
 
-std::shared_ptr<hb::core::IRequestListener> requestListener;
+std::shared_ptr<RequestListener> requestListener;
 }
 
 void WebCurrencyRatesProvider::RequestRates(const hb::Date& date,
                                             hb::core::ICurrencyRatesReceiver* ratesReceiver)
 {
-    if (m_ratesReceiver == NULL && !requestListener)
+    if (!requestListener)
     {
-        m_ratesReceiver = ratesReceiver;
-        m_date = date;
-
         requestListener.reset(new RequestListener(*this));
-
-        hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(), requestListener);
     }
 
+    if (m_ratesReceivers.find(date) == m_ratesReceivers.end())
+    {
+        m_ratesReceivers[date] = ratesReceiver;
+
+        const hb::core::IWebEngine::RequestId requestId = hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(), requestListener);
+        m_requests[requestId] = date;
+    }
 }
-void WebCurrencyRatesProvider::OnWebResponseRecieved(hb::core::IWebEngine::RequestId /*requestId*/,
+
+void WebCurrencyRatesProvider::OnWebResponseRecieved(hb::core::IWebEngine::RequestId requestId,
                                                      const std::string& response)
 {
-    requestListener.reset();
+    if (m_requests.find(requestId) != m_requests.end())
+    {
+        const hb::Date date = m_requests[requestId];
 
-    m_ratesReceiver->OnCurrencyExchangeRatesReceived(m_date, ParseResponse(response));
-    m_date.clear();
+        CurrencyRatesReceivers::const_iterator it = m_ratesReceivers.find(date);
 
-    m_ratesReceiver = NULL;
+        if (it != m_ratesReceivers.end() && it->second)
+        {
+            it->second->OnCurrencyExchangeRatesReceived(date, ParseResponse(response));
+        }
+
+        m_ratesReceivers.erase(date);
+
+        m_requests.erase(requestId);
+    }
 }

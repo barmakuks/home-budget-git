@@ -4,6 +4,7 @@
 #include "currency-rates-interfaces.h"
 #include "iweb-engine.h"
 #include "raw-types.h"
+#include <map>
 
 class WebCurrencyRatesProvider:
         public hb::core::ICurrencyRatesProvider,
@@ -24,9 +25,11 @@ public:
     virtual std::string GetRequestParameters() const = 0;
 
 private:
-    hb::core::ICurrencyRatesReceiver* m_ratesReceiver;
-    hb::Date  m_date;
+    typedef std::map<hb::Date, hb::core::ICurrencyRatesReceiver*>   CurrencyRatesReceivers;
+    typedef std::map<hb::core::IWebEngine::RequestId, hb::Date>     Requests;
 
+    CurrencyRatesReceivers  m_ratesReceivers;
+    Requests                m_requests;
 };
 
 

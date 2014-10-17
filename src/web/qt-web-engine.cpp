@@ -22,22 +22,24 @@ hb::core::IWebEngine::RequestId QtWebEngine::SendRequest(const std::string& url,
         const std::string& request,
         const core::IRequestListenerPtr& callback)
 {
+    pthread_mutex_lock(&m_locker);
+
     const std::string qurl = url + "?" + request;
 
     QNetworkReply* reply = m_manager->get(QNetworkRequest(QUrl(qurl.c_str())));
 
     m_callbacks.insert(CallbackMap::value_type(reply, callback));
 
-    return ++m_index;
+    m_requests.insert(RequestsMap::value_type(reply, ++m_index));
+
+    pthread_mutex_unlock(&m_locker);
+
+    return m_index;
 }
 
 void QtWebEngine::finishedSlot(QNetworkReply* reply)
 {
-//    // Reading attributes of the reply e.g. the HTTP status code
-//    QVariant statusCodeV = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-//    // Or the target URL if it was a redirect:
-//    QVariant redirectionTargetUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-//    // see CS001432 on how to handle this
+    pthread_mutex_lock(&m_locker);
 
     // no error received?
     if (reply->error() == QNetworkReply::NoError)
@@ -47,12 +49,14 @@ void QtWebEngine::finishedSlot(QNetworkReply* reply)
         QString response(bytes); // string
 
         CallbackMap::const_iterator cb = m_callbacks.find(reply);
+        RequestsMap::const_iterator rb = m_requests.find(reply);
 
-        if (cb != m_callbacks.end() && cb->second)
+        if (cb != m_callbacks.end() && cb->second && rb != m_requests.end())
         {
-            cb->second->OnWebResponseRecieved(m_index, response.toUtf8().constData());
+            cb->second->OnWebResponseRecieved(m_requests[reply], response.toUtf8().constData());
 
             m_callbacks.erase(cb);
+            m_requests.erase(rb);
         }
     }
     // Some http error received
@@ -64,6 +68,7 @@ void QtWebEngine::finishedSlot(QNetworkReply* reply)
     // We receive ownership of the reply object
     // and therefore need to handle deletion.
     reply->deleteLater();
+    pthread_mutex_unlock(&m_locker);
 }
 
 

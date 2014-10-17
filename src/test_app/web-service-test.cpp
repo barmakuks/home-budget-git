@@ -31,7 +31,7 @@ public:
             }
         }
 
-        application->exit();
+        //application->exit();
     }
 };
 
@@ -46,7 +46,9 @@ void RunWebServiceTest()
 
     CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
 
-    CurrencyExchangeManager::RequestRates("", &test);
+    CurrencyExchangeManager::RequestRates("01012014", &test);
+    CurrencyExchangeManager::RequestRates("01022014", &test);
+    CurrencyExchangeManager::RequestRates("01032014", &test);
     application->exec();
 
     delete application;
