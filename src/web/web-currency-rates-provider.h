@@ -32,6 +32,8 @@ private:
 
     CurrencyRatesReceivers  m_ratesReceivers;
     Requests                m_requests;
+    std::shared_ptr<IRequestListener> m_requestListener;
+
 };
 
 

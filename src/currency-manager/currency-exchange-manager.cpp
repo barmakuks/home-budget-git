@@ -58,7 +58,7 @@ void CurrencyExchangeManager::SendRequest(const Date& date, ICurrencyRatesReceiv
     }
 }
 
-void CurrencyExchangeManager::SendNextRequest(const Date& date)
+bool CurrencyExchangeManager::SendNextRequest(const Date& date)
 {
 
     if (m_current_providers.find(date) == m_current_providers.end())
@@ -73,7 +73,11 @@ void CurrencyExchangeManager::SendNextRequest(const Date& date)
     if (m_current_providers[date] != m_providers.end())
     {
         (*(m_current_providers[date]))->RequestRates(date, this);
+
+        return true;
     }
+
+    return false;
 }
 
 
@@ -89,9 +93,9 @@ void CurrencyExchangeManager::RemoveListeners(const Date& date)
 
 void CurrencyExchangeManager::OnCurrencyExchangeRatesReceived(const Date& date, const ExchangeRateTable& rates)
 {
-    if (rates.empty())
+    if (rates.empty() && SendNextRequest(date))
     {
-        SendNextRequest(date);
+//        SendNextRequest(date);
     }
     else
     {

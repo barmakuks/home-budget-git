@@ -47,7 +47,6 @@ hb::core::IWebEngine::RequestId QtWebEngine::SendRequest(const std::string& url,
 
 void QtWebEngine::finishedSlot(QNetworkReply* reply)
 {
-    pthread_mutex_lock(&locker_mutex);
 
     // no error received?
     if (reply->error() == QNetworkReply::NoError)
@@ -63,8 +62,10 @@ void QtWebEngine::finishedSlot(QNetworkReply* reply)
         {
             cb->second->OnWebResponseRecieved(m_requests[reply], response.toUtf8().constData());
 
-            m_callbacks.erase(cb);
-            m_requests.erase(rb);
+            pthread_mutex_lock(&locker_mutex);
+            m_callbacks.erase(m_callbacks.find(reply));
+            m_requests.erase(m_requests.find(reply));
+            pthread_mutex_unlock(&locker_mutex);
         }
     }
     // Some http error received
@@ -76,7 +77,6 @@ void QtWebEngine::finishedSlot(QNetworkReply* reply)
     // We receive ownership of the reply object
     // and therefore need to handle deletion.
     reply->deleteLater();
-    pthread_mutex_unlock(&locker_mutex);
 }
 
 

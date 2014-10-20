@@ -25,22 +25,21 @@ public:
     }
 };
 
-std::shared_ptr<RequestListener> requestListener;
 }
 
 void WebCurrencyRatesProvider::RequestRates(const hb::Date& date,
                                             hb::core::ICurrencyRatesReceiver* ratesReceiver)
 {
-    if (!requestListener)
+    if (!m_requestListener)
     {
-        requestListener.reset(new RequestListener(*this));
+        m_requestListener.reset(new RequestListener(*this));
     }
 
     if (m_ratesReceivers.find(date) == m_ratesReceivers.end())
     {
         m_ratesReceivers[date] = ratesReceiver;
 
-        const hb::core::IWebEngine::RequestId requestId = hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(date), requestListener);
+        const hb::core::IWebEngine::RequestId requestId = hb::core::WebEngine::SendRequest(GetRequestUrl(), GetRequestParameters(date), m_requestListener);
         m_requests[requestId] = date;
     }
 }
@@ -51,6 +50,7 @@ void WebCurrencyRatesProvider::OnWebResponseRecieved(hb::core::IWebEngine::Reque
     if (m_requests.find(requestId) != m_requests.end())
     {
         const hb::Date date = m_requests[requestId];
+        m_requests.erase(requestId);
 
         CurrencyRatesReceivers::const_iterator it = m_ratesReceivers.find(date);
 
@@ -61,6 +61,5 @@ void WebCurrencyRatesProvider::OnWebResponseRecieved(hb::core::IWebEngine::Reque
 
         m_ratesReceivers.erase(date);
 
-        m_requests.erase(requestId);
     }
 }

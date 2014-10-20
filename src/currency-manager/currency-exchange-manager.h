@@ -36,7 +36,7 @@ protected:
 private:
     void SendRequest(const Date& date, ICurrencyRatesReceiver* listener);
 
-    void SendNextRequest(const Date& date);
+    bool SendNextRequest(const Date& date);
 
     void AddListener(const Date& date, ICurrencyRatesReceiver* listener);
     void RemoveListeners(const Date& date);
