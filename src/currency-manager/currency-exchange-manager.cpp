@@ -33,13 +33,6 @@ void CurrencyExchangeManager::RequestRates(const Date& date, ICurrencyRatesRecei
     instance->SendRequest(date, listener);
 }
 
-bool CurrencyExchangeManager::IsThisLastRequest()
-{
-    ASSERT_RETURN(instance, false);
-    return instance->m_listeners.size() == 1;
-}
-
-
 /**************************************************************************************************************************/
 
 void CurrencyExchangeManager::AddProvider(const CurrencyRatesProviderPtr& ratesProvider)
@@ -56,13 +49,33 @@ void CurrencyExchangeManager::SendRequest(const Date& date, ICurrencyRatesReceiv
     if (m_listeners.find(date) == m_listeners.end())
     {
         AddListener(date, listener);
-        (*m_providers.begin())->RequestRates(date, this);
+        m_current_providers.erase(date);
+        SendNextRequest(date);
     }
     else
     {
         AddListener(date, listener);
     }
 }
+
+void CurrencyExchangeManager::SendNextRequest(const Date& date)
+{
+
+    if (m_current_providers.find(date) == m_current_providers.end())
+    {
+        m_current_providers[date] = m_providers.begin();
+    }
+    else
+    {
+        m_current_providers[date]++;
+    }
+
+    if (m_current_providers[date] != m_providers.end())
+    {
+        (*(m_current_providers[date]))->RequestRates(date, this);
+    }
+}
+
 
 void CurrencyExchangeManager::AddListener(const Date& date, ICurrencyRatesReceiver* listener)
 {
@@ -76,20 +89,27 @@ void CurrencyExchangeManager::RemoveListeners(const Date& date)
 
 void CurrencyExchangeManager::OnCurrencyExchangeRatesReceived(const Date& date, const ExchangeRateTable& rates)
 {
-    Listeners& listeners = m_listeners[date];
-
-    for (Listeners::iterator it = listeners.begin();
-         it != listeners.end();
-         ++it)
+    if (rates.empty())
     {
-        if (*it)
-        {
-            (*it)->OnCurrencyExchangeRatesReceived(date, rates);
-        }
+        SendNextRequest(date);
     }
+    else
+    {
+        Listeners& listeners = m_listeners[date];
 
-    RemoveListeners(date);
-    m_current_provider = m_providers.begin();
+        for (Listeners::iterator it = listeners.begin();
+             it != listeners.end();
+             ++it)
+        {
+            if (*it)
+            {
+                (*it)->OnCurrencyExchangeRatesReceived(date, rates);
+            }
+        }
+
+        RemoveListeners(date);
+        m_current_providers.erase(date);
+    }
 }
 
 } // namespace core

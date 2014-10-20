@@ -54,10 +54,7 @@ public:
             }
         }
 
-        if (CurrencyExchangeManager::IsThisLastRequest())
-        {
-            application->exit();
-        }
+        application->exit();
     }
 };
 }

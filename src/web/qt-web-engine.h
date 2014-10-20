@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <map>
-#include <pthread.h>
 
 class QNetworkReply;
 class QNetworkAccessManager;
@@ -40,7 +39,6 @@ private:
     CallbackMap m_callbacks;
     RequestsMap m_requests;
     RequestId   m_index;
-    pthread_mutex_t m_locker;
 };
 
 } // namespace web

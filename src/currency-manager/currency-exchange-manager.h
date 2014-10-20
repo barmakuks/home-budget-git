@@ -23,8 +23,6 @@ public:
 
     static void RequestRates(const Date& date, ICurrencyRatesReceiver* listener);
 
-    static bool IsThisLastRequest();
-
 private:
     static std::shared_ptr<CurrencyExchangeManager> instance;
 
@@ -37,6 +35,8 @@ protected:
 
 private:
     void SendRequest(const Date& date, ICurrencyRatesReceiver* listener);
+
+    void SendNextRequest(const Date& date);
 
     void AddListener(const Date& date, ICurrencyRatesReceiver* listener);
     void RemoveListeners(const Date& date);
@@ -52,7 +52,9 @@ private:
 
     typedef std::vector<CurrencyRatesProviderPtr>   Providers;
     Providers                                       m_providers;
-    Providers::const_iterator                       m_current_provider;
+
+    typedef std::map<Date, Providers::const_iterator> ProviderIterators;
+    ProviderIterators                               m_current_providers;
 };
 
 } // namespace core

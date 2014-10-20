@@ -7,6 +7,14 @@
 
 #include <iostream>
 
+#include <pthread.h>
+
+namespace
+{
+    pthread_mutex_t locker_mutex;
+}
+
+
 namespace hb
 {
 namespace web
@@ -22,7 +30,7 @@ hb::core::IWebEngine::RequestId QtWebEngine::SendRequest(const std::string& url,
         const std::string& request,
         const core::IRequestListenerPtr& callback)
 {
-    pthread_mutex_lock(&m_locker);
+    pthread_mutex_lock(&locker_mutex);
 
     const std::string qurl = url + "?" + request;
 
@@ -32,14 +40,14 @@ hb::core::IWebEngine::RequestId QtWebEngine::SendRequest(const std::string& url,
 
     m_requests.insert(RequestsMap::value_type(reply, ++m_index));
 
-    pthread_mutex_unlock(&m_locker);
+    pthread_mutex_unlock(&locker_mutex);
 
     return m_index;
 }
 
 void QtWebEngine::finishedSlot(QNetworkReply* reply)
 {
-    pthread_mutex_lock(&m_locker);
+    pthread_mutex_lock(&locker_mutex);
 
     // no error received?
     if (reply->error() == QNetworkReply::NoError)
@@ -68,7 +76,7 @@ void QtWebEngine::finishedSlot(QNetworkReply* reply)
     // We receive ownership of the reply object
     // and therefore need to handle deletion.
     reply->deleteLater();
-    pthread_mutex_unlock(&m_locker);
+    pthread_mutex_unlock(&locker_mutex);
 }
 
 
