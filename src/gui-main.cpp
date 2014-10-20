@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 
     Engine::CreateInstance(storage);
 
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
 
     MainWindow w;

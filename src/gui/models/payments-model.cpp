@@ -17,12 +17,13 @@ void PaymentsModel::Reload(const QDate& minDate, const QDate& maxDate)
 
 void PaymentsModel::Reload(const std::string& minDate, const std::string& maxDate)
 {
+    beginResetModel();
     using namespace hb::core;
 
     m_documents = Engine::GetInstance().GetPayments(minDate, maxDate);
     m_docTypes = Engine::GetInstance().GetPaymentTypes();
 
-    reset();
+    endResetModel();
 }
 
 int PaymentsModel::rowCount(const QModelIndex& parent) const
@@ -134,7 +135,7 @@ QVariant PaymentsModel::GetCellForecolor(const QModelIndex& index) const
     {
         const hb::core::PaymentDocument& doc = GetPaymentItemRef(index.row());
 
-        return doc.Amount() >= 0 ? Qt::black : Qt::red;
+        return doc.Amount() >= 0 ? QColor(Qt::black) : QColor(Qt::red);
     }
     return QVariant();
 }

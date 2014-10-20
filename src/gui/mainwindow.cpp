@@ -72,14 +72,14 @@ MainWindow::MainWindow(QWidget* parent) :
     move(x, y);
 
     ui->balanceTableView->setModel(&m_balanceModel);
-    ui->balanceTableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    ui->balanceTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->paymentsBalanceTableView->setModel(&m_paymentsBalanceModel);
 //    ui->paymentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->paymentsTableView->setModel(&m_paymentsModel);
 
     ui->documentsTableView->setModel(&m_documentsModel);
-    ui->documentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    ui->documentsTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 
     const int m = 25;
 

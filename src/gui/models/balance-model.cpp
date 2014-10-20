@@ -69,6 +69,7 @@ private:
 
 void BalanceModel::Recalculate(const std::string& date)
 {
+    beginResetModel();
     using namespace hb::core;
     m_balance = Engine::GetInstance().GetBalance(date);
     m_total_balance = m_balance->GetTotalBalance();
@@ -78,7 +79,7 @@ void BalanceModel::Recalculate(const std::string& date)
     std::sort(m_balance->begin(), m_balance->end(), comporator);
     std::sort(m_total_balance->begin(), m_total_balance->end(), comporator);
 
-    reset();
+    endResetModel();
 }
 
 QModelIndex BalanceModel::index(int row, int column, const QModelIndex& parent) const

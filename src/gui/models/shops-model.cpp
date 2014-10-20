@@ -10,8 +10,9 @@ void ShopsModel::Reload()
 {
     using namespace hb::core;
 
+    beginResetModel();
     m_shops = Engine::GetInstance().GetShops(true);
-    reset();
+    endResetModel();
 }
 
 int ShopsModel::rowCount(const QModelIndex& /*parent*/) const

@@ -14,8 +14,9 @@ DocTypeModel::DocTypeModel()
 
 void DocTypeModel::Reload(DocumentType::TypeSign sign)
 {
+    beginResetModel();
     m_doctypes = Engine::GetInstance().GetTypeList(sign);
-    reset();
+    endResetModel();
 }
 
 QModelIndex DocTypeModel::index(int row, int column, const QModelIndex& parent) const

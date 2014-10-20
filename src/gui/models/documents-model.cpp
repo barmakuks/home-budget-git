@@ -37,11 +37,12 @@ void DocumentsModel::Reload(const std::string& minDate,
                             const hb::AccountId accountId,
                             const hb::CurrencyId currencyId)
 {
+    beginResetModel();
     using namespace hb::core;
 
     m_documents = Engine::GetInstance().GetDocuments(minDate, maxDate, accountId, currencyId);
 
-    reset();
+    endResetModel();
 }
 
 namespace

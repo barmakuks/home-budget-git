@@ -20,10 +20,11 @@ void PaymentsBalanceModel::Recalculate(const QDate &date)
 
 void PaymentsBalanceModel::Recalculate(const std::string &date)
 {
+    beginResetModel();
     using namespace hb::core;
     m_balance = Engine::GetInstance().GetPaymentsBalance(date);
 
-    reset();
+    endResetModel();
 }
 
 int PaymentsBalanceModel::rowCount(const QModelIndex &/*parent*/) const
