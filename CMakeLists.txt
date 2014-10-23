@@ -44,7 +44,6 @@ include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/s
 set(CORE_LIB_NAME core-lib)
 file(GLOB_RECURSE CORE_HEADERS ./src/*.h)
 file(GLOB_RECURSE CORE_TEMPLATES ./src/*.hpp)
-add_subdirectory(thirdparty/tinyxml2-master)
 aux_source_directory(./src/core CORE_LIB_SRC)
 aux_source_directory(./src/currency-manager CUR_LIB_SRC)
 aux_source_directory(./src/storage CORE_LIB_SRC)
@@ -65,8 +64,6 @@ file(GLOB_RECURSE GUI_FORMS src/gui/forms/*.ui)
 qt5_wrap_ui(GENERATED_FORMS_HEADERS ${GUI_FORMS})
 qt5_wrap_cpp(GENERATED_HEADERS_MOC ${GUI_HEADERS})
 qt5_add_resources(ICONS_RC_SRCS ${ICONS_RCS})
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${PROJECT_NAME} ${GUI_MAIN_SRC} ${GUI_SRC} ${GENERATED_HEADERS_MOC} ${GENERATED_FORMS_HEADERS} ${ICONS_RC_SRCS})
 target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME} ${WEB_LIB_NAME} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} Qt5::Widgets pthread)
