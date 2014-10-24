@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     std::cout << "********************** Wait for response***********************" << std::endl;
     sem_wait(&semaphore);
 //    pthread_join(t, NULL);
-    std::cout << "********************** Responce received***********************" << std::endl;
+    std::cout << "********************** Response received***********************" << std::endl;
 
 
     return 0;
