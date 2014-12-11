@@ -13,6 +13,11 @@ namespace utils
 std::string FormatMoney(hb::Money money)
 {
     std::ostringstream buf;
+    if (money < 0.)
+    {
+        return std::string("-") + FormatMoney(-money);
+    }
+
     buf << int(money / 100) << "." << std::setfill('0') << std::setw(2) << money % 100;
 
     return buf.str();
