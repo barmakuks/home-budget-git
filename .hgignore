@@ -1,0 +1,5 @@
+syntax: glob
+home-budget.net
+CMakeLists.txt.user*
+*.orig
+*~

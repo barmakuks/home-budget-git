@@ -77,6 +77,8 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
 
     // set doc type
     SelectDocType(docType->Id());
+
+    ui->amountEdit->setFocus();
 }
 
 bool DocumentDialog::GetDataFromUI()
@@ -94,7 +96,13 @@ bool DocumentDialog::GetDataFromUI()
     const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
 
     Amount amount;
-    amount.SetValue(ui->amountEdit->text().toDouble() * 100);
+    const int value = round(ui->amountEdit->text().toDouble() * 100.0);
+
+    if (value <= 0)
+    {
+        return false;
+    }
+    amount.SetValue(value);
     amount.SetAccount(m_accountsModel.GetAccountItemId(ui->accountComboBox->currentIndex()));
     amount.SetCurrency(m_currencyModel.GetCurrencyItemId(ui->currencyComboBox->currentIndex()));
 
@@ -183,11 +191,20 @@ void DocumentDialog::on_okButton_clicked()
 
 void DocumentDialog::on_moreButton_clicked()
 {
+    static const QString ZERO = Tr(hb::utils::FormatMoney(0));
+
+    if (ZERO == ui->amountEdit->text())
+    {
+        done(DialogResult::Accepted);
+        return;
+    }
+
     if (GetDataFromUI())
     {
         Engine::GetInstance().Write(*m_document);
         m_document = m_document->CreateTemplate();
-        ui->amountEdit->setText(Tr(hb::utils::FormatMoney(0)));
+        ui->amountEdit->setText(ZERO);
+        ui->amountEdit->setSelection(0, ui->amountEdit->text().length());
         ui->shopComboBox->setEditText(Tr(m_document->Shop()));
     }
 }
