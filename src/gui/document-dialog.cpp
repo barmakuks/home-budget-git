@@ -19,6 +19,37 @@ DocumentDialog* DocumentDialog::dlg = NULL;
 using namespace hb::core;
 using namespace hb::utils;
 
+class MoneyValidator: public QDoubleValidator{
+
+
+    // QValidator interface
+public:
+    virtual State validate(QString& input, int& pos) const;
+    virtual void fixup(QString& input) const;
+};
+
+QValidator::State MoneyValidator::validate(QString& input, int& pos) const
+{
+//    std::cout << "validate: " << Convert(input) << " pos: " << pos ;
+    const QValidator::State state = QDoubleValidator::validate(input, pos);
+
+    if (state == QValidator::Intermediate || state == QValidator::Acceptable)
+    { // do additional validation
+        static QChar decimalPoint = locale().decimalPoint();
+        static QChar altDecimalPoint = decimalPoint == '.' ? ',' : '.';
+        input = input.replace(altDecimalPoint, decimalPoint);
+    }
+
+//    std::cout << " result: " << Convert(input) << " pos: " << pos << " state: " << state << std::endl;
+    return state;
+}
+
+void MoneyValidator::fixup(QString& input) const
+{
+    std::cout << "fixup: " << Convert(input) << std::endl;
+    QDoubleValidator::fixup(input);
+}
+
 DocumentDialog::DocumentDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::DocumentDialog),
@@ -31,7 +62,7 @@ DocumentDialog::DocumentDialog(QWidget* parent) :
     ui->accountComboBox->setModel(&m_accountsModel);
     ui->shopComboBox->setModel(&m_shopsModel);
     ui->currencyComboBox->setModel(&m_currencyModel);
-    ui->amountEdit->setValidator(new QDoubleValidator());
+    ui->amountEdit->setValidator(new MoneyValidator());
 }
 
 void DocumentDialog::SetupUI(const DocumentPtr& document)

@@ -45,7 +45,7 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 
     engine.ExecuteQuery(query_string, strategy);
 
-    std::cout << query_string << std::endl;
+//    std::cout << query_string << std::endl;
 
     return strategy.Result();
 }
