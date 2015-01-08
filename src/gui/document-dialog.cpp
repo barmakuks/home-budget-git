@@ -31,6 +31,7 @@ DocumentDialog::DocumentDialog(QWidget* parent) :
     ui->accountComboBox->setModel(&m_accountsModel);
     ui->shopComboBox->setModel(&m_shopsModel);
     ui->currencyComboBox->setModel(&m_currencyModel);
+    ui->amountEdit->setValidator(new QDoubleValidator());
 }
 
 void DocumentDialog::SetupUI(const DocumentPtr& document)
@@ -216,7 +217,7 @@ void DocumentDialog::on_cancelButton_clicked()
 
 void DocumentDialog::on_shopComboBox_currentIndexChanged(int index)
 {
-    ui->shopComboBox->setEditText(Tr(m_shopsModel.GetShopItemId(index)));
+    ui->shopComboBox->setCurrentText(Tr(m_shopsModel.GetShopItemId(index)));
 }
 
 void DocumentDialog::on_accountComboBox_currentIndexChanged(int index)
@@ -342,3 +343,4 @@ void DocumentDialog::remove_docType()
         }
     }
 }
+

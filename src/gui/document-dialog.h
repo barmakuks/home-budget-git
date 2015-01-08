@@ -77,7 +77,7 @@ private:
     CurrenciesModel m_currencyModel;
     ShopsModel      m_shopsModel;
     hb::core::DocumentPtr m_document;
-    bool             m_has_changes;
+    bool            m_has_changes;
 
 private:
     static DocumentDialog*  dlg;

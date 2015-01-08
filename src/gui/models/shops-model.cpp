@@ -18,7 +18,6 @@ void ShopsModel::Reload()
 int ShopsModel::rowCount(const QModelIndex& /*parent*/) const
 {
     return m_shops ? m_shops->size() : 0;
-
 }
 
 QVariant ShopsModel::data(const QModelIndex& index, int role) const
@@ -26,6 +25,7 @@ QVariant ShopsModel::data(const QModelIndex& index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
+    case Qt::EditRole:
     {
         return GetCellString(index);
     }
