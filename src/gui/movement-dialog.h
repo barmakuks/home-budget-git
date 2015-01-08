@@ -47,6 +47,8 @@ private slots:
 
     void on_cancelButton_clicked();
 
+    void on_amountFromEdit_textChanged(const QString& text);
+
 private:
 
 private:

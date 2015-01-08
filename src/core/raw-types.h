@@ -21,6 +21,8 @@ typedef unsigned int Color;
 typedef int Money;
 typedef std::string Date;
 typedef std::string CounterValue;
+typedef std::string ParamName;
+typedef std::string ParamValue;
 
 } // namespace hb
 

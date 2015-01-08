@@ -56,6 +56,9 @@ public:
 
     virtual ShopListPtr GetShopList(const IFilter& filter) const = 0;
 
+    virtual ParamValue GetParamValue(const ParamName& paramName, const ParamValue& defaultValue = NULL) const = 0;
+    virtual void SetParamValue(const ParamName& paramName, const ParamValue& value) const = 0;
+
     virtual bool Write(Document& doc) const = 0;
     virtual bool Write(DocumentType& docType) const = 0;
     virtual bool Write(Account& account) const = 0;

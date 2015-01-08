@@ -12,6 +12,7 @@
 #include "date-time-utils.h"
 #include "payment-document.h"
 #include "payment-type.h"
+#include <boost/lexical_cast.hpp>
 
 namespace hb
 {
@@ -97,6 +98,23 @@ DocTypeId Engine::GetRootDocTypeId(DocumentType::TypeSign documentType)
     if (it == m_docTypeRoots.end())
     {
         DocumentTypeListPtr docTypeList = m_storage->GetTypeList(DocTypeSignFilter(documentType));
+
+        if (documentType == DocumentType::Movement)
+        {
+            // TODO set empty default value when get param from storage will be implemented
+            ParamValue paramValue = m_storage->GetParamValue("DEF_MOVEMENT", "212");
+
+            int id = boost::lexical_cast<int>(paramValue);
+            DocumentTypeList::const_iterator it = docTypeList->find(id);
+
+            if (it != docTypeList->end())
+            {
+                rootId = id;
+                m_docTypeRoots.insert(DocTypeRootsMap::value_type(documentType, rootId));
+
+                return rootId;
+            }
+        }
 
         if (!docTypeList->Head().empty())
         {

@@ -180,6 +180,17 @@ ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const
     return GetData<FillShopListStrategy>(m_databaseEngine, filter);
 }
 
+ParamValue DatabaseStorage::GetParamValue(const ParamName& paramName, const ParamValue& defaultValue) const
+{
+    // TODO implement read data from params table
+    return defaultValue;
+}
+
+void DatabaseStorage::SetParamValue(const ParamName& paramName, const ParamValue& value) const
+{
+    // TODO implement write data to params table
+}
+
 bool DatabaseStorage::Write(Document& doc) const
 {
     return WriteData(m_databaseEngine, doc);

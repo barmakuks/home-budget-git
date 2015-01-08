@@ -38,6 +38,9 @@ public:
 
     virtual core::ShopListPtr GetShopList(const core::IFilter& filter) const;
 
+    virtual ParamValue GetParamValue(const ParamName &paramName, const ParamValue &defaultValue) const;
+    virtual void SetParamValue(const ParamName &paramName, const ParamValue &value) const;
+
     bool Write(core::Document& doc) const;
     bool Write(core::DocumentType& docType) const;
     bool Write(core::Account& account) const;
@@ -51,7 +54,6 @@ public:
 private:
 
     core::IDatabaseEngine&    m_databaseEngine;
-
 };
 
 } // namespace storage
