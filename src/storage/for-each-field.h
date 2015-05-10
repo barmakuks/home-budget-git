@@ -3,6 +3,7 @@
 
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include <memory>
 
 namespace hb
 {

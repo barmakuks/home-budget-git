@@ -86,7 +86,7 @@ aux_source_directory(./tests TEST_SRC)
 add_executable(${TEST_EXE_NAME} EXCLUDE_FROM_ALL ${TEST_SRC})
 target_link_libraries(${TEST_EXE_NAME} gtest gtest_main  ${Boost_LIBRARIES} ${CORE_LIB_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
-add_custom_target(test
+add_custom_target(run-test
                   COMMAND ./${TEST_EXE_NAME})
 
-add_dependencies(test ${TEST_EXE_NAME})
+add_dependencies(run-test ${TEST_EXE_NAME})

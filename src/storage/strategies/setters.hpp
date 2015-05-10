@@ -2,6 +2,7 @@
 #define SETTERS_HPP
 
 #include <boost/lexical_cast.hpp>
+#include <memory>
 
 template<typename value_type>
 typename std::remove_reference<value_type>::type ParseValue(const std::string& valueStr,

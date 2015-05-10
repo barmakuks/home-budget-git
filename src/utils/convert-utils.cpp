@@ -1,6 +1,7 @@
 #include "convert-utils.h"
 #include <QDate>
 #include <QString>
+#include <QObject>
 
 namespace hb
 {
