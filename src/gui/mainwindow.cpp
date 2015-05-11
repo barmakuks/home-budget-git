@@ -7,6 +7,9 @@
 #include <QComboBox>
 #include <iostream>
 #include <QMessageBox>
+#include <utility>
+#include <sstream>
+#include <iomanip>
 
 #include "date-time-utils.h"
 #include "document-dialog.h"
@@ -98,6 +101,8 @@ MainWindow::MainWindow(QWidget* parent) :
 
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate());
+
+    ui->summaLabel->setHidden(true);
 
     m_filterSetupInProgress = false;
 
@@ -249,6 +254,67 @@ void MainWindow::EditDocument()
     }
 }
 
+void MainWindow::CalculateSelectedRows()
+{
+    using namespace hb::core;
+
+    QModelIndexList indexes = ui->documentsTableView->selectionModel()->selectedRows();
+
+    ui->summaLabel->setHidden(indexes.size() <= 1);
+
+    typedef std::map<hb::CurrencyId, std::pair<hb::Money, hb::Money> > DayBalance; // currency Id, <income, outcome>
+    DayBalance day_balance;
+
+    for (QModelIndexList::iterator it = indexes.begin(); it != indexes.end(); ++it)
+    {
+        DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(it->row());
+
+        if (doc)
+        {
+            if (doc->AmountTo().is_initialized() && !doc->AmountFrom().is_initialized())
+            {
+                const Amount& amount = doc->AmountTo().get();
+
+                if (day_balance.find(amount.Currency()) == day_balance.end())
+                {
+                    day_balance.insert(std::make_pair(amount.Currency(),  std::make_pair(amount.Value(), 0)));
+                }
+                else
+                {
+                    DayBalance::mapped_type balance = day_balance[amount.Currency()];
+                    day_balance[amount.Currency()] = std::make_pair(balance.first + amount.Value(), balance.second);
+                }
+            }
+            else if (!doc->AmountTo().is_initialized() && doc->AmountFrom().is_initialized())
+            {
+                const Amount& amount = doc->AmountFrom().get();
+
+                if (day_balance.find(amount.Currency()) == day_balance.end())
+                {
+                    day_balance.insert(std::make_pair(amount.Currency(),  std::make_pair(0, amount.Value())));
+                }
+                else
+                {
+                    DayBalance::mapped_type balance = day_balance[amount.Currency()];
+                    day_balance[amount.Currency()] = std::make_pair(balance.first, amount.Value() + balance.second);
+                }
+            }
+        }
+    }
+
+    std::stringstream balance_str;
+
+    for (DayBalance::iterator it = day_balance.begin(); it != day_balance.end() ; ++it)
+    {
+        hb::core::CurrencyPtr currency = Engine::GetInstance().GetCurrencies()->at(it->first);
+
+        balance_str << std::setfill(' ') << std::setw(15) << hb::utils::FormatMoney(-it->second.second) <<  " " << currency->Symbol();
+        balance_str << "  :" << std::setfill(' ') << std::setw(15) << hb::utils::FormatMoney(it->second.first) <<  " " << currency->Symbol() << std::endl;
+    }
+
+    ui->summaLabel->setText(hb::utils::Tr(balance_str.str()));
+}
+
 void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
 {
     using namespace hb::core;
@@ -354,6 +420,7 @@ void MainWindow::on_removeButton_clicked()
 void MainWindow::documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     SetButtonsEnabled();
+    CalculateSelectedRows();
 }
 
 void MainWindow::on_movementButton_clicked()

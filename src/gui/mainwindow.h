@@ -31,6 +31,7 @@ private:
     void ApplyDocumentsFilter();
     void UpdateBalance();
     void EditDocument();
+    void CalculateSelectedRows();
 
     void CreateDocument(hb::core::DocumentType::TypeSign docType);
 
