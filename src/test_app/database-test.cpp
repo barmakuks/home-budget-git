@@ -9,6 +9,7 @@
 #include "currency.h"
 #include "balance.h"
 #include "balance-filter.h"
+#include <iostream>
 
 using namespace std;
 
@@ -58,7 +59,7 @@ void Print(const hb::core::Documents& documents, const hb::core::DocumentTypeLis
         }
 
         cout << "ID: " << doc->Id() << " DATE: " << doc->DocDate() << " " << doc->DocType() << " " << doc_type_name << " FROM ";
-        const bool amount_from_exists = doc->AmountFrom();
+        const bool amount_from_exists = doc->AmountFrom().is_initialized();
 
         if (amount_from_exists)
         {

@@ -40,7 +40,7 @@ add_library(${WEB_LIB_NAME} STATIC ${WEB_LIB_SRC} ${UTILS_SRC} ${GENERATED_WEB_H
 target_link_libraries(${WEB_LIB_NAME} ${XML_LIB_NAME} Qt5::Network)
 
 ############################################################ Core library #################################################################
-include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies ./src/utils ./src/currency-manager)
+include_directories(./inc ./src/core ./src/storage ./src/storage/filters ./src/storage/strategies ./src/utils ./src/currency-manager ${Boost_INCLUDE_DIRS})
 set(CORE_LIB_NAME core-lib)
 file(GLOB_RECURSE CORE_HEADERS ./src/*.h)
 file(GLOB_RECURSE CORE_TEMPLATES ./src/*.hpp)
