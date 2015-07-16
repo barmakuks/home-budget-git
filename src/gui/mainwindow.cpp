@@ -540,7 +540,6 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
             QGraphicsTextItem* text = scene->addText(caption.c_str(), font);
             text->setPos(-text->boundingRect().width() / 2, -radius - text->boundingRect().height() * 2.);
 
-
             values.push_back(ReportLines::value_type(report_item.DocTypeName(), amount));
             summa += amount;
         }

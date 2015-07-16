@@ -16,7 +16,6 @@ public:
     const hb::core::ReportItem& CurrentItemRef() const;
     void SetCurrentItem(const hb::core::ReportItem& item);
     bool SetCurrentItem(int index);
-
     const hb::core::ReportItemPtr GetSubItem(int index) const;
 
     bool Back();
