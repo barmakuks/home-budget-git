@@ -21,6 +21,7 @@ ReportItem::ReportItem(const Report& sub_items):
             amount.SetCurCode(sub_amount.second.CurCode());
             amount.SetCurName(sub_amount.second.CurName());
             amount.SetCurSymbol(sub_amount.second.CurSymbol());
+            amount.SetSubAmount(amount.SubAmount() + sub_amount.second.Amount() + sub_amount.second.SubAmount());
         }
     }
 }

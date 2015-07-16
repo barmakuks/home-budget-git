@@ -134,6 +134,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     ui->balanceTableView->setModel(&m_balanceModel);
     ui->balanceTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->reportSubItemsTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->paymentsBalanceTableView->setModel(&m_paymentsBalanceModel);
 //    ui->paymentsTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -162,6 +163,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->endDateDocsEdit->setDate(QDate::currentDate());
 
     ui->summaLabel->setHidden(true);
+
+    ui->reportSubItemsTableView->setModel(&m_reportModel);
 
     m_filterSetupInProgress = false;
 
@@ -466,16 +469,26 @@ void MainWindow::MakeReport()
 {
     using namespace hb::core;
 
-    m_currentReport = Engine::GetInstance().GetReport(hb::utils::NormalizeDate(ui->startDateReportEdit->date()),
-                      hb::utils::NormalizeDate(ui->endDateReportEdit->date()));
+    ReportPtr currentReport = Engine::GetInstance().GetReport(hb::utils::NormalizeDate(ui->startDateReportEdit->date()),
+                              hb::utils::NormalizeDate(ui->endDateReportEdit->date()));
 
-    if (!m_currentReport)
+    const hb::CurrencyId currencyId = m_currenciesReportModel.GetCurrencyItemId(ui->currencyReportCB->currentIndex());
+    m_reportModel.SetReport(currentReport, currencyId);
+
+    if (!currentReport)
     {
         ui->reportView->setScene(nullptr);
         return;
     }
 
-    ReportItem main_report_item(*m_currentReport);
+    UpdateReport();
+}
+
+void MainWindow::UpdateReport()
+{
+    using namespace hb::core;
+
+    const ReportItem& main_report_item = m_reportModel.CurrentItemRef();
 
     hb::CurrencyId currencyId = m_currenciesReportModel.GetCurrencyItemId(ui->currencyReportCB->currentIndex());
 
@@ -506,6 +519,8 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
 
     hb::Money summa = 0;
 
+    std::string currency_symbol;
+
     {
         // add current amount
         const auto amounts = report_item.Amounts();
@@ -513,14 +528,19 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
 
         if (cur_amount != amounts.end())
         {
-            const std::string caption = report_item.DocTypeName() + " " + cur_amount->second.CurSymbol();
+            const hb::Money amount = std::abs(cur_amount->second.Amount());
+            const hb::Money sub_amount = std::abs(cur_amount->second.SubAmount());
+
+            const std::string caption = report_item.DocTypeName() + ": " + hb::utils::FormatMoney(amount + sub_amount) + " " + cur_amount->second.CurName();
+            currency_symbol = cur_amount->second.CurSymbol();
+
             QFont font;
             font.setPixelSize(16);
 
             QGraphicsTextItem* text = scene->addText(caption.c_str(), font);
-            text->setPos(-text->boundingRect().width() / 2, -radius - text->boundingRect().height());
+            text->setPos(-text->boundingRect().width() / 2, -radius - text->boundingRect().height() * 2.);
 
-            hb::Money amount = std::abs(cur_amount->second.Amount());
+
             values.push_back(ReportLines::value_type(report_item.DocTypeName(), amount));
             summa += amount;
         }
@@ -560,7 +580,7 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
             continue;
         }
 
-        QPainterPath* path = new QPainterPath();        
+        QPainterPath* path = new QPainterPath();
         qreal angle = 360.0 * value.second / summa;
         path->arcTo(rect, start, angle);
 
@@ -583,8 +603,8 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
 
         std::stringstream str;
         str << value.first << " ";
-        str << std::setw(2) << std::fixed <<  hb::utils::FormatMoney(value.second) << " usd ";
-        str << "(" << std::setw(2) << std::fixed << std::setprecision(0) << value.second * 100. / summa << "% )";
+        str << std::setw(2) << std::fixed <<  hb::utils::FormatMoney(value.second) << currency_symbol;
+        str << std::endl <<  "(" << std::setw(2) << std::fixed << std::setprecision(1) << value.second * 100. / summa << "%)";
         QGraphicsTextItem* text = scene->addText(str.str().c_str());
 
         QFont font = text->font();
@@ -610,4 +630,22 @@ void MainWindow::on_periodReportCB_currentIndexChanged(int index)
 void MainWindow::on_currencyReportCB_currentIndexChanged(int index)
 {
     MakeReport();
+}
+
+void MainWindow::on_btnReportBack_clicked()
+{
+    if (m_reportModel.Back())
+    {
+        UpdateReport();
+    }
+}
+
+void MainWindow::on_reportSubItemsTableView_doubleClicked(const QModelIndex& index)
+{
+    QModelIndexList indexes = ui->reportSubItemsTableView->selectionModel()->selectedRows();
+
+    if (m_reportModel.SetCurrentItem(indexes[0].row()))
+    {
+        UpdateReport();
+    }
 }

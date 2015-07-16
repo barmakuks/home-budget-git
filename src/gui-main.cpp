@@ -36,11 +36,13 @@ int main(int argc, char* argv[])
 //    WebEngine::Setup(IWebEnginePtr(new QtWebEngine()));
 //    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
 
-    std::string path_to_db = "/home/vitalii/development/barma-home-budget/data/budget.sqlite";
+    std::string path_to_db = "/home/vitalii/development/home-budget-git/data/budget.sqlite";
+
     if (argc > 1)
     {
         path_to_db = argv[1];
     }
+
     hb::sqlite::SqliteEngine db_engine(path_to_db);
     IStoragePtr storage(new DatabaseStorage(db_engine));
 
