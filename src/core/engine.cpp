@@ -9,6 +9,7 @@
 #include "payments-balance-filter.h"
 #include "payments-filter.h"
 #include "shop-filter.h"
+#include "report-filter.h"
 #include "date-time-utils.h"
 #include "payment-document.h"
 #include "payment-type.h"
@@ -247,6 +248,11 @@ ShopListPtr Engine::GetShops(bool reload)
     }
 
     return m_shops;
+}
+
+ReportPtr Engine::GetReport(const Date& from, const Date& to) const
+{
+    return m_storage->GetReport(ReportFilter(from, to));
 }
 
 bool Engine::Write(Document& doc)

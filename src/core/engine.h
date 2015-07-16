@@ -51,6 +51,9 @@ public:
 
     ShopListPtr GetShops(bool reload = false);
 
+    ReportPtr GetReport(const Date& from,
+                             const Date& to) const;
+
     bool Write(Document& doc);
     bool Write(DocumentType& docType);
     bool Write(Account& account);

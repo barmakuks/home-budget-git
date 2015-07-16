@@ -11,6 +11,7 @@
 #include "set-value-functions.h"
 #include "last-id-strategy.h"
 #include "fill-shop-list-strategy.h"
+#include "fill-report-strategy.h"
 
 namespace hb
 {
@@ -47,6 +48,8 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 
 //    std::cout << query_string << std::endl;
 
+    strategy.Finalize();
+
     return strategy.Result();
 }
 
@@ -82,7 +85,7 @@ class class_has_id
     template<class C> static yes& test(char (*)[sizeof(&C::Id)]);
     template<class C> static no& test(...);
 public:
-    enum{value = sizeof(test<T>(0)) == sizeof(yes&)};
+    enum {value = sizeof(test<T>(0)) == sizeof(yes&)};
 };
 
 template <typename T, bool readId>
@@ -159,17 +162,17 @@ BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
     return GetData<FillStrategy<hb::core::BalancePtr, SetBalanceValue> >(m_databaseEngine, filter);
 }
 
-PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter &filter) const
+PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter& filter) const
 {
     return GetData<FillStrategy<hb::core::PaymentsBalancePtr, SetPaymentsBalanceValue> >(m_databaseEngine, filter);
 }
 
-PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const IFilter &filter) const
+PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const IFilter& filter) const
 {
     return GetData<FillStrategy<hb::core::PaymentTypesMapPtr, SetPaymentTypeValue> >(m_databaseEngine, filter);
 }
 
-PaymentsPtr DatabaseStorage::GetPayments(const IFilter &filter) const
+PaymentsPtr DatabaseStorage::GetPayments(const IFilter& filter) const
 {
     return GetData<FillStrategy<hb::core::PaymentsPtr, SetPaymentValue> >(m_databaseEngine, filter);
 }
@@ -178,6 +181,11 @@ ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const
 {
     // TODO change strategy
     return GetData<FillShopListStrategy>(m_databaseEngine, filter);
+}
+
+ReportPtr DatabaseStorage::GetReport(const IFilter& filter) const
+{
+    return GetData<FillReportStrategy>(m_databaseEngine, filter);
 }
 
 ParamValue DatabaseStorage::GetParamValue(const ParamName& paramName, const ParamValue& defaultValue) const

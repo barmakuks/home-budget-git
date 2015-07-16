@@ -19,16 +19,20 @@ public:
     {
     }
 
-    virtual void NewRecord()
+    void NewRecord() override
     {
         m_lastId = EmptyId;
     }
 
-    virtual void ApplyRecord()
+    void ApplyRecord() override
     {
     }
 
-    virtual void AddColumnValue(const std::string& fieldName, const std::string& value);
+    void AddColumnValue(const std::string& fieldName, const std::string& value) override;
+
+    void Finalize() override
+    {
+    }
 
     const ResultType Result() const
     {

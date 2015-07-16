@@ -7,9 +7,12 @@
 #include <QComboBox>
 #include <iostream>
 #include <QMessageBox>
+#include <QGraphicsView>
 #include <utility>
 #include <sstream>
 #include <iomanip>
+#include <QGraphicsTextItem>
+#include <functional>
 
 #include "date-time-utils.h"
 #include "document-dialog.h"
@@ -19,6 +22,8 @@
 #include "convert-utils.h"
 #include "currency-exchange-manager.h"
 #include "models/string-format.h"
+#include "report-item.h"
+
 
 namespace
 {
@@ -40,11 +45,64 @@ int FindBiggestScreen(const QDesktopWidget& desktop)
 
     return  index;
 }
+
+
+typedef std::function<void()> Callback;
+
+void SetUpDate(QDateEdit* minDate, QDateEdit* maxDate, const hb::utils::DateInterval& interval, bool& stopper, Callback update_func)
+{
+    using namespace hb::utils;
+
+    if (stopper)
+    {
+        return;
+    }
+
+    stopper = true;
+
+    const QDate from = hb::utils::QDatefromNormalizedDate(interval.from);
+    minDate->setDate(from);
+    const QDate to = hb::utils::QDatefromNormalizedDate(interval.to);
+    maxDate->setDate(to);
+
+    stopper = false;
+
+    if (update_func)
+    {
+        update_func();
+    }
+}
+
+void SetPeriodComboBox(QComboBox* periodCB, const QDate& dateFrom, const QDate& dateTo, bool& stopper, Callback update_func)
+{
+    using namespace hb::utils;
+
+    if (stopper)
+    {
+        return;
+    }
+
+    DateInterval interval(hb::utils::NormalizeDate(dateFrom),
+                          hb::utils::NormalizeDate(dateTo));
+
+    const DatePeriod::Period period = GetDatePeriod(interval);
+
+    stopper = true;
+    periodCB->setCurrentIndex(period);
+    stopper = false;
+
+    if (update_func)
+    {
+        update_func();
+    }
+}
+
 }
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    m_currenciesReportModel(false),
     m_filterSetupInProgress(true),
     m_doc_dlg(NULL)
 {
@@ -95,12 +153,13 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->documentsTableView->setColumnWidth(6, m * 4);
     ui->documentsTableView->setColumnWidth(7, m * 4);
 
-    ui->accountComboBox->setModel(&m_accountsModel);
+    ui->accountDocsCB->setModel(&m_accountsModel);
 
-    ui->currencyComboBox->setModel(&m_currenciesModel);
+    ui->currencyDocsCB->setModel(&m_currenciesDocModel);
+    ui->currencyReportCB->setModel(&m_currenciesReportModel);
 
-    ui->startDateEdit->setDate(QDate::currentDate());
-    ui->endDateEdit->setDate(QDate::currentDate());
+    ui->startDateDocsEdit->setDate(QDate::currentDate());
+    ui->endDateDocsEdit->setDate(QDate::currentDate());
 
     ui->summaLabel->setHidden(true);
 
@@ -130,66 +189,30 @@ void MainWindow::on_calendarWidget_clicked(const QDate& /*date*/)
     UpdateBalance();
 }
 
-void MainWindow::on_periodComboBox_currentIndexChanged(int index)
+void MainWindow::on_periodDocsCB_currentIndexChanged(int index)
 {
     using namespace hb::utils;
-
-    if (m_filterSetupInProgress)
-    {
-        return;
-    }
-
-    m_filterSetupInProgress = true;
-
-    const DatePeriod::Period period = static_cast<DatePeriod::Period>(index);
-
-    DateInterval interval = GetDateInterval(period);
-
-    const QDate from = hb::utils::QDatefromNormalizedDate(interval.from);
-    ui->startDateEdit->setDate(from);
-    const QDate to = hb::utils::QDatefromNormalizedDate(interval.to);
-    ui->endDateEdit->setDate(to);
-
-    m_filterSetupInProgress = false;
-
-    ApplyDocumentsFilter();
-}
-
-void MainWindow::SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo)
-{
-    using namespace hb::utils;
-
-    if (m_filterSetupInProgress)
-    {
-        return;
-    }
-
-    DateInterval interval(hb::utils::NormalizeDate(dateFrom),
-                          hb::utils::NormalizeDate(dateTo));
-
-    const DatePeriod::Period period = GetDatePeriod(interval);
-
-    m_filterSetupInProgress = true;
-    ui->periodComboBox->setCurrentIndex(period);
-    m_filterSetupInProgress = false;
-
-    ApplyDocumentsFilter();
+    SetUpDate(ui->startDateDocsEdit,
+              ui->endDateDocsEdit,
+              GetDateInterval(static_cast<DatePeriod::Period>(index)),
+              m_filterSetupInProgress,
+              std::bind(&MainWindow::ApplyDocumentsFilter, this));
 }
 
 void MainWindow::ApplyDocumentsFilter()
 {
-    hb::AccountId accountId = m_accountsModel.GetAccountItemId(ui->accountComboBox->currentIndex());
-    hb::CurrencyId currencyId = m_currenciesModel.GetCurrencyItemId(ui->currencyComboBox->currentIndex());
+    hb::AccountId accountId = m_accountsModel.GetAccountItemId(ui->accountDocsCB->currentIndex());
+    hb::CurrencyId currencyId = m_currenciesDocModel.GetCurrencyItemId(ui->currencyDocsCB->currentIndex());
 
     QModelIndexList selection = ui->documentsTableView->selectionModel()->selectedRows();
 
-    m_documentsModel.Reload(ui->startDateEdit->date(),
-                            ui->endDateEdit->date(),
+    m_documentsModel.Reload(ui->startDateDocsEdit->date(),
+                            ui->endDateDocsEdit->date(),
                             accountId,
                             currencyId);
 
-    m_paymentsModel.Reload(ui->startDateEdit->date(),
-                           ui->endDateEdit->date());
+    m_paymentsModel.Reload(ui->startDateDocsEdit->date(),
+                           ui->endDateDocsEdit->date());
 
     if (!selection.empty())
     {
@@ -214,10 +237,12 @@ public:
              ++it)
         {
             std::cout << (*it)->Currency() << " : " << hb::utils::FormatMoney((*it)->Amount());
+
             if ((*it)->Currency() != 980)
             {
                 std::cout << " in UAH: " << hb::utils::FormatMoney(rates.at(980).at((*it)->Currency()) * (*it)->Amount()) << "uah";
             }
+
             std::cout << std::endl;
         }
     }
@@ -320,6 +345,7 @@ void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
     using namespace hb::core;
 
     bool result = false;
+
     if (docType == hb::core::DocumentType::Movement)
     {
         result = MovementDialog::CreateDocument(docType);
@@ -343,17 +369,25 @@ void MainWindow::SetButtonsEnabled()
     ui->removeButton->setEnabled(enabled);
 }
 
-void MainWindow::on_startDateEdit_dateChanged(const QDate& /*date*/)
+void MainWindow::on_startDateDocsEdit_dateChanged(const QDate& /*date*/)
 {
-    SetPeriodComboBox(ui->startDateEdit->date(), ui->endDateEdit->date());
+    SetPeriodComboBox(ui->periodDocsCB,
+                      ui->startDateDocsEdit->date(),
+                      ui->endDateDocsEdit->date(),
+                      m_filterSetupInProgress,
+                      std::bind(&MainWindow::ApplyDocumentsFilter, this));
 }
 
-void MainWindow::on_endDateEdit_dateChanged(const QDate& /*date*/)
+void MainWindow::on_endDateDocsEdit_dateChanged(const QDate& /*date*/)
 {
-    SetPeriodComboBox(ui->startDateEdit->date(), ui->endDateEdit->date());
+    SetPeriodComboBox(ui->periodDocsCB,
+                      ui->startDateDocsEdit->date(),
+                      ui->endDateDocsEdit->date(),
+                      m_filterSetupInProgress,
+                      std::bind(&MainWindow::ApplyDocumentsFilter, this));
 }
 
-void MainWindow::on_accountComboBox_currentIndexChanged(int /*index*/)
+void MainWindow::on_accountDocsCB_currentIndexChanged(int /*index*/)
 {
     if (!m_filterSetupInProgress)
     {
@@ -361,7 +395,7 @@ void MainWindow::on_accountComboBox_currentIndexChanged(int /*index*/)
     }
 }
 
-void MainWindow::on_currencyComboBox_currentIndexChanged(int index)
+void MainWindow::on_currencyDocsCB_currentIndexChanged(int index)
 {
     if (!m_filterSetupInProgress)
     {
@@ -426,4 +460,154 @@ void MainWindow::documentsTableView_selectionChanged(const QItemSelection& selec
 void MainWindow::on_movementButton_clicked()
 {
     CreateDocument(hb::core::DocumentType::Movement);
+}
+
+void MainWindow::MakeReport()
+{
+    using namespace hb::core;
+
+    m_currentReport = Engine::GetInstance().GetReport(hb::utils::NormalizeDate(ui->startDateReportEdit->date()),
+                      hb::utils::NormalizeDate(ui->endDateReportEdit->date()));
+
+    if (!m_currentReport)
+    {
+        ui->reportView->setScene(nullptr);
+        return;
+    }
+
+    ReportItem main_report_item(*m_currentReport);
+
+    hb::CurrencyId currencyId = m_currenciesReportModel.GetCurrencyItemId(ui->currencyReportCB->currentIndex());
+
+    const auto& amount = main_report_item.Amounts().find(currencyId);
+
+    if (amount != main_report_item.Amounts().end())
+    {
+        QGraphicsScene* scene = CreateReportScene(main_report_item, amount->second.CurCode());
+        ui->reportView->setScene(scene);
+        ui->reportView->show();
+    }
+    else
+    {
+        ui->reportView->setScene(nullptr);
+    }
+}
+
+QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report_item, hb::CurrencyId currency)
+{
+    using namespace hb::core;
+
+    const qreal radius = 200.;
+
+    std::unique_ptr<QGraphicsScene> scene(new QGraphicsScene(this));
+
+    typedef std::vector<std::pair<std::string, hb::Money> > ReportLines;
+    ReportLines values;
+
+    hb::Money summa = 0;
+
+    {
+        // add current amount
+        const auto amounts = report_item.Amounts();
+        const auto cur_amount = amounts.find(currency);
+
+        if (cur_amount != amounts.end())
+        {
+            const std::string caption = report_item.DocTypeName() + " " + cur_amount->second.CurSymbol();
+            QFont font;
+            font.setPixelSize(16);
+
+            QGraphicsTextItem* text = scene->addText(caption.c_str(), font);
+            text->setPos(-text->boundingRect().width() / 2, -radius - text->boundingRect().height());
+
+            hb::Money amount = std::abs(cur_amount->second.Amount());
+            values.push_back(ReportLines::value_type(report_item.DocTypeName(), amount));
+            summa += amount;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+
+    // add sub-amounts
+    for (auto it : report_item.SubItems())
+    {
+        ReportItemPtr sub_item = it.second;
+        const auto amounts = sub_item->Amounts();
+        const auto cur_amount = amounts.find(currency);
+
+        if (cur_amount != amounts.end())
+        {
+            hb::Money amount = std::abs(cur_amount->second.Amount()) + std::abs(cur_amount->second.SubAmount());
+            values.push_back(ReportLines::value_type(sub_item->DocTypeName(), amount));
+            summa += amount;
+        }
+    }
+
+
+    QRectF rect(-radius, -radius, 2 * radius, 2 * radius);
+    scene->addEllipse(-1, -1, 1, 1);
+
+    qreal start = 0.;
+
+    int h = random() * 360. / RAND_MAX;
+
+    for (auto value : values)
+    {
+        if (value.second == 0.)
+        {
+            continue;
+        }
+
+        QPainterPath* path = new QPainterPath();        
+        qreal angle = 360.0 * value.second / summa;
+        path->arcTo(rect, start, angle);
+
+        start += angle;
+        path->closeSubpath();
+        QColor color;
+        h = static_cast<int>(h + 360. * 0.618033988749895) % 360;
+        color.setHsv(h, 255 * 0.5, 0.99 * 255, 255);
+
+        scene->addPath(*path, QColor(color.red(), color.green(), color.blue(), 127), color);
+
+        const qreal alpha = -3.14159265 * (start - angle / 2) / 180.0;
+        const qreal xS = cos(alpha) * radius * 1;
+        const qreal yS = sin(alpha) * radius * 1;
+
+        const qreal xE = cos(alpha) * radius * 1.05;
+        const qreal yE = sin(alpha) * radius * 1.05; //xS > 0 ? radius + 20 : -radius - 20;
+
+        scene->addLine(xS, yS, xE, yE, QColor(0, 0, 0, 64));
+
+        std::stringstream str;
+        str << value.first << " ";
+        str << std::setw(2) << std::fixed <<  hb::utils::FormatMoney(value.second) << " usd ";
+        str << "(" << std::setw(2) << std::fixed << std::setprecision(0) << value.second * 100. / summa << "% )";
+        QGraphicsTextItem* text = scene->addText(str.str().c_str());
+
+        QFont font = text->font();
+        font.setPixelSize(9);
+        text->setFont(font);
+        const qreal xT = xE > 0 ? xE : xE - text->boundingRect().width();
+        const qreal yT = yE - text->boundingRect().height() / 2;
+        text->setPos(xT, yT);
+    }
+
+    return scene.release();
+}
+
+void MainWindow::on_periodReportCB_currentIndexChanged(int index)
+{
+    SetUpDate(ui->startDateReportEdit,
+              ui->endDateReportEdit,
+              GetDateInterval(static_cast<hb::utils::DatePeriod::Period>(index)),
+              m_filterSetupInProgress,
+              std::bind(&MainWindow::MakeReport, this));
+}
+
+void MainWindow::on_currencyReportCB_currentIndexChanged(int index)
+{
+    MakeReport();
 }

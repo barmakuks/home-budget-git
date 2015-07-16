@@ -10,6 +10,7 @@
 #include "balance.h"
 #include "payments-balance.h"
 //#include "payment-document.h"
+#include "report-item.h"
 
 namespace hb
 {
@@ -55,6 +56,8 @@ public:
     virtual PaymentTypesMapPtr GetPaymentTypes(const IFilter& filter) const  = 0;
 
     virtual ShopListPtr GetShopList(const IFilter& filter) const = 0;
+
+    virtual ReportPtr GetReport(const IFilter& filter) const = 0;
 
     virtual ParamValue GetParamValue(const ParamName& paramName, const ParamValue& defaultValue = NULL) const = 0;
     virtual void SetParamValue(const ParamName& paramName, const ParamValue& value) const = 0;

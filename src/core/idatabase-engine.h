@@ -19,6 +19,7 @@ public:
         virtual void NewRecord() = 0;
         virtual void ApplyRecord() = 0;
         virtual void AddColumnValue(const std::string& fieldName, const std::string& value) = 0;
+        virtual void Finalize() = 0;
     };
 
 public:

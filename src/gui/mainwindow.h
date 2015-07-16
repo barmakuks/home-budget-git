@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
+
 #include "core.h"
 #include "models/balance-model.h"
 #include "models/documents-model.h"
@@ -10,6 +12,8 @@
 #include "models/payments-balance-model.h"
 #include "models/payments-model.h"
 
+#include "report-item.h"
+
 namespace Ui
 {
 class MainWindow;
@@ -17,6 +21,7 @@ class MainWindow;
 
 class DocumentDialog;
 class QItemSelection;
+class QGraphicsScene;
 
 class MainWindow : public QMainWindow
 {
@@ -27,7 +32,6 @@ public:
     ~MainWindow();
 
 private:
-    void SetPeriodComboBox(const QDate& dateFrom, const QDate& dateTo);
     void ApplyDocumentsFilter();
     void UpdateBalance();
     void EditDocument();
@@ -37,18 +41,22 @@ private:
 
     void SetButtonsEnabled();
 
+    /***************** build Report routine **********************/
+    QGraphicsScene* CreateReportScene(const hb::core::ReportItem& report_item, hb::CurrencyId currency);
+    void MakeReport();
+
 private slots:
     void on_calendarWidget_clicked(const QDate& date);
 
-    void on_periodComboBox_currentIndexChanged(int index);
+    void on_periodDocsCB_currentIndexChanged(int index);
 
-    void on_startDateEdit_dateChanged(const QDate& date);
+    void on_startDateDocsEdit_dateChanged(const QDate& date);
 
-    void on_endDateEdit_dateChanged(const QDate& date);
+    void on_endDateDocsEdit_dateChanged(const QDate& date);
 
-    void on_accountComboBox_currentIndexChanged(int index);
+    void on_accountDocsCB_currentIndexChanged(int index);
 
-    void on_currencyComboBox_currentIndexChanged(int index);
+    void on_currencyDocsCB_currentIndexChanged(int index);
 
     void on_creditButton_clicked();
 
@@ -64,18 +72,25 @@ private slots:
 
     void on_movementButton_clicked();
 
+    void on_periodReportCB_currentIndexChanged(int index);
+
+    void on_currencyReportCB_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
     DocumentsModel          m_documentsModel;
     AccountsModel           m_accountsModel;
-    CurrenciesModel         m_currenciesModel;
+    CurrenciesModel         m_currenciesDocModel;
+    CurrenciesModel         m_currenciesReportModel;
     PaymentsBalanceModel    m_paymentsBalanceModel;
     PaymentsModel           m_paymentsModel;
 
     bool                    m_filterSetupInProgress;
 
-    DocumentDialog*  m_doc_dlg;
+    DocumentDialog*         m_doc_dlg;
+
+    hb::core::ReportPtr     m_currentReport;
 };
 
 #endif // MAINWINDOW_H

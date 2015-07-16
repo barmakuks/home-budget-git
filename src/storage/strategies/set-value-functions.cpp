@@ -91,6 +91,7 @@ void SetDocumentValue(hb::core::Document& doc, const std::string& field, const s
         {
             doc.SetAmountTo(Amount());
         }
+
         Amount amount = doc.AmountTo().get();
         SetFieldValue(amount, &Amount::SetAccount, "account_to_id", name, value);
         SetFieldValue(amount, &Amount::SetCurrency, "account_to_cur", name, value);

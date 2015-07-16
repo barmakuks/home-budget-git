@@ -38,6 +38,8 @@ public:
 
     virtual core::ShopListPtr GetShopList(const core::IFilter& filter) const;
 
+    virtual core::ReportPtr GetReport(const core::IFilter& filter) const;
+
     virtual ParamValue GetParamValue(const ParamName &paramName, const ParamValue &defaultValue) const;
     virtual void SetParamValue(const ParamName &paramName, const ParamValue &value) const;
 
