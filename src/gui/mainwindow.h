@@ -11,6 +11,7 @@
 #include "models/currencies-model.h"
 #include "models/payments-balance-model.h"
 #include "models/payments-model.h"
+#include "models/report-model.h"
 
 #include "report-item.h"
 
@@ -44,6 +45,7 @@ private:
     /***************** build Report routine **********************/
     QGraphicsScene* CreateReportScene(const hb::core::ReportItem& report_item, hb::CurrencyId currency);
     void MakeReport();
+    void UpdateReport();
 
 private slots:
     void on_calendarWidget_clicked(const QDate& date);
@@ -76,6 +78,10 @@ private slots:
 
     void on_currencyReportCB_currentIndexChanged(int index);
 
+    void on_btnReportBack_clicked();
+
+    void on_reportSubItemsTableView_doubleClicked(const QModelIndex& index);
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
@@ -85,12 +91,11 @@ private:
     CurrenciesModel         m_currenciesReportModel;
     PaymentsBalanceModel    m_paymentsBalanceModel;
     PaymentsModel           m_paymentsModel;
+    ReportModel             m_reportModel;
 
     bool                    m_filterSetupInProgress;
 
     DocumentDialog*         m_doc_dlg;
-
-    hb::core::ReportPtr     m_currentReport;
 };
 
 #endif // MAINWINDOW_H
