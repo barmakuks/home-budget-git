@@ -603,7 +603,7 @@ QGraphicsScene* MainWindow::CreateReportScene(const hb::core::ReportItem& report
         std::stringstream str;
         str << value.first << " ";
         str << std::setw(2) << std::fixed <<  hb::utils::FormatMoney(value.second) << currency_symbol;
-        str << std::endl <<  "(" << std::setw(2) << std::fixed << std::setprecision(1) << value.second * 100. / summa << "%)";
+        str << " (" << std::setw(2) << std::fixed << std::setprecision(1) << value.second * 100. / summa << "%)";
         QGraphicsTextItem* text = scene->addText(str.str().c_str());
 
         QFont font = text->font();

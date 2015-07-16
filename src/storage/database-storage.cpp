@@ -12,7 +12,7 @@
 #include "last-id-strategy.h"
 #include "fill-shop-list-strategy.h"
 #include "fill-report-strategy.h"
-
+#include <iostream>
 namespace hb
 {
 namespace storage
@@ -46,7 +46,7 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 
     engine.ExecuteQuery(query_string, strategy);
 
-//    std::cout << query_string << std::endl;
+    std::cout << query_string << std::endl;
 
     strategy.Finalize();
 
