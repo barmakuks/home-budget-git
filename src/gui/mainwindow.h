@@ -12,6 +12,7 @@
 #include "models/payments-balance-model.h"
 #include "models/payments-model.h"
 #include "models/report-model.h"
+#include "models/doc-type-filter-model.h"
 
 #include "report-item.h"
 
@@ -82,6 +83,10 @@ private slots:
 
     void on_reportSubItemsTableView_doubleClicked(const QModelIndex& index);
 
+    void on_reportsTabWidget_currentChanged(int index);
+
+    void on_btnDocTypeFilter_clicked();
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
@@ -92,6 +97,7 @@ private:
     PaymentsBalanceModel    m_paymentsBalanceModel;
     PaymentsModel           m_paymentsModel;
     ReportModel             m_reportModel;
+    DocTypeFilterModel      m_docTypeModel;
 
     bool                    m_filterSetupInProgress;
 

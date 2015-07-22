@@ -60,38 +60,6 @@ QModelIndex DocTypeModel::parent(const QModelIndex& child) const
     DocTypeId parentId = childItem->ParentId();
 
     return getDocTypeIndex(parentId);
-
-//    if (parentId == EmptyId)
-//    {
-//        return QModelIndex();
-//    }
-
-//    DocTypeId grandparent = (*m_doctypes)[parentId]->ParentId();
-
-//    DocTypeIdList parent_brothers;
-
-//    if (grandparent != EmptyId)
-//    {
-//        parent_brothers = (*m_doctypes)[grandparent]->Subtypes();
-//    }
-//    else
-//    {
-//        parent_brothers = m_doctypes->Head();
-//    }
-
-//    int parentRow = 0;
-
-//    for (auto it = parent_brothers.begin();
-//         it != parent_brothers.end();
-//         ++it, ++parentRow)
-//    {
-//        if (*it == parentId)
-//        {
-//            return createIndex(parentRow, 0, parentId);
-//        }
-//    }
-
-//    return QModelIndex();
 }
 
 int DocTypeModel::rowCount(const QModelIndex& parent) const
@@ -181,12 +149,4 @@ QModelIndex DocTypeModel::getDocTypeIndex(const DocTypeId docTypeId) const
     } while (id != docTypeId);
 
     return result;
-
-//    std::cout << "Parents: ";
-//    while (!parents.empty())
-//    {
-//        std::cout << parents.top() << " ";
-//        parents.pop();
-//    }
-//    std::cout << std::endl;
 }

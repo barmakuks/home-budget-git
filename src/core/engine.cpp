@@ -144,9 +144,10 @@ DocumentTypeListPtr Engine::GetTypeList(bool reload)
 DocumentsPtr Engine::GetDocuments(const Date& from,
                                   const Date& to,
                                   const AccountId accountId,
-                                  const CurrencyId currencyId)
+                                  const CurrencyId currencyId,
+                                  const hb::core::DocTypeIdList& doc_types)
 {
-    return m_storage->GetDocuments(DocByDateFilter(from, to, accountId, currencyId));
+    return m_storage->GetDocuments(DocByDateFilter(from, to, accountId, currencyId, doc_types));
 }
 
 AccountMapPtr Engine::GetAccounts(bool reload)

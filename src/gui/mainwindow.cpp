@@ -23,7 +23,7 @@
 #include "currency-exchange-manager.h"
 #include "models/string-format.h"
 #include "report-item.h"
-
+#include "doc-type-filter-dialog.h"
 
 namespace
 {
@@ -166,6 +166,9 @@ MainWindow::MainWindow(QWidget* parent) :
 
     ui->reportSubItemsTableView->setModel(&m_reportModel);
 
+    ui->startDateReportEdit->setDate(QDate::currentDate());
+    ui->endDateReportEdit->setDate(QDate::currentDate());
+
     m_filterSetupInProgress = false;
 
     ApplyDocumentsFilter();
@@ -174,6 +177,8 @@ MainWindow::MainWindow(QWidget* parent) :
             SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
             this,
             SLOT(documentsTableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
+
+    m_docTypeModel.Reload();
 }
 
 MainWindow::~MainWindow()
@@ -212,7 +217,8 @@ void MainWindow::ApplyDocumentsFilter()
     m_documentsModel.Reload(ui->startDateDocsEdit->date(),
                             ui->endDateDocsEdit->date(),
                             accountId,
-                            currencyId);
+                            currencyId,
+                            m_docTypeModel.GetSelected());
 
     m_paymentsModel.Reload(ui->startDateDocsEdit->date(),
                            ui->endDateDocsEdit->date());
@@ -646,5 +652,29 @@ void MainWindow::on_reportSubItemsTableView_doubleClicked(const QModelIndex& ind
     if (m_reportModel.SetCurrentItem(indexes[0].row()))
     {
         UpdateReport();
+    }
+}
+
+void MainWindow::on_reportsTabWidget_currentChanged(int index)
+{
+    switch (index)
+    {
+    case 0:
+        ui->currencyReportCB->setEnabled(true);
+        break;
+    case 1:
+        ui->currencyReportCB->setEnabled(false);
+        break;
+    case 2:
+        ui->currencyReportCB->setEnabled(false);
+        break;
+    }
+}
+
+void MainWindow::on_btnDocTypeFilter_clicked()
+{
+    if (DocTypeFilterDialog::ShowFilter(&m_docTypeModel))
+    {
+        ApplyDocumentsFilter();
     }
 }

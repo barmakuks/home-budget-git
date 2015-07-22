@@ -15,12 +15,14 @@ public:
     void Reload(const QDate& minDate,
                 const QDate& maxDate,
                 const hb::AccountId accountId,
-                const hb::CurrencyId currencyId);
+                const hb::CurrencyId currencyId,
+                const hb::core::DocTypeIdList& doc_types);
 
     void Reload(const std::string& minDate,
                 const std::string& maxDate,
                 const hb::AccountId accountId,
-                const hb::CurrencyId currencyId);
+                const hb::CurrencyId currencyId,
+                const hb::core::DocTypeIdList& doc_types);
 
     const hb::core::DocumentPtr& GetDocumentItemPtr(int index) const;
 

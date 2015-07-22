@@ -34,7 +34,8 @@ public:
     DocumentsPtr GetDocuments(const Date& from,
                               const Date& to,
                               const hb::AccountId accountId,
-                              const hb::CurrencyId currencyId);
+                              const hb::CurrencyId currencyId,
+                              const DocTypeIdList& doc_types);
 
     AccountMapPtr GetAccounts(bool reload = false);
     AccountListPtr GetAccountsList(bool reload = false);
@@ -52,7 +53,7 @@ public:
     ShopListPtr GetShops(bool reload = false);
 
     ReportPtr GetReport(const Date& from,
-                             const Date& to) const;
+                        const Date& to) const;
 
     bool Write(Document& doc);
     bool Write(DocumentType& docType);

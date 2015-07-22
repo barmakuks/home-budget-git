@@ -18,29 +18,32 @@ DocumentsModel::DocumentsModel()
 
     m_currencies = model.GetCurrencies();
 
-    Reload(QDate::currentDate(), QDate::currentDate(), hb::EmptyId, hb::EmptyId);
+    Reload(QDate::currentDate(), QDate::currentDate(), hb::EmptyId, hb::EmptyId, hb::core::DocTypeIdList());
 }
 
 void DocumentsModel::Reload(const QDate& minDate,
                             const QDate& maxDate,
                             const hb::AccountId accountId,
-                            const hb::CurrencyId currencyId)
+                            const hb::CurrencyId currencyId,
+                            const hb::core::DocTypeIdList& doc_types)
 {
     Reload(hb::utils::NormalizeDate(minDate),
            hb::utils::NormalizeDate(maxDate),
            accountId,
-           currencyId);
+           currencyId,
+           doc_types);
 }
 
 void DocumentsModel::Reload(const std::string& minDate,
                             const std::string& maxDate,
                             const hb::AccountId accountId,
-                            const hb::CurrencyId currencyId)
+                            const hb::CurrencyId currencyId,
+                            const hb::core::DocTypeIdList& doc_types)
 {
     beginResetModel();
     using namespace hb::core;
 
-    m_documents = Engine::GetInstance().GetDocuments(minDate, maxDate, accountId, currencyId);
+    m_documents = Engine::GetInstance().GetDocuments(minDate, maxDate, accountId, currencyId, doc_types);
 
     endResetModel();
 }
@@ -109,30 +112,37 @@ QVariant DocumentsModel::headerData(int section, Qt::Orientation /*orientation*/
         {
             return Tr("Дата");
         }
+
         case Columns::DocType:
         {
             return Tr("Опис");
         }
+
         case Columns::AccountFrom:
         {
             return Tr("Рах. витр.");
         }
+
         case Columns::AccountTo:
         {
             return Tr("Рах. дох.");
         }
+
         case Columns::AmountFrom:
         {
             return Tr("Сума витрат");
         }
+
         case Columns::AmountTo:
         {
             return Tr("Сума дохід");
         }
+
         case Columns::Note:
         {
             return Tr("Примітка");
         }
+
         case Columns::Shop:
         {
             return QVariant();
@@ -277,8 +287,10 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
         {
             return QColor(0xB00000);
         }
+
         break;
     }
+
     case Columns::AccountFrom:
     {
         if (doc.AmountFrom().is_initialized())
@@ -286,8 +298,10 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
             const AccountPtr account = m_accounts->at(doc.AmountFrom()->Account());
             return QColor(account->ForegroundColor());
         }
+
         break;
     }
+
     case Columns::AccountTo:
     {
         if (doc.AmountTo().is_initialized())
@@ -295,8 +309,10 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
             const AccountPtr account = m_accounts->at(doc.AmountTo()->Account());
             return QColor(account->ForegroundColor());
         }
+
         break;
     }
+
     case Columns::AmountFrom:
     {
         if (doc.AmountFrom().is_initialized())
@@ -304,8 +320,10 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
             const CurrencyPtr cur = m_currencies->at(doc.AmountFrom()->Currency());
             return QColor(cur->ForegroundColor());
         }
+
         break;
     }
+
     case Columns::AmountTo:
     {
         if (doc.AmountTo().is_initialized())
@@ -313,6 +331,7 @@ QVariant DocumentsModel::GetCellForecolor(const QModelIndex& index) const
             const CurrencyPtr cur = m_currencies->at(doc.AmountTo()->Currency());
             return QColor(cur->ForegroundColor());
         }
+
         break;
     }
     }
