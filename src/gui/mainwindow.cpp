@@ -662,9 +662,11 @@ void MainWindow::on_reportsTabWidget_currentChanged(int index)
     case 0:
         ui->currencyReportCB->setEnabled(true);
         break;
+
     case 1:
         ui->currencyReportCB->setEnabled(false);
         break;
+
     case 2:
         ui->currencyReportCB->setEnabled(false);
         break;
@@ -677,4 +679,22 @@ void MainWindow::on_btnDocTypeFilter_clicked()
     {
         ApplyDocumentsFilter();
     }
+}
+
+void MainWindow::on_startDateReportEdit_dateChanged(const QDate& date)
+{
+    SetPeriodComboBox(ui->periodReportCB,
+                      date,
+                      ui->endDateReportEdit->date(),
+                      m_filterSetupInProgress,
+                      std::bind(&MainWindow::MakeReport, this));
+}
+
+void MainWindow::on_endDateReportEdit_dateChanged(const QDate &date)
+{
+    SetPeriodComboBox(ui->periodReportCB,
+                      ui->startDateReportEdit->date(),
+                      date,
+                      m_filterSetupInProgress,
+                      std::bind(&MainWindow::MakeReport, this));
 }

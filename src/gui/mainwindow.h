@@ -87,6 +87,10 @@ private slots:
 
     void on_btnDocTypeFilter_clicked();
 
+    void on_startDateReportEdit_dateChanged(const QDate &date);
+
+    void on_endDateReportEdit_dateChanged(const QDate &date);
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
