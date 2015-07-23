@@ -101,7 +101,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="amountEdit">
+          <widget class="QFocusedLineEdit" name="amountEdit">
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
@@ -220,6 +220,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QFocusedLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfocusedlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

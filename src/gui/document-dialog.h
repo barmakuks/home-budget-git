@@ -22,14 +22,14 @@ public:
     ~DocumentDialog();
 
     /** Open dialog to edit document
-      @param document Document to edit
-      @return true if document was changed successfully
+        @param document Document to edit
+        @return true if document was changed successfully
     */
     static bool EditDocument(const hb::core::DocumentPtr& document);
 
     /** Creates new empty document and opens dialog to edit it
-      @param docType Type of document
-      @return true if document was created and changed successfully
+        @param docType Type of document
+        @return true if document was created and changed successfully
     */
     static bool CreateDocument(hb::core::DocumentType::TypeSign docType);
 
@@ -58,7 +58,7 @@ private slots:
 
     void on_accountComboBox_currentIndexChanged(int index);
 
-    void on_docTypeTreeView_customContextMenuRequested(const QPoint &pos);
+    void on_docTypeTreeView_customContextMenuRequested(const QPoint& pos);
 
     void add_docType();
     void edit_docType();

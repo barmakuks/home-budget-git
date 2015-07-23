@@ -208,6 +208,7 @@ void DocumentDialog::on_moreButton_clicked()
         ui->amountEdit->setText(ZERO);
         ui->amountEdit->setSelection(0, ui->amountEdit->text().length());
         ui->shopComboBox->setEditText(Tr(m_document->Shop()));
+        ui->amountEdit->setFocus();
     }
 }
 
