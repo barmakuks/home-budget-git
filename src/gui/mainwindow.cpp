@@ -661,14 +661,17 @@ void MainWindow::on_reportsTabWidget_currentChanged(int index)
     {
     case 0:
         ui->currencyReportCB->setEnabled(true);
+        ui->intervalReportCB->setEnabled(false);
         break;
 
     case 1:
         ui->currencyReportCB->setEnabled(false);
+        ui->intervalReportCB->setEnabled(true);
         break;
 
     case 2:
         ui->currencyReportCB->setEnabled(false);
+        ui->intervalReportCB->setEnabled(true);
         break;
     }
 }

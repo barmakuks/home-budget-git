@@ -21,8 +21,13 @@ public:
     const hb::AccountId GetAccountItemId(int index) const;
     int GetIndexOfAccount(hb::AccountId accountId) const;
 
+    void MoveAccountDown(hb::AccountId accountId);
+    void MoveAccountUp(hb::AccountId accountId);
+
 private:
     const hb::core::Account& GetAccountItem(int index) const;
+    void SwapAccounts(hb::core::AccountList& accounts, int index_a, int index_b);
+
 
     QVariant GetCellString(const QModelIndex& index) const;
     QVariant GetCellForecolor(const QModelIndex& index) const;
