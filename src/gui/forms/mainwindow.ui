@@ -1195,6 +1195,127 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="settingsTab">
+        <attribute name="title">
+         <string>Налаштування</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="maximumSize">
+            <size>
+             <width>370</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Рахунки</string>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QListView" name="settingsAccountsView"/>
+            </item>
+            <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+             <widget class="QWidget" name="widget_25" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_15">
+               <item>
+                <widget class="QToolButton" name="btnAccountUp">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>В гору</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnAccountDown">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Донизу</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_26" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnAccountAdd">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Добавити</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnAccountEdit">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Змінити</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnAccountRemove">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Видалити</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_24" native="true">
+           <zorder>groupBox</zorder>
+           <zorder>groupBox</zorder>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>

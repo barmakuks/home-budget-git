@@ -155,6 +155,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->documentsTableView->setColumnWidth(7, m * 4);
 
     ui->accountDocsCB->setModel(&m_accountsModel);
+    ui->settingsAccountsView->setModel(&m_accountsModel);
 
     ui->currencyDocsCB->setModel(&m_currenciesDocModel);
     ui->currencyReportCB->setModel(&m_currenciesReportModel);
@@ -177,6 +178,11 @@ MainWindow::MainWindow(QWidget* parent) :
             SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
             this,
             SLOT(documentsTableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
+
+    connect(ui->settingsAccountsView->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
+            this,
+            SLOT(settingsAccountsView_selectionChanged(const QItemSelection&, const QItemSelection&)));
 
     m_docTypeModel.Reload();
 }
@@ -373,9 +379,22 @@ void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
 
 void MainWindow::SetButtonsEnabled()
 {
-    const bool enabled = ui->documentsTableView->selectionModel()->selectedRows().size() == 1;
-    ui->editButton->setEnabled(enabled);
-    ui->removeButton->setEnabled(enabled);
+    { // Main tab
+        const bool enabled = ui->documentsTableView->selectionModel()->selectedRows().size() == 1;
+        ui->editButton->setEnabled(enabled);
+        ui->removeButton->setEnabled(enabled);
+    }
+
+    { // Settings tab
+        const auto rows = ui->settingsAccountsView->selectionModel()->selectedRows();
+        const bool is_one_row = rows.size() == 1 && rows.begin()->row() != 0;
+
+        ui->btnAccountUp->setEnabled(is_one_row && rows.begin()->row() != 1);
+        ui->btnAccountDown->setEnabled(is_one_row && rows.begin()->row() != m_accountsModel.rowCount() - 1);
+        ui->btnAccountAdd->setEnabled(true);
+        ui->btnAccountEdit->setEnabled(is_one_row);
+        ui->btnAccountRemove->setEnabled(is_one_row);
+    }
 }
 
 void MainWindow::on_startDateDocsEdit_dateChanged(const QDate& /*date*/)
@@ -464,6 +483,11 @@ void MainWindow::documentsTableView_selectionChanged(const QItemSelection& selec
 {
     SetButtonsEnabled();
     CalculateSelectedRows();
+}
+
+void MainWindow::settingsAccountsView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    SetButtonsEnabled();
 }
 
 void MainWindow::on_movementButton_clicked()
@@ -693,11 +717,45 @@ void MainWindow::on_startDateReportEdit_dateChanged(const QDate& date)
                       std::bind(&MainWindow::MakeReport, this));
 }
 
-void MainWindow::on_endDateReportEdit_dateChanged(const QDate &date)
+void MainWindow::on_endDateReportEdit_dateChanged(const QDate& date)
 {
     SetPeriodComboBox(ui->periodReportCB,
                       ui->startDateReportEdit->date(),
                       date,
                       m_filterSetupInProgress,
                       std::bind(&MainWindow::MakeReport, this));
+}
+
+void MainWindow::on_btnAccountUp_clicked()
+{
+    QModelIndexList selection = ui->settingsAccountsView->selectionModel()->selectedRows();
+
+    if (selection.size() == 1)
+    {
+        int selectedRow = selection.begin()->row();
+        hb::AccountId accountId = m_accountsModel.GetAccountItemId(selectedRow);
+
+        if (m_accountsModel.MoveAccountUp(accountId))
+        {
+            QModelIndex index = m_accountsModel.index(selectedRow - 1);
+            ui->settingsAccountsView->setCurrentIndex(index);
+        }
+    }
+}
+
+void MainWindow::on_btnAccountDown_clicked()
+{
+    QModelIndexList selection = ui->settingsAccountsView->selectionModel()->selectedRows();
+
+    if (selection.size() == 1)
+    {
+        int selectedRow = selection.begin()->row();
+        hb::AccountId accountId = m_accountsModel.GetAccountItemId(selectedRow);
+
+        if (m_accountsModel.MoveAccountDown(accountId))
+        {
+            QModelIndex index = m_accountsModel.index(selectedRow + 1);
+            ui->settingsAccountsView->setCurrentIndex(index);
+        }
+    }
 }

@@ -98,7 +98,7 @@ void AccountsModel::SwapAccounts(hb::core::AccountList& accounts, int index_a, i
     endResetModel();
 }
 
-void AccountsModel::MoveAccountDown(hb::AccountId accountId)
+bool AccountsModel::MoveAccountDown(hb::AccountId accountId)
 {
     using namespace hb::core;
 
@@ -107,10 +107,14 @@ void AccountsModel::MoveAccountDown(hb::AccountId accountId)
     if (index >= 0 && index < static_cast<int>(m_accounts->size()) - 1)
     {
         SwapAccounts(*m_accounts, index, index + 1);
+
+        return true;
     }
+
+    return false;
 }
 
-void AccountsModel::MoveAccountUp(hb::AccountId accountId)
+bool AccountsModel::MoveAccountUp(hb::AccountId accountId)
 {
     using namespace hb::core;
 
@@ -119,7 +123,11 @@ void AccountsModel::MoveAccountUp(hb::AccountId accountId)
     if (index > 0)
     {
         SwapAccounts(*m_accounts, index, index - 1);
+
+        return true;
     }
+
+    return false;
 }
 
 const hb::core::Account& AccountsModel::GetAccountItem(int index) const

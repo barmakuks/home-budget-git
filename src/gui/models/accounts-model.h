@@ -15,14 +15,14 @@ public:
 
     // QAbstractItemModel interface
 public:
-    int rowCount(const QModelIndex& parent) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role) const;
 
     const hb::AccountId GetAccountItemId(int index) const;
     int GetIndexOfAccount(hb::AccountId accountId) const;
 
-    void MoveAccountDown(hb::AccountId accountId);
-    void MoveAccountUp(hb::AccountId accountId);
+    bool MoveAccountDown(hb::AccountId accountId);
+    bool MoveAccountUp(hb::AccountId accountId);
 
 private:
     const hb::core::Account& GetAccountItem(int index) const;

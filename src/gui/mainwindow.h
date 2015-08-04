@@ -73,6 +73,8 @@ private slots:
 
     void documentsTableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
+    void settingsAccountsView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+
     void on_movementButton_clicked();
 
     void on_periodReportCB_currentIndexChanged(int index);
@@ -90,6 +92,10 @@ private slots:
     void on_startDateReportEdit_dateChanged(const QDate &date);
 
     void on_endDateReportEdit_dateChanged(const QDate &date);
+
+    void on_btnAccountUp_clicked();
+
+    void on_btnAccountDown_clicked();
 
 private:
     Ui::MainWindow*         ui;
