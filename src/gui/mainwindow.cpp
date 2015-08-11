@@ -759,3 +759,14 @@ void MainWindow::on_btnAccountDown_clicked()
         }
     }
 }
+
+void MainWindow::on_mainTabWidget_currentChanged(int index)
+{
+    if (index == 0)
+    {
+        if (ui->accountDocsCB->currentIndex() < 0)
+        {
+            ui->accountDocsCB->setCurrentIndex(0);
+        }
+    }
+}

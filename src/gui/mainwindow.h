@@ -97,6 +97,8 @@ private slots:
 
     void on_btnAccountDown_clicked();
 
+    void on_mainTabWidget_currentChanged(int index);
+
 private:
     Ui::MainWindow*         ui;
     BalanceModel            m_balanceModel;
