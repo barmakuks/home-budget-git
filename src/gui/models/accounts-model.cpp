@@ -17,7 +17,9 @@ AccountsModel::AccountsModel(bool allAccountsFirst):
 void AccountsModel::Reload()
 {
     using namespace hb::core;
+    beginResetModel();
     m_accounts = Engine::GetInstance().GetAccountsList(true);
+    endResetModel();
 }
 
 int AccountsModel::rowCount(const QModelIndex& /*parent*/) const
@@ -159,7 +161,6 @@ QVariant AccountsModel::GetCellForecolor(const QModelIndex& index) const
         {
             return QColor(0xA0A0A0);
         }
-
     }
 
     return QVariant();

@@ -15,6 +15,7 @@
 #include <functional>
 
 #include "date-time-utils.h"
+#include "account-dialog.h"
 #include "document-dialog.h"
 #include "movement-dialog.h"
 #include "document.h"
@@ -379,13 +380,15 @@ void MainWindow::CreateDocument(hb::core::DocumentType::TypeSign docType)
 
 void MainWindow::SetButtonsEnabled()
 {
-    { // Main tab
+    {
+        // Main tab
         const bool enabled = ui->documentsTableView->selectionModel()->selectedRows().size() == 1;
         ui->editButton->setEnabled(enabled);
         ui->removeButton->setEnabled(enabled);
     }
 
-    { // Settings tab
+    {
+        // Settings tab
         const auto rows = ui->settingsAccountsView->selectionModel()->selectedRows();
         const bool is_one_row = rows.size() == 1 && rows.begin()->row() != 0;
 
@@ -533,6 +536,21 @@ void MainWindow::UpdateReport()
     else
     {
         ui->reportView->setScene(nullptr);
+    }
+}
+
+void MainWindow::EditAccount(const QModelIndex& index)
+{
+    int selectedRow = index.row();
+
+    hb::AccountId accountId = m_accountsModel.GetAccountItemId(selectedRow);
+
+    hb::core::AccountPtr account = hb::core::Engine::GetInstance().GetAccounts()->at(accountId);
+
+    if (AccountDialog::EditAccount(account))
+    {
+        m_accountsModel.Reload();
+        ui->settingsAccountsView->setCurrentIndex(m_accountsModel.index(selectedRow));
     }
 }
 
@@ -769,4 +787,33 @@ void MainWindow::on_mainTabWidget_currentChanged(int index)
             ui->accountDocsCB->setCurrentIndex(0);
         }
     }
+}
+
+void MainWindow::on_btnAccountAdd_clicked()
+{
+    hb::core::AccountPtr account(new hb::core::Account());
+
+    if (AccountDialog::EditAccount(account))
+    {
+        m_accountsModel.Reload();
+    }
+}
+
+void MainWindow::on_btnAccountEdit_clicked()
+{
+    QModelIndexList selection = ui->settingsAccountsView->selectionModel()->selectedRows();
+
+    if (selection.size() == 1)
+    {
+        int selectedRow = selection.begin()->row();
+
+        QModelIndex index = m_accountsModel.index(selectedRow);
+
+        EditAccount(index);
+    }
+}
+
+void MainWindow::on_settingsAccountsView_doubleClicked(const QModelIndex& index)
+{
+    EditAccount(index);
 }

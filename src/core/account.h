@@ -52,7 +52,13 @@ private:
     Color       m_foreground_color;
 };
 
-typedef std::shared_ptr<Account> AccountPtr;
+class AccountPtr : public std::shared_ptr<Account>
+{
+public:
+    AccountPtr() : std::shared_ptr<Account>(){}
+    AccountPtr(Account* ptr) : std::shared_ptr<Account>(ptr){}
+
+};
 
 typedef std::map<AccountId, AccountPtr> AccountMap;
 typedef std::vector<hb::core::AccountPtr>  AccountList;

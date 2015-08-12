@@ -48,6 +48,8 @@ private:
     void MakeReport();
     void UpdateReport();
 
+    void EditAccount(const QModelIndex& index);
+
 private slots:
     void on_calendarWidget_clicked(const QDate& date);
 
@@ -89,15 +91,21 @@ private slots:
 
     void on_btnDocTypeFilter_clicked();
 
-    void on_startDateReportEdit_dateChanged(const QDate &date);
+    void on_startDateReportEdit_dateChanged(const QDate& date);
 
-    void on_endDateReportEdit_dateChanged(const QDate &date);
+    void on_endDateReportEdit_dateChanged(const QDate& date);
 
     void on_btnAccountUp_clicked();
 
     void on_btnAccountDown_clicked();
 
     void on_mainTabWidget_currentChanged(int index);
+
+    void on_btnAccountAdd_clicked();
+
+    void on_btnAccountEdit_clicked();
+
+    void on_settingsAccountsView_doubleClicked(const QModelIndex& index);
 
 private:
     Ui::MainWindow*         ui;
