@@ -71,7 +71,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(${PROJECT_NAME} ${GUI_MAIN_SRC} ${GUI_SRC} ${GENERATED_HEADERS_MOC} ${GENERATED_FORMS_HEADERS} ${ICONS_RC_SRCS})
 target_link_libraries(${PROJECT_NAME} ${SQLITE_LIB_NAME} ${CORE_LIB_NAME} ${WEB_LIB_NAME} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} Qt5::Widgets pthread)
 
-############################################################ Test executable console ######################################################
+############################################################ Test Web-service console #####################################################
 set(TEST_APP_NAME home-budget-test-app)
 aux_source_directory(./src/test_app TEST_APP_MAIN_SRC)
 add_executable(${TEST_APP_NAME} ${TEST_APP_MAIN_SRC})

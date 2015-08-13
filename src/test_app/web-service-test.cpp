@@ -3,6 +3,7 @@
 #include "currency-exchange-manager.h"
 #include "privatbank-currency-rates-provider.h"
 #include "pfsoft-currency-rates-provider.h"
+#include "b911-currency-rates-provider.h"
 #include "currency-rates-interfaces.h"
 #include "convert-utils.h"
 
@@ -93,8 +94,9 @@ void RunWebServiceTest()
 
     WebEngine::Setup(IWebEnginePtr(new hb::web::QtWebEngine()));
 
-    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
-    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PfSoftCurrencyRatesProvider()));
+//    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
+//    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PfSoftCurrencyRatesProvider()));
+    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new B911CurrencyRatesProvider()));
 
     CurrencyExchangeManager::RequestRates(hb::utils::NormalizeDate(QDate::currentDate()), test.get());
     CurrencyExchangeManager::RequestRates("20140201", test.get());
