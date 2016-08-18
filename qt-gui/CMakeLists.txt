@@ -4,6 +4,8 @@ project(home-budget-qt)
 find_package(Qt5Core)
 find_package(Qt5Network)
 find_package(Qt5Widgets)
+find_package(Boost COMPONENTS REQUIRED)
+
 
 add_definitions(${QT_DEFINITIONS})
 add_definitions(-std=c++11)
@@ -20,6 +22,7 @@ qt5_wrap_cpp(GENERATED_HEADERS_MOC ${GUI_HEADERS})
 qt5_add_resources(ICONS_RC_SRCS ${ICONS_RCS})
 
 include_directories(${HB_INCLUDES})
+include_directories(${Boost_INCLUDE_DIR})
 include_directories(${STORAGE_INCLUDES})
 include_directories(${ENGINE_INCLUDES})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

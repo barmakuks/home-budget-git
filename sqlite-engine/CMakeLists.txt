@@ -8,7 +8,7 @@ set(ENGINE_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE INTERNAL "engine
 file(GLOB_RECURSE ENGINE_LIB_HEADERS ${ENGINE_INCLUDES}/*.h ${ENGINE_INCLUDES}/*.hpp)
 file(GLOB_RECURSE ENGINE_LIB_SRC src/*.cpp thirdparty/*.h thirdparty/*.cpp thirdparty/*.c)
 
-include_directories(${HB_INCLUDES})
+include_directories(${HB_INCLUDES} thirdparty/sqlite)
 include_directories(${STORAGE_INCLUDES})
 include_directories(${ENGINE_INCLUDES})
 
