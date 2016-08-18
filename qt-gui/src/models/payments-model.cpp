@@ -4,6 +4,7 @@
 #include "utils/convert-utils.h"
 #include "string-format.h"
 #include "engine.h"
+#include "get-doc-engine.h"
 
 PaymentsModel::PaymentsModel()
 {
@@ -17,8 +18,8 @@ void PaymentsModel::Reload(const QDate& minDate, const QDate& maxDate)
 void PaymentsModel::Reload(const std::string& minDate, const std::string& maxDate)
 {
     beginResetModel();
-    m_documents = hb::Engine::GetInstance().GetPayments(minDate, maxDate);
-    m_docTypes = hb::Engine::GetInstance().GetPaymentTypes();
+    m_documents = hb::GetDocEngine().GetPayments(minDate, maxDate);
+    m_docTypes = hb::GetDocEngine().GetPaymentTypes();
 
     endResetModel();
 }

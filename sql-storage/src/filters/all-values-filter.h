@@ -1,10 +1,10 @@
 #pragma once
 
-#include "istorage.h"
+#include "storage/istorage.h"
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
 class AllValuesFilter: public IFilter
@@ -16,5 +16,5 @@ public:
     virtual std::string HavingCondition() const {return "";}
     virtual std::string OrderBy() const { return "";}
 };
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

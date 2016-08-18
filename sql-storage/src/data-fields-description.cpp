@@ -6,7 +6,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 /***** Document type *****/
 

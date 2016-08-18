@@ -2,7 +2,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 FillReportStrategy::FillReportStrategy()
     : m_report(new Report())
@@ -91,5 +91,5 @@ void FillReportStrategy::Finalize()
     m_report = processed_report;
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

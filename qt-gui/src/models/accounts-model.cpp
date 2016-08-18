@@ -4,6 +4,7 @@
 #include <QFont>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "string-format.h"
 #include "utils/convert-utils.h"
 using namespace hb::qt_utils;
@@ -16,7 +17,7 @@ AccountsModel::AccountsModel(bool allAccountsFirst)
 
 void AccountsModel::Reload()
 {
-    m_accounts = hb::Engine::GetInstance().GetAccountsList(true);
+    m_accounts = hb::GetDocEngine().GetAccountsList(true);
 }
 
 int AccountsModel::rowCount(const QModelIndex& /*parent*/) const

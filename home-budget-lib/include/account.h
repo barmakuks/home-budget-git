@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include <raw-types.h>
+#include <hb-types.h>
 
 namespace hb
 {

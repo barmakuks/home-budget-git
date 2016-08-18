@@ -6,9 +6,9 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
-class FillReportStrategy : public hb::IDatabaseEngine::ICallbackStrategy
+class FillReportStrategy : public IDatabaseEngine::ICallbackStrategy
 {
 public:
     using ResultType = ReportPtr;
@@ -36,5 +36,5 @@ private:
 public:
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

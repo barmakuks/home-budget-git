@@ -14,7 +14,7 @@ class PaymentDocument;
 class PaymentsBalanceRow;
 class PaymentType;
 
-namespace storage
+namespace sql_storage
 {
 
 void SetAccountValue(hb::Account& account, const std::string& field, const std::string& value);
@@ -27,5 +27,5 @@ void SetPaymentValue(hb::PaymentDocument& doc, const std::string& field, const s
 void SetPaymentsBalanceValue(hb::PaymentsBalanceRow& balance, const std::string& field, const std::string& value);
 void SetPaymentTypeValue(hb::PaymentType& paymentType, const std::string& field, const std::string& value);
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

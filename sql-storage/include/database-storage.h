@@ -1,12 +1,12 @@
 #pragma once
-#include "istorage.h"
+#include "storage/istorage.h"
 #include "idatabase-engine.h"
 
 namespace hb
 {
 class IFilter;
 
-namespace storage
+namespace sql_storage
 {
 class DatabaseStorage : public IStorage
 {
@@ -55,5 +55,5 @@ private:
     IDatabaseEngine& m_databaseEngine;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

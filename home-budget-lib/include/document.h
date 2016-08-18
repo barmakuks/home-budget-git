@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 
 #include "documenttype.h"
-#include "raw-types.h"
+#include "hb-types.h"
 
 namespace hb
 {

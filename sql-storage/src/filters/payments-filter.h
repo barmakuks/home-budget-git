@@ -7,7 +7,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class PaymentsByDateFilter : public AllValuesFilter
 {
@@ -46,5 +46,5 @@ private:
     const std::string m_minDate;
     const std::string m_maxDate;
 };
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

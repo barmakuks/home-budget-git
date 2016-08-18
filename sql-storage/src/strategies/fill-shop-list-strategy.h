@@ -5,10 +5,10 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
-class FillShopListStrategy: public hb::IDatabaseEngine::ICallbackStrategy
+class FillShopListStrategy: public IDatabaseEngine::ICallbackStrategy
 {
 public:
     using ResultType = ShopListPtr;
@@ -38,5 +38,5 @@ private:
     row_type m_shop;
 };
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

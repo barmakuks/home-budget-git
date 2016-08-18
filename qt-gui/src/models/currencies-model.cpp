@@ -3,6 +3,7 @@
 #include <QColor>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "utils/convert-utils.h"
 
 CurrenciesModel::CurrenciesModel(bool allCurrenciesFirst)
@@ -32,7 +33,7 @@ public:
 
 void CurrenciesModel::Reload()
 {
-    hb::CurrencyMapPtr currencies = hb::Engine::GetInstance().GetCurrencies();
+    hb::CurrencyMapPtr currencies = hb::GetDocEngine().GetCurrencies();
 
     m_currencies.clear();
     m_currencies.reserve(currencies->size());

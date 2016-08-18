@@ -6,30 +6,21 @@
 #include "payment-document.h"
 #include "payment-type.h"
 #include <boost/lexical_cast.hpp>
-#include <istorage.h>
+#include <storage/istorage.h>
+#include <storage/ifilter.h>
+#include <storage/ifilter-factory.h>
 
 namespace hb
 {
-std::unique_ptr<Engine> Engine::m_engine;
 
-Engine& Engine::CreateInstance(const IStoragePtr& storage)
+DocEngine::DocEngine(const IStoragePtr& storage)
+    : m_storage(storage)
 {
-    if (!m_engine)
-    {
-        m_engine.reset(new Engine(storage));
-    }
-
-    return *m_engine;
 }
 
-Engine& Engine::GetInstance()
+DocumentPtr DocEngine::CreateDocument(DocumentType::Direction docType)
 {
-    return *m_engine;
-}
-
-DocumentPtr Engine::CreateDocument(DocumentType::Direction docType)
-{
-    hb::DocTypeId rootDocTypeId = Engine::GetInstance().GetRootDocTypeId(docType);
+    hb::DocTypeId rootDocTypeId = GetRootDocTypeId(docType);
 
     if (rootDocTypeId != hb::EmptyId)
     {
@@ -64,12 +55,7 @@ DocumentPtr Engine::CreateDocument(DocumentType::Direction docType)
     return DocumentPtr();
 }
 
-Engine::Engine(const IStoragePtr& storage)
-    : m_storage(storage)
-{
-}
-
-DocumentTypeListPtr Engine::GetTypeList(DocumentType::Direction documentType)
+DocumentTypeListPtr DocEngine::GetTypeList(DocumentType::Direction documentType)
 {
     const auto filter = m_storage->GetFilterFactory().CreateDocTypeFilter(documentType);
     DocumentTypeListPtr docTypeList = m_storage->GetTypeList(*filter);
@@ -79,7 +65,7 @@ DocumentTypeListPtr Engine::GetTypeList(DocumentType::Direction documentType)
     return docTypeList;
 }
 
-DocTypeId Engine::GetRootDocTypeId(DocumentType::Direction documentType)
+DocTypeId DocEngine::GetRootDocTypeId(DocumentType::Direction documentType)
 {
     DocTypeId rootId = EmptyId;
 
@@ -122,7 +108,7 @@ DocTypeId Engine::GetRootDocTypeId(DocumentType::Direction documentType)
     return rootId;
 }
 
-DocumentTypeListPtr Engine::GetTypeList(bool reload)
+DocumentTypeListPtr DocEngine::GetTypeList(bool reload)
 {
     if (reload || !m_typelist)
     {
@@ -133,7 +119,7 @@ DocumentTypeListPtr Engine::GetTypeList(bool reload)
     return m_typelist;
 }
 
-DocumentsPtr Engine::GetDocuments(const Date& from,
+DocumentsPtr DocEngine::GetDocuments(const Date& from,
                                   const Date& to,
                                   const AccountId accountId,
                                   const CurrencyId currencyId,
@@ -144,7 +130,7 @@ DocumentsPtr Engine::GetDocuments(const Date& from,
     return m_storage->GetDocuments(*filter);
 }
 
-AccountMapPtr Engine::GetAccounts(bool reload)
+AccountMapPtr DocEngine::GetAccounts(bool reload)
 {
     if (reload || !m_accounts)
     {
@@ -174,12 +160,12 @@ public:
 };
 }
 
-AccountListPtr Engine::GetAccountsList(bool reload)
+AccountListPtr DocEngine::GetAccountsList(bool reload)
 {
     if (reload || !m_accountList)
     {
         m_accountList.reset(new AccountList());
-        hb::AccountMapPtr accounts = Engine::GetInstance().GetAccounts(reload);
+        hb::AccountMapPtr accounts = GetAccounts(reload);
 
         m_accountList->reserve(accounts->size());
 
@@ -197,7 +183,7 @@ AccountListPtr Engine::GetAccountsList(bool reload)
     return m_accountList;
 }
 
-CurrencyMapPtr Engine::GetCurrencies(bool reload)
+CurrencyMapPtr DocEngine::GetCurrencies(bool reload)
 {
     if (reload || !m_currencies)
     {
@@ -208,19 +194,19 @@ CurrencyMapPtr Engine::GetCurrencies(bool reload)
     return m_currencies;
 }
 
-BalancePtr Engine::GetBalance(const Date& date)
+BalancePtr DocEngine::GetBalance(const Date& date)
 {
     const auto filter = m_storage->GetFilterFactory().CreateBalanceFilter(date);
     return m_storage->GetBalance(*filter);
 }
 
-PaymentsBalancePtr Engine::GetPaymentsBalance(const Date& date)
+PaymentsBalancePtr DocEngine::GetPaymentsBalance(const Date& date)
 {
     const auto filter = m_storage->GetFilterFactory().CreatePaymentsBalanceFilter(date);
     return m_storage->GetPaymentsBalance(*filter);
 }
 
-PaymentTypesMapPtr Engine::GetPaymentTypes(bool reload)
+PaymentTypesMapPtr DocEngine::GetPaymentTypes(bool reload)
 {
     if (reload || !m_paymentTypes)
     {
@@ -231,13 +217,13 @@ PaymentTypesMapPtr Engine::GetPaymentTypes(bool reload)
     return m_paymentTypes;
 }
 
-PaymentsPtr Engine::GetPayments(const Date& from, const Date& to)
+PaymentsPtr DocEngine::GetPayments(const Date& from, const Date& to)
 {
     const auto filter = m_storage->GetFilterFactory().CreatePaymentsByDateFilter(from, to);
     return m_storage->GetPayments(*filter);
 }
 
-ShopListPtr Engine::GetShops(bool reload)
+ShopListPtr DocEngine::GetShops(bool reload)
 {
     if (reload || !m_shops)
     {
@@ -248,33 +234,33 @@ ShopListPtr Engine::GetShops(bool reload)
     return m_shops;
 }
 
-ReportPtr Engine::GetReport(const Date& from, const Date& to) const
+ReportPtr DocEngine::GetReport(const Date& from, const Date& to) const
 {
     static const auto filter = m_storage->GetFilterFactory().CreateReportFilter(from, to);
     return m_storage->GetReport(*filter);
 }
 
-bool Engine::Write(Document& doc)
+bool DocEngine::Write(Document& doc)
 {
     return m_storage->Write(doc);
 }
 
-bool Engine::Write(DocumentType& docType)
+bool DocEngine::Write(DocumentType& docType)
 {
     return m_storage->Write(docType);
 }
 
-bool Engine::Write(Account& account)
+bool DocEngine::Write(Account& account)
 {
     return m_storage->Write(account);
 }
 
-bool Engine::Write(Currency& currency)
+bool DocEngine::Write(Currency& currency)
 {
     return m_storage->Write(currency);
 }
 
-bool Engine::DeleteDocument(DocId id)
+bool DocEngine::DeleteDocument(DocId id)
 {
     Document doc;
     doc.SetId(id);
@@ -282,7 +268,7 @@ bool Engine::DeleteDocument(DocId id)
     return m_storage->Delete(doc);
 }
 
-bool Engine::DeleteDocumentType(DocTypeId id)
+bool DocEngine::DeleteDocumentType(DocTypeId id)
 {
     DocumentType docType;
     docType.SetId(id);
@@ -290,7 +276,7 @@ bool Engine::DeleteDocumentType(DocTypeId id)
     return m_storage->Delete(docType);
 }
 
-bool Engine::DeleteAccount(AccountId id)
+bool DocEngine::DeleteAccount(AccountId id)
 {
     Account account;
     account.SetId(id);
@@ -298,7 +284,7 @@ bool Engine::DeleteAccount(AccountId id)
     return m_storage->Delete(account);
 }
 
-bool Engine::DeleteCurrency(CurrencyId code)
+bool DocEngine::DeleteCurrency(CurrencyId code)
 {
     Currency currency;
     currency.SetCode(code);

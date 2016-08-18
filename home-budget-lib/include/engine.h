@@ -1,25 +1,22 @@
 #pragma once
 #include <memory>
 
-#include "istorage.h"
-
+#include "storage/istorage.h"
+#include <documenttype.h>
 #include "payment-type.h"
 
 namespace hb
 {
-
 class Document;
-class DocumentType;
 class Account;
 class Currency;
 
-class Engine
+class DocEngine
 {
-public:
-    static Engine& CreateInstance(const IStoragePtr& storage);
-    static Engine& GetInstance();
+    DocEngine(const DocEngine& storage) = delete;
 
 public:
+    DocEngine(const IStoragePtr& storage);
 
     DocumentPtr CreateDocument(DocumentType::Direction docType);
 
@@ -43,13 +40,11 @@ public:
 
     PaymentTypesMapPtr GetPaymentTypes(bool reload = false);
 
-    PaymentsPtr GetPayments(const Date& from,
-                            const Date& to);
+    PaymentsPtr GetPayments(const Date& from, const Date& to);
 
     ShopListPtr GetShops(bool reload = false);
 
-    ReportPtr GetReport(const Date& from,
-                        const Date& to) const;
+    ReportPtr GetReport(const Date& from, const Date& to) const;
 
     bool Write(Document& doc);
     bool Write(DocumentType& docType);
@@ -62,24 +57,20 @@ public:
     bool DeleteCurrency(CurrencyId code);
 
 protected:
-    Engine(const IStoragePtr& storage);
-
     DocTypeId GetRootDocTypeId(DocumentType::Direction documentType);
-private:
-    static std::unique_ptr<Engine>  m_engine;
 
 private:
     IStoragePtr m_storage;
 
-    AccountMapPtr       m_accounts;
-    AccountListPtr      m_accountList;
-    CurrencyMapPtr      m_currencies;
+    AccountMapPtr m_accounts;
+    AccountListPtr m_accountList;
+    CurrencyMapPtr m_currencies;
     DocumentTypeListPtr m_typelist;
-    ShopListPtr         m_shops;
-    PaymentTypesMapPtr  m_paymentTypes;
+    ShopListPtr m_shops;
+    PaymentTypesMapPtr m_paymentTypes;
 
     typedef std::map<DocumentType::Direction, DocTypeId> DocTypeRootsMap;
-    DocTypeRootsMap     m_docTypeRoots;
+    DocTypeRootsMap m_docTypeRoots;
 };
 
-} // namespace hb
+}  // namespace hb

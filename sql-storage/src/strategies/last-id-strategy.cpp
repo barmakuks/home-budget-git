@@ -2,7 +2,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
 void LastIdStrategy::AddColumnValue(const std::string& fieldName, const std::string& value)
@@ -13,5 +13,5 @@ void LastIdStrategy::AddColumnValue(const std::string& fieldName, const std::str
     }
 }
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

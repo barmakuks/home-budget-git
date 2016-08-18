@@ -4,13 +4,14 @@
 #include <QDate>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "string-format.h"
 #include "balance.h"
 #include "utils/convert-utils.h"
 
 BalanceModel::BalanceModel()
 {
-    auto& model = hb::Engine::GetInstance();
+    auto& model = hb::GetDocEngine();
 
     m_accounts = model.GetAccounts();
 
@@ -66,7 +67,7 @@ private:
 void BalanceModel::Recalculate(const std::string& date)
 {
     beginResetModel();
-    m_balance = hb::Engine::GetInstance().GetBalance(date);
+    m_balance = hb::GetDocEngine().GetBalance(date);
     m_total_balance = m_balance->GetTotalBalance();
 
     AccountOrderComporator comporator(m_accounts);

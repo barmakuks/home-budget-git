@@ -4,7 +4,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class ReportFilter : public AllValuesFilter
 {
@@ -39,5 +39,5 @@ private:
     Date m_date_max;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

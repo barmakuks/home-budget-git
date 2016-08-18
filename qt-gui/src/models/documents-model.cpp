@@ -4,17 +4,18 @@
 #include <QColor>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "string-format.h"
 #include "utils/convert-utils.h"
 #include "hb_chrono.h"
 
 DocumentsModel::DocumentsModel()
 {
-    hb::Engine& model = hb::Engine::GetInstance();
+    hb::DocEngine& doc_engine = hb::GetDocEngine();
 
-    m_accounts = model.GetAccounts();
+    m_accounts = doc_engine.GetAccounts();
 
-    m_currencies = model.GetCurrencies();
+    m_currencies = doc_engine.GetCurrencies();
 
     Reload(QDate::currentDate(), QDate::currentDate(), hb::EmptyId, hb::EmptyId,
            hb::DocTypeIdList());
@@ -37,8 +38,8 @@ void DocumentsModel::Reload(const std::string& minDate,
                             const hb::DocTypeIdList& doc_types)
 {
     beginResetModel();
-    m_documents = hb::Engine::GetInstance().GetDocuments(minDate, maxDate, accountId, currencyId,
-                                                         doc_types);
+    m_documents
+        = hb::GetDocEngine().GetDocuments(minDate, maxDate, accountId, currencyId, doc_types);
 
     endResetModel();
 }
@@ -184,7 +185,7 @@ QVariant DocumentsModel::GetCellString(const QModelIndex& index) const
 
     case Columns::DocType:
     {
-        hb::DocumentTypeListPtr docTypes = Engine::GetInstance().GetTypeList();
+        hb::DocumentTypeListPtr docTypes = hb::GetDocEngine().GetTypeList();
 
         const auto it = docTypes->find(doc.DocType());
 

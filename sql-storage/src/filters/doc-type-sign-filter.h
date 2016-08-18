@@ -7,7 +7,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class DocTypeFilter : public AllValuesFilter
 {
@@ -42,5 +42,5 @@ private:
     const DocumentType::Direction m_sign;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

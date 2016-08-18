@@ -7,6 +7,7 @@
 #include "utils/convert-utils.h"
 #include "string-format.h"
 #include "engine.h"
+#include "get-doc-engine.h"
 
 PaymentsBalanceModel::PaymentsBalanceModel()
 {
@@ -22,7 +23,7 @@ void PaymentsBalanceModel::Recalculate(const std::string &date)
 {
     beginResetModel();
     using namespace hb;
-    m_balance = Engine::GetInstance().GetPaymentsBalance(date);
+    m_balance = GetDocEngine().GetPaymentsBalance(date);
 
     endResetModel();
 }

@@ -5,7 +5,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class IFieldDescription
 {
@@ -106,5 +106,5 @@ FieldDescriptionPtr CreateFieldDescription(const char* name, T value)
     return FieldDescriptionPtr(new FieldDescription<T>(name, value));
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

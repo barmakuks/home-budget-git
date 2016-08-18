@@ -15,7 +15,7 @@
 #include <iostream>
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 DatabaseStorage::DatabaseStorage(IDatabaseEngine& engine)
     : m_databaseEngine(engine)
@@ -252,5 +252,5 @@ const hb::IFilterFactory& DatabaseStorage::GetFilterFactory() const
     return filter_factory;
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

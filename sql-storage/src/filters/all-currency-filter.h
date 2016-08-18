@@ -4,7 +4,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class AllCurrencyFilter : public AllValuesFilter
 {
@@ -19,5 +19,5 @@ public:
     }
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

@@ -46,9 +46,8 @@ int callback(void* strategyPtr, int argc, char** argv, char** azColName)
 {
     if (strategyPtr)
     {
-
-        IDatabaseEngine::ICallbackStrategy* strategy
-            = static_cast<IDatabaseEngine::ICallbackStrategy*>(strategyPtr);
+        sql_storage::IDatabaseEngine::ICallbackStrategy* strategy
+            = static_cast<sql_storage::IDatabaseEngine::ICallbackStrategy*>(strategyPtr);
 
         strategy->NewRecord();
 

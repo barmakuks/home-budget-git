@@ -4,7 +4,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class BalanceFilter : public AllValuesFilter
 {
@@ -43,5 +43,5 @@ private:
     Date m_date;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

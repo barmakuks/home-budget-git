@@ -4,7 +4,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class ShopListFilter : public AllValuesFilter
 {
@@ -30,5 +30,5 @@ public:
     }
 };
 
-}  // storage
-}  // hb
+}  // namespace sql_storage
+}  // namespace hb

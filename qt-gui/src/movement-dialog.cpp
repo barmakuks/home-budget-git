@@ -4,6 +4,7 @@
 #include <QComboBox>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "documenttype.h"
 #include "models/string-format.h"
 #include "models/moneyvalidator.h"
@@ -37,7 +38,7 @@ void MovementDialog::SetupUI(const hb::DocumentPtr& document)
     m_document = document;
 
     // setup models
-    const DocumentTypeListPtr typelist = Engine::GetInstance().GetTypeList();
+    const DocumentTypeListPtr typelist = GetDocEngine().GetTypeList();
     const DocumentTypePtr docType = typelist->at(document->DocType());
     m_docTypesModel.Reload(docType->Sign());
     m_accountsModel.Reload();
@@ -147,7 +148,7 @@ bool MovementDialog::EditDocument(const hb::DocumentPtr& document)
 
 bool MovementDialog::CreateDocument(hb::DocumentType::Direction docType)
 {
-    DocumentPtr doc = Engine::GetInstance().CreateDocument(docType);
+    DocumentPtr doc = GetDocEngine().CreateDocument(docType);
 
     return EditDocument(doc);
 }
@@ -156,7 +157,7 @@ void MovementDialog::on_okButton_clicked()
 {
     if (GetDataFromUI())
     {
-        Engine::GetInstance().Write(*m_document);
+        GetDocEngine().Write(*m_document);
         done(DialogResult::Accepted);
     }
 }
@@ -173,7 +174,7 @@ void MovementDialog::on_moreButton_clicked()
 
     if (GetDataFromUI())
     {
-        Engine::GetInstance().Write(*m_document);
+        GetDocEngine().Write(*m_document);
         m_document = m_document->CreateTemplate();
         ui->amountFromEdit->setFocus();
         ui->amountFromEdit->setText(ZERO);

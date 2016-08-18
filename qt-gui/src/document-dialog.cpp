@@ -10,6 +10,7 @@
 #include <QMessageBox>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "document.h"
 #include "models/string-format.h"
 #include "utils/convert-utils.h"
@@ -40,7 +41,7 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     m_document = document;
 
     // setup models
-    const DocumentTypeListPtr typelist = Engine::GetInstance().GetTypeList();
+    const DocumentTypeListPtr typelist = GetDocEngine().GetTypeList();
     const DocumentTypePtr docType = typelist->at(document->DocType());
     m_docTypesModel.Reload(docType->Sign());
     m_accountsModel.Reload();
@@ -99,7 +100,7 @@ bool DocumentDialog::GetDataFromUI()
     }
 
     const DocTypeId docTypeId = static_cast<DocTypeId>(selectedDoctypes.begin()->internalId());
-    const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
+    const DocumentTypePtr docType = GetDocEngine().GetTypeList()->at(docTypeId);
 
     Amount amount;
     const int value = round(ui->amountEdit->text().toDouble() * 100.0);
@@ -178,7 +179,7 @@ bool DocumentDialog::EditDocument(const DocumentPtr& document)
 
 bool DocumentDialog::CreateDocument(DocumentType::Direction docType)
 {
-    DocumentPtr doc = Engine::GetInstance().CreateDocument(docType);
+    DocumentPtr doc = GetDocEngine().CreateDocument(docType);
 
     return EditDocument(doc);
 }
@@ -187,7 +188,7 @@ void DocumentDialog::on_okButton_clicked()
 {
     if (GetDataFromUI())
     {
-        Engine::GetInstance().Write(*m_document);
+        GetDocEngine().Write(*m_document);
         done(DialogResult::Accepted);
     }
 }
@@ -204,7 +205,7 @@ void DocumentDialog::on_moreButton_clicked()
 
     if (GetDataFromUI())
     {
-        Engine::GetInstance().Write(*m_document);
+        GetDocEngine().Write(*m_document);
         m_document = m_document->CreateTemplate();
         ui->amountEdit->setText(ZERO);
         ui->amountEdit->setSelection(0, ui->amountEdit->text().length());
@@ -226,7 +227,7 @@ void DocumentDialog::on_shopComboBox_currentIndexChanged(int index)
 void DocumentDialog::on_accountComboBox_currentIndexChanged(int index)
 {
     hb::AccountId accountId = m_accountsModel.GetAccountItemId(index);
-    AccountPtr account = Engine::GetInstance().GetAccounts()->at(accountId);
+    AccountPtr account = GetDocEngine().GetAccounts()->at(accountId);
     ui->currencyComboBox->setCurrentIndex(
         m_currencyModel.GetCurrencyIndex(account->DefaultCurrency()).row());
 }
@@ -257,7 +258,7 @@ void DocumentDialog::add_docType()
         return;
     }
 
-    const DocumentTypePtr parentDocType = Engine::GetInstance().GetTypeList()->at(parentDocTypeId);
+    const DocumentTypePtr parentDocType = GetDocEngine().GetTypeList()->at(parentDocTypeId);
 
     QInputDialog dlg;
     dlg.setLabelText(Tr("Введить назву"));
@@ -271,9 +272,9 @@ void DocumentDialog::add_docType()
         docType.SetName(Convert(dlg.textValue()));
         docType.SetSign(parentDocType->Sign());
 
-        Engine::GetInstance().Write(docType);
+        GetDocEngine().Write(docType);
 
-        Engine::GetInstance().GetTypeList(true);
+        GetDocEngine().GetTypeList(true);
         m_docTypesModel.Reload(parentDocType->Sign());
 
         SelectDocType(docType.Id());
@@ -295,13 +296,13 @@ void DocumentDialog::edit_docType()
     dlg.setWindowTitle(Tr("Тип документу"));
     const hb::DocTypeId docTypeId
         = static_cast<hb::DocTypeId>(selectedDoctypes.begin()->internalId());
-    const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
+    const DocumentTypePtr docType = GetDocEngine().GetTypeList()->at(docTypeId);
     dlg.setTextValue(Tr(docType->Name()));
 
     if (dlg.exec() == QInputDialog::DialogCode::Accepted)
     {
         docType->SetName(Convert(dlg.textValue()));
-        Engine::GetInstance().Write(*docType);
+        GetDocEngine().Write(*docType);
         m_docTypesModel.Reload(docType->Sign());
         SelectDocType(docType->Id());
     }
@@ -318,7 +319,7 @@ void DocumentDialog::remove_docType()
     }
     const hb::DocTypeId docTypeId
         = static_cast<hb::DocTypeId>(selectedDoctypes.begin()->internalId());
-    const DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(docTypeId);
+    const DocumentTypePtr docType = GetDocEngine().GetTypeList()->at(docTypeId);
 
     if (docType->ParentId() == hb::EmptyId)
     {
@@ -342,8 +343,8 @@ void DocumentDialog::remove_docType()
 
         if (msgBox.exec() == QMessageBox::Yes)
         {
-            Engine::GetInstance().DeleteDocumentType(docType->Id());
-            Engine::GetInstance().GetTypeList(true);
+            GetDocEngine().DeleteDocumentType(docType->Id());
+            GetDocEngine().GetTypeList(true);
             m_docTypesModel.Reload(docType->Sign());
 
             SelectDocType(docType->ParentId());

@@ -2,13 +2,13 @@
 
 #include "idatabase-engine.h"
 #include <boost/lexical_cast.hpp>
-#include "raw-types.h"
+#include "hb-types.h"
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
-class LastIdStrategy : public hb::IDatabaseEngine::ICallbackStrategy
+class LastIdStrategy : public IDatabaseEngine::ICallbackStrategy
 {
 public:
     typedef Identifier ResultType;
@@ -42,5 +42,5 @@ private:
     ResultType m_lastId;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

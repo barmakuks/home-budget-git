@@ -25,7 +25,7 @@ private:
     const std::string m_what;
 };
 
-class SqliteEngine : public hb::IDatabaseEngine
+class SqliteEngine : public sql_storage::IDatabaseEngine
 {
 public:
     static bool IsDbExists(const std::string& path);

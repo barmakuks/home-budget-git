@@ -6,7 +6,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 std::string BuildInsertStatement(const std::string& table, const FieldDescriptionList& fields);
 
@@ -79,5 +79,5 @@ inline std::string BuildSql<hb::Currency>(const hb::Currency& data)
     }
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

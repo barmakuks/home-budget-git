@@ -7,7 +7,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class DocByDateFilter : public AllValuesFilter
 {
@@ -99,5 +99,5 @@ private:
     const hb::DocTypeIdList m_doc_types;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

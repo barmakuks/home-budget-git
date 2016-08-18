@@ -69,16 +69,14 @@ struct extract_collection_row_type<T, true>  // T is a vector
     typedef typename T::value_type type;
 };
 
-//****** collection row type
-//************************************************************************//
+//****** collection row type********************************************************************//
 template <typename T>
 struct get_collection_row_type
 {
     typedef typename extract_collection_row_type<T, is_vector<T>::value>::type type;
 };
 
-//****** item type
-//**********************************************************************************//
+//****** item type*******************************************************************************//
 template <typename T, bool isMap>
 struct extract_map_item_type
 {

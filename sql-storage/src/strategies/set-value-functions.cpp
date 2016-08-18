@@ -12,7 +12,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 void SetAccountValue(Account& account, const std::string& field, const std::string& value)
 {
@@ -156,5 +156,5 @@ void SetPaymentTypeValue(hb::PaymentType& paymentType,
     SetFieldValue(paymentType, &PaymentType::SetName, "name", name, value);
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

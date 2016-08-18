@@ -19,6 +19,7 @@
 #include "movement-dialog.h"
 #include "document.h"
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "utils/convert-utils.h"
 //#include "currency-exchange-manager.h"
 #include "models/string-format.h"
@@ -280,7 +281,7 @@ void MainWindow::EditDocument()
     {
         DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
 
-        DocumentTypePtr docType = Engine::GetInstance().GetTypeList()->at(doc->DocType());
+        DocumentTypePtr docType = GetDocEngine().GetTypeList()->at(doc->DocType());
 
         const bool result = docType->Sign() == DocumentType::Direction::Movement
                                 ? MovementDialog::EditDocument(doc)
@@ -288,7 +289,7 @@ void MainWindow::EditDocument()
 
         if (result)
         {
-            hb::Engine::GetInstance().Write(*doc);
+            hb::GetDocEngine().Write(*doc);
             ApplyDocumentsFilter();
             UpdateBalance();
         }
@@ -353,7 +354,7 @@ void MainWindow::CalculateSelectedRows()
 
     for (DayBalance::iterator it = day_balance.begin(); it != day_balance.end(); ++it)
     {
-        hb::CurrencyPtr currency = Engine::GetInstance().GetCurrencies()->at(it->first);
+        hb::CurrencyPtr currency = GetDocEngine().GetCurrencies()->at(it->first);
 
         balance_str << std::setfill(' ') << std::setw(15)
                     << hb::qt_utils::FormatMoney(-it->second.second) << " " << currency->Symbol();
@@ -462,7 +463,7 @@ void MainWindow::on_removeButton_clicked()
         {
             hb::DocumentPtr doc = m_documentsModel.GetDocumentItemPtr(indexes[0].row());
 
-            if (doc && hb::Engine::GetInstance().DeleteDocument(doc->Id()))
+            if (doc && hb::GetDocEngine().DeleteDocument(doc->Id()))
             {
                 ApplyDocumentsFilter();
             }
@@ -487,7 +488,7 @@ void MainWindow::MakeReport()
     using namespace hb::qt_utils;
 
     const auto currentReport
-        = hb::Engine::GetInstance().GetReport(NormalizeDate(ui->startDateReportEdit->date()),
+        = hb::GetDocEngine().GetReport(NormalizeDate(ui->startDateReportEdit->date()),
                                               NormalizeDate(ui->endDateReportEdit->date()));
 
     const hb::CurrencyId currencyId

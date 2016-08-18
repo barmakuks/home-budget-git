@@ -2,7 +2,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
 FillShopListStrategy::FillShopListStrategy():
@@ -31,5 +31,5 @@ void FillShopListStrategy::AddColumnValue(const std::string& fieldName, const st
     }
 }
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

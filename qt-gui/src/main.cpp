@@ -5,7 +5,7 @@
 
 #include <database-storage.h>
 #include <sqlite-engine.h>
-#include "engine.h"
+#include "get-doc-engine.h"
 
 class App: public QApplication
 {
@@ -28,7 +28,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-    using namespace hb::storage;
+    using namespace hb::sql_storage;
     using namespace hb;
 
     App a(argc, argv);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     hb::sqlite::SqliteEngine db_engine(path_to_db);
     IStoragePtr storage(new DatabaseStorage(db_engine));
 
-    Engine::CreateInstance(storage);
+    InitDocEngine(storage);
 
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 

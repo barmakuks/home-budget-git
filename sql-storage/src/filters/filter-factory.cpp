@@ -11,7 +11,7 @@
 #include "report-filter.h"
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 IFilterPtr FilterFactory::CreateDocTypeFilter(DocumentType::Direction doc_type_sign) const
 {
@@ -69,5 +69,5 @@ IFilterPtr FilterFactory::CreateReportFilter(const std::string& after,
     return IFilterPtr(new ReportFilter(after, before));
 }
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

@@ -6,7 +6,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class AllAccountsFilter : public AllValuesFilter
 {
@@ -21,5 +21,5 @@ public:
     }
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

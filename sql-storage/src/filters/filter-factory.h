@@ -1,10 +1,11 @@
 #pragma once
 
-#include <istorage.h>
+#include <storage/istorage.h>
+#include <storage/ifilter-factory.h>
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 class FilterFactory : public hb::IFilterFactory
 {
@@ -31,5 +32,5 @@ public:
                                   const std::string& before) const override;
 };
 
-}  // namespace storage
+}  // namespace sql_storage
 }  // namespace hb

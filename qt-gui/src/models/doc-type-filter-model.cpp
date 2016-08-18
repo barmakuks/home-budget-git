@@ -1,5 +1,6 @@
 #include "doc-type-filter-model.h"
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "utils/convert-utils.h"
 
 using namespace hb;
@@ -8,9 +9,9 @@ void DocTypeFilterModel::Reload()
 {
     m_doc_types.clear();
 
-    AddTypes(Engine::GetInstance().GetTypeList(DocumentType::Direction::Income)->Head());
-    AddTypes(Engine::GetInstance().GetTypeList(DocumentType::Direction::Outcome)->Head());
-    AddTypes(Engine::GetInstance().GetTypeList(DocumentType::Direction::Movement)->Head());
+    AddTypes(GetDocEngine().GetTypeList(DocumentType::Direction::Income)->Head());
+    AddTypes(GetDocEngine().GetTypeList(DocumentType::Direction::Outcome)->Head());
+    AddTypes(GetDocEngine().GetTypeList(DocumentType::Direction::Movement)->Head());
 }
 
 int DocTypeFilterModel::rowCount(const QModelIndex& parent) const
@@ -59,7 +60,7 @@ bool DocTypeFilterModel::setData(const QModelIndex& index, const QVariant& value
 
 void DocTypeFilterModel::AddTypes(hb::DocTypeIdList& doctypes, const std::string& prefix, int level)
 {
-    DocumentTypeListPtr types = Engine::GetInstance().GetTypeList();
+    DocumentTypeListPtr types = GetDocEngine().GetTypeList();
 
     for (hb::DocTypeId doc_type_id : doctypes)
     {

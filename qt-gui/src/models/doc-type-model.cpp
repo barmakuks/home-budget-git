@@ -2,6 +2,7 @@
 #include <stack>
 
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "utils/convert-utils.h"
 
 using namespace hb;
@@ -14,7 +15,7 @@ DocTypeModel::DocTypeModel()
 void DocTypeModel::Reload(DocumentType::Direction sign)
 {
     beginResetModel();
-    m_doctypes = Engine::GetInstance().GetTypeList(sign);
+    m_doctypes = GetDocEngine().GetTypeList(sign);
     endResetModel();
 }
 

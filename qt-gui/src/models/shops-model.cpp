@@ -1,5 +1,6 @@
 #include "shops-model.h"
 #include "engine.h"
+#include "get-doc-engine.h"
 #include "utils/convert-utils.h"
 
 ShopsModel::ShopsModel()
@@ -9,7 +10,7 @@ ShopsModel::ShopsModel()
 void ShopsModel::Reload()
 {
     beginResetModel();
-    m_shops = hb::Engine::GetInstance().GetShops(true);
+    m_shops = hb::GetDocEngine().GetShops(true);
     endResetModel();
 }
 

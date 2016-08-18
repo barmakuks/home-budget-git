@@ -9,6 +9,7 @@ file(GLOB_RECURSE ENGINE_LIB_HEADERS ${ENGINE_INCLUDES}/*.h ${ENGINE_INCLUDES}/*
 file(GLOB_RECURSE ENGINE_LIB_SRC src/*.cpp thirdparty/*.h thirdparty/*.cpp thirdparty/*.c)
 
 include_directories(${HB_INCLUDES})
+include_directories(${STORAGE_INCLUDES})
 include_directories(${ENGINE_INCLUDES})
 
 add_library(sqlite-engine SHARED ${ENGINE_LIB_SRC} ${ENGINE_LIB_HEADERS})

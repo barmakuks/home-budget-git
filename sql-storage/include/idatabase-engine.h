@@ -4,6 +4,8 @@
 
 namespace hb
 {
+namespace sql_storage
+{
 
 class IDatabaseEngine
 {
@@ -25,6 +27,5 @@ public:
 
     virtual bool ExecuteNonQuery(const std::string& sqlquery) const = 0;
 };
-
+} // namespace sql_storage
 } // namespace hg
-

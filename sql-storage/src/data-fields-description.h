@@ -4,7 +4,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
 template<class T>
@@ -19,5 +19,5 @@ FieldDescriptionList Fields(T data)
     return FieldDescriptionList();
 }
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb

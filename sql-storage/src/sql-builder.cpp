@@ -3,7 +3,7 @@
 
 namespace hb
 {
-namespace storage
+namespace sql_storage
 {
 
 std::string BuildInsertStatement(const std::string& table,
@@ -74,6 +74,6 @@ std::string BuildDeleteStatement(const std::string& table,
     return query_string.str();
 }
 
-} // namespace storage
+} // namespace sql_storage
 } // namespace hb
 
