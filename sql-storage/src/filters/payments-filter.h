@@ -1,6 +1,4 @@
-#ifndef PAYMENTSFILTER_H
-#define PAYMENTSFILTER_H
-
+#pragma once
 #include <string>
 #include <sstream>
 
@@ -11,14 +9,12 @@ namespace hb
 {
 namespace storage
 {
-
-class PaymentsByDateFilter: public AllValuesFilter
+class PaymentsByDateFilter : public AllValuesFilter
 {
 public:
-
-    PaymentsByDateFilter(const std::string& after, const std::string& before):
-        m_minDate(after),
-        m_maxDate(before)
+    PaymentsByDateFilter(const std::string& after, const std::string& before)
+        : m_minDate(after)
+        , m_maxDate(before)
     {
     }
 
@@ -47,9 +43,8 @@ public:
     }
 
 private:
-    const std::string       m_minDate;
-    const std::string       m_maxDate;
+    const std::string m_minDate;
+    const std::string m_maxDate;
 };
-} // namespace storage
-} // namespace hb
-#endif // PAYMENTSFILTER_H
+}  // namespace storage
+}  // namespace hb

@@ -14,7 +14,7 @@
    <string>Hello this fucking world!!!</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../res/icons.qrc">
+   <iconset resource="../../res/icons.qrc">
     <normaloff>:/icons/credit_card.ico</normaloff>:/icons/credit_card.ico</iconset>
   </property>
   <property name="styleSheet">
@@ -641,7 +641,7 @@
             <bool>false</bool>
            </property>
            <attribute name="horizontalHeaderVisible">
-            <bool>false</bool>
+            <bool>true</bool>
            </attribute>
            <attribute name="horizontalHeaderHighlightSections">
             <bool>false</bool>
@@ -1214,7 +1214,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../../res/icons.qrc"/>
+  <include location="../../res/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

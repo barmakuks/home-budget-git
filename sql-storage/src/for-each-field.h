@@ -1,6 +1,4 @@
-#ifndef FOREACHFIELD_H
-#define FOREACHFIELD_H
-
+#pragma once
 #include <string>
 #include <boost/lexical_cast.hpp>
 #include <memory>
@@ -110,5 +108,3 @@ FieldDescriptionPtr CreateFieldDescription(const char* name, T value)
 
 }  // namespace storage
 }  // namespace hb
-
-#endif  // FOREACHFIELD_H

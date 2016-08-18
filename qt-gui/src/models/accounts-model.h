@@ -1,7 +1,5 @@
 #pragma once
 #include <QAbstractListModel>
-#include <vector>
-
 #include "account.h"
 
 class AccountsModel : public QAbstractListModel

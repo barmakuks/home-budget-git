@@ -1,6 +1,4 @@
-#ifndef PAYMENTSBALANCEFILTER_H
-#define PAYMENTSBALANCEFILTER_H
-
+#pragma once
 #include <string>
 #include "all-values-filter.h"
 
@@ -8,12 +6,11 @@ namespace hb
 {
 namespace storage
 {
-
-class PaymentsBalanceFilter: public AllValuesFilter
+class PaymentsBalanceFilter : public AllValuesFilter
 {
 public:
-    PaymentsBalanceFilter(Date date):
-        m_date(date)
+    PaymentsBalanceFilter(Date date)
+        : m_date(date)
     {
     }
 
@@ -29,14 +26,13 @@ public:
 
     std::string From() const
     {
-        return "payments p LEFT OUTER JOIN payment_documents pd ON p.id=pd.payment_id " + (m_date.empty() ? std::string("") : " and date <= '" + m_date + "'");
+        return "payments p LEFT OUTER JOIN payment_documents pd ON p.id=pd.payment_id "
+               + (m_date.empty() ? std::string("") : " and date <= '" + m_date + "'");
     }
 
 private:
-    Date    m_date;
+    Date m_date;
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // PAYMENTSBALANCEFILTER_H
+}  // namespace storage
+}  // namespace hb

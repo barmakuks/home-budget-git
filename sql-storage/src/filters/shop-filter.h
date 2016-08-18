@@ -1,6 +1,4 @@
-#ifndef SHOPFILTER_H
-#define SHOPFILTER_H
-
+#pragma once
 #include <string>
 #include "all-values-filter.h"
 
@@ -8,12 +6,11 @@ namespace hb
 {
 namespace storage
 {
-
-class ShopListFilter: public AllValuesFilter
+class ShopListFilter : public AllValuesFilter
 {
 public:
-    ShopListFilter():
-        AllValuesFilter()
+    ShopListFilter()
+        : AllValuesFilter()
     {
     }
 
@@ -27,10 +24,11 @@ public:
         return "documents";
     }
 
-    std::string OrderBy() const { return "shop";}
-
+    std::string OrderBy() const
+    {
+        return "shop";
+    }
 };
 
-} // storage
-} // hb
-#endif // SHOPFILTER_H
+}  // storage
+}  // hb

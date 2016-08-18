@@ -1,10 +1,8 @@
-#ifndef SETTERS_HPP
-#define SETTERS_HPP
-
+#pragma once
 #include <boost/lexical_cast.hpp>
 #include <memory>
 
-template<typename value_type>
+template <typename value_type>
 typename std::remove_reference<value_type>::type ParseValue(const std::string& valueStr,
                                                             bool& result)
 {
@@ -20,22 +18,21 @@ typename std::remove_reference<value_type>::type ParseValue(const std::string& v
         result = true;
         return value;
     }
-    catch(boost::bad_lexical_cast const& )
+    catch (boost::bad_lexical_cast const&)
     {
         result = false;
         return typename std::remove_reference<value_type>::type();
     }
 }
 
-template<>
-inline const std::string ParseValue<const std::string&>(const std::string& valueStr,
-                                                        bool& result)
+template <>
+inline const std::string ParseValue<const std::string&>(const std::string& valueStr, bool& result)
 {
     result = true;
     return valueStr;
 }
 
-template<class Object, typename value_type>
+template <class Object, typename value_type>
 bool SetFieldValue(Object& obj,
                    void (Object::*setter)(value_type),
                    const std::string& expectedField,
@@ -60,8 +57,7 @@ bool SetFieldValue(Object& obj,
     return false;
 }
 
-
-template<class Object, typename value_type>
+template <class Object, typename value_type>
 inline void SetFieldValue(std::shared_ptr<Object>& obj,
                           void (Object::*setter)(value_type),
                           const std::string& expectedField,
@@ -83,5 +79,3 @@ inline void SetFieldValue(std::shared_ptr<Object>& obj,
         }
     }
 }
-
-#endif // SETTERS_HPP

@@ -1,5 +1,4 @@
-#ifndef DOCUMENTBYDATEFILTER_H
-#define DOCUMENTBYDATEFILTER_H
+#pragma once
 #include <string>
 #include <sstream>
 
@@ -102,5 +101,3 @@ private:
 
 }  // namespace storage
 }  // namespace hb
-
-#endif  // DOCUMENTBYDATEFILTER_H

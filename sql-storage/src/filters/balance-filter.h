@@ -1,6 +1,4 @@
-#ifndef BALANCEFILTER_H
-#define BALANCEFILTER_H
-
+#pragma once
 #include <string>
 #include "all-values-filter.h"
 
@@ -8,12 +6,11 @@ namespace hb
 {
 namespace storage
 {
-
-class BalanceFilter: public AllValuesFilter
+class BalanceFilter : public AllValuesFilter
 {
 public:
-    BalanceFilter(Date date):
-        m_date(date)
+    BalanceFilter(Date date)
+        : m_date(date)
     {
     }
 
@@ -43,10 +40,8 @@ public:
     }
 
 private:
-    Date    m_date;
+    Date m_date;
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // BALANCEFILTER_H
+}  // namespace storage
+}  // namespace hb

@@ -1,5 +1,4 @@
-#ifndef DOCTYPEFILTERDIALOG_H
-#define DOCTYPEFILTERDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QAbstractButton>
@@ -30,5 +29,3 @@ private:
     Ui::DocTypeFilterDialog* ui;
     DocTypeFilterModel*      m_model;
 };
-
-#endif // DOCTYPEFILTERDIALOG_H

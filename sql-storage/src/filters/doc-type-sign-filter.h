@@ -1,6 +1,4 @@
-#ifndef DOCTYPESIGNFILTER_H
-#define DOCTYPESIGNFILTER_H
-
+#pragma once
 #include <string>
 #include <sstream>
 
@@ -11,8 +9,7 @@ namespace hb
 {
 namespace storage
 {
-
-class DocTypeFilter: public AllValuesFilter
+class DocTypeFilter : public AllValuesFilter
 {
 public:
     DocTypeFilter()
@@ -25,12 +22,11 @@ public:
     }
 };
 
-
-class DocTypeSignFilter: public DocTypeFilter
+class DocTypeSignFilter : public DocTypeFilter
 {
 public:
-    DocTypeSignFilter(DocumentType::Direction sign):
-        m_sign(sign)
+    DocTypeSignFilter(DocumentType::Direction sign)
+        : m_sign(sign)
     {
     }
 
@@ -46,7 +42,5 @@ private:
     const DocumentType::Direction m_sign;
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // DOCTYPESIGNFILTER_H
+}  // namespace storage
+}  // namespace hb

@@ -1,6 +1,4 @@
-#ifndef CONVERTUTILS_H
-#define CONVERTUTILS_H
-
+#pragma once
 #include "raw-types.h"
 
 class QDate;
@@ -10,7 +8,6 @@ namespace hb
 {
 namespace qt_utils
 {
-
 QDate QDatefromNormalizedDate(const hb::Date& date);
 
 hb::Date NormalizeDate(const QDate& date);
@@ -21,8 +18,5 @@ QString Convert(const std::string& source);
 
 QString Tr(const std::string& source);
 QString Tr(const char* source);
-
 }
 }
-
-#endif // CONVERTUTILS_H

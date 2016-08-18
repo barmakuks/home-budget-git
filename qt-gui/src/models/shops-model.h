@@ -1,6 +1,4 @@
-#ifndef SHOPSMODEL_H
-#define SHOPSMODEL_H
-
+#pragma once
 #include <QAbstractListModel>
 #include <vector>
 
@@ -26,5 +24,3 @@ private:
 private:
     hb::ShopListPtr m_shops;
 };
-
-#endif  // SHOPSMODEL_H

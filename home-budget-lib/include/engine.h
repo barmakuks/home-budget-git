@@ -1,6 +1,4 @@
-#ifndef ENGINE_H
-#define ENGINE_H
-
+#pragma once
 #include <memory>
 
 #include "istorage.h"
@@ -85,4 +83,3 @@ private:
 };
 
 } // namespace hb
-#endif // ENGINE_H

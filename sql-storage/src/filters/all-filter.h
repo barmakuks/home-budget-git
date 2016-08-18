@@ -1,14 +1,11 @@
-#ifndef ALLFILTER_H
-#define ALLFILTER_H
-
+#pragma once
 #include "all-values-filter.h"
 
 namespace hb
 {
 namespace storage
 {
-
-class AllDocumentsFilter: public AllValuesFilter
+class AllDocumentsFilter : public AllValuesFilter
 {
 public:
     AllDocumentsFilter()
@@ -21,7 +18,5 @@ public:
     }
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // ALLFILTER_H
+}  // namespace storage
+}  // namespace hb

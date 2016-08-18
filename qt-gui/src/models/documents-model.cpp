@@ -62,7 +62,7 @@ struct Columns
 };
 }
 
-int DocumentsModel::rowCount(const QModelIndex& parent) const
+int DocumentsModel::rowCount(const QModelIndex& /*parent*/) const
 {
     int row_count = (m_documents) ? m_documents->size() : 0;
 

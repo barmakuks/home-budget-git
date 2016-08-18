@@ -1,13 +1,10 @@
-#ifndef DOCTYPEFILTERMODEL_H
-#define DOCTYPEFILTERMODEL_H
-
+#pragma once
 #include <QAbstractListModel>
 #include "documenttype.h"
 
-class DocTypeFilterModel: public QAbstractListModel
+class DocTypeFilterModel : public QAbstractListModel
 {
 public:
-
     void Reload();
     // QAbstractItemModel interface
 public:
@@ -21,30 +18,26 @@ public:
     void ResetSelection();
 
 private:
-    void  AddTypes(hb::DocTypeIdList& doctypes, const std::string& prefix = "", int level = 0);
+    void AddTypes(hb::DocTypeIdList& doctypes, const std::string& prefix = "", int level = 0);
 
 private:
     struct CheckedDocType
     {
-        CheckedDocType(hb::DocTypeId   id,
-                       std::string     name,
-                       bool            checked,
-                       int level):
-            id(id),
-            name(name),
-            checked(checked),
-            level(level)
+        CheckedDocType(hb::DocTypeId id, std::string name, bool checked, int level)
+            : id(id)
+            , name(name)
+            , checked(checked)
+            , level(level)
         {
         }
+
     public:
-        hb::DocTypeId   id;
-        std::string     name;
-        bool            checked = false;
-        int             level;
+        hb::DocTypeId id;
+        std::string name;
+        bool checked = false;
+        int level;
     };
     typedef std::vector<CheckedDocType> DocTypesNames;
 
     DocTypesNames m_doc_types;
 };
-
-#endif // DOCTYPEFILTERMODEL_H

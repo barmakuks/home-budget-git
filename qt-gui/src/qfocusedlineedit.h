@@ -1,6 +1,4 @@
-#ifndef QFOCUSEDLINEEDIT_H
-#define QFOCUSEDLINEEDIT_H
-
+#pragma once
 #include <QLineEdit>
 
 class QFocusedLineEdit : public QLineEdit
@@ -18,8 +16,7 @@ protected:
     void focusInEvent(QFocusEvent* e) override;
     void focusOutEvent(QFocusEvent* e) override;
     void mousePressEvent(QMouseEvent* e) override;
+
 private:
     bool m_just_has_focused;
 };
-
-#endif // QFOCUSEDLINEEDIT_H

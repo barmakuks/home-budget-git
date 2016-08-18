@@ -1,6 +1,4 @@
-#ifndef ALLACCOUNTSFILTER_H
-#define ALLACCOUNTSFILTER_H
-
+#pragma once
 #include <string>
 
 #include "documenttype.h"
@@ -10,8 +8,7 @@ namespace hb
 {
 namespace storage
 {
-
-class AllAccountsFilter: public AllValuesFilter
+class AllAccountsFilter : public AllValuesFilter
 {
 public:
     AllAccountsFilter()
@@ -24,7 +21,5 @@ public:
     }
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // ALLACCOUNTSFILTER_H
+}  // namespace storage
+}  // namespace hb

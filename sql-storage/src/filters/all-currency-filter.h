@@ -1,6 +1,4 @@
-#ifndef ALLCURRENCYFILTER_H
-#define ALLCURRENCYFILTER_H
-
+#pragma once
 #include <string>
 #include "all-values-filter.h"
 
@@ -8,8 +6,7 @@ namespace hb
 {
 namespace storage
 {
-
-class AllCurrencyFilter: public AllValuesFilter
+class AllCurrencyFilter : public AllValuesFilter
 {
 public:
     AllCurrencyFilter()
@@ -22,7 +19,5 @@ public:
     }
 };
 
-} // namespace storage
-} // namespace hb
-
-#endif // ALLCURRENCYFILTER_H
+}  // namespace storage
+}  // namespace hb
