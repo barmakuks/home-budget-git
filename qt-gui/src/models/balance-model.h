@@ -5,15 +5,6 @@
 #include "balance.h"
 #include "currency.h"
 
-namespace hb
-{
-namespace core
-{
-class IStorage;
-class BalanceRow;
-}
-}
-
 class BalanceModel : public QAbstractItemModel
 {
 public:

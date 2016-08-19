@@ -1,6 +1,6 @@
 #pragma once
 
-#include "idatabase-engine.h"
+#include "sql-database-engine.h"
 #include <boost/lexical_cast.hpp>
 #include "hb-types.h"
 
@@ -8,7 +8,7 @@ namespace hb
 {
 namespace sql_storage
 {
-class LastIdStrategy : public IDatabaseEngine::ICallbackStrategy
+class LastIdStrategy : public SqlDatabaseEngine::CallbackStrategy
 {
 public:
     typedef Identifier ResultType;

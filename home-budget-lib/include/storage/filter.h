@@ -2,7 +2,9 @@
 #include <memory>
 namespace hb
 {
-class IFilter
+namespace storage
+{
+class Filter
 {
 public:
     virtual std::string Fields() const = 0;
@@ -13,6 +15,7 @@ public:
     virtual std::string OrderBy() const = 0;
 };
 
-using IFilterPtr = std::unique_ptr<IFilter>;
+using FilterPtr = std::unique_ptr<Filter>;
 
+} // namespace storage
 }  // namespace hb

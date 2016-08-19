@@ -1,13 +1,13 @@
 #pragma once
 
-#include "storage/istorage.h"
+#include "storage/storage.h"
 
 namespace hb
 {
 namespace sql_storage
 {
 
-class AllValuesFilter: public IFilter
+class AllValuesFilter: public storage::Filter
 {
 public:
     virtual std::string Fields() const {return "*";}

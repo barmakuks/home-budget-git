@@ -7,10 +7,13 @@
 #include <sqlite-engine.h>
 #include "get-doc-engine.h"
 
-class App: public QApplication
+class App : public QApplication
 {
 public:
-    App(int& argc, char* argv[]):QApplication(argc, argv){}
+    App(int& argc, char* argv[])
+        : QApplication(argc, argv)
+    {
+    }
 
     bool notify(QObject* receiver, QEvent* event)
     {
@@ -33,8 +36,9 @@ int main(int argc, char* argv[])
 
     App a(argc, argv);
 
-//    WebEngine::Setup(IWebEnginePtr(new QtWebEngine()));
-//    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new PrivatbankCurrencyRatesProvider()));
+    //    WebEngine::Setup(IWebEnginePtr(new QtWebEngine()));
+    //    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new
+    //    PrivatbankCurrencyRatesProvider()));
 
     std::string path_to_db = "/home/vitalii/development/home-budget-git/data/budget.sqlite";
 
@@ -44,11 +48,11 @@ int main(int argc, char* argv[])
     }
 
     hb::sqlite::SqliteEngine db_engine(path_to_db);
-    IStoragePtr storage(new DatabaseStorage(db_engine));
+    storage::StoragePtr storage(new DatabaseStorage(db_engine));
 
     InitDocEngine(storage);
 
-//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
     MainWindow w;
     w.show();

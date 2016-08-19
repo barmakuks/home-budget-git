@@ -6,14 +6,13 @@
 #include "payment-document.h"
 #include "payment-type.h"
 #include <boost/lexical_cast.hpp>
-#include <storage/istorage.h>
-#include <storage/ifilter.h>
-#include <storage/ifilter-factory.h>
+#include <storage/filter.h>
+#include <storage/filter-factory.h>
 
 namespace hb
 {
 
-DocEngine::DocEngine(const IStoragePtr& storage)
+DocEngine::DocEngine(const storage::StoragePtr& storage)
     : m_storage(storage)
 {
 }

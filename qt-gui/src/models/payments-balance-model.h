@@ -7,7 +7,6 @@
 
 namespace hb
 {
-class IStorage;
 class PaymentsBalanceRow;
 }
 

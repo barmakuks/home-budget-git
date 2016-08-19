@@ -4,7 +4,7 @@
 #include <vector>
 #include <type_traits>
 
-#include "idatabase-engine.h"
+#include "sql-database-engine.h"
 #include "setters.hpp"
 #include "get_type_traits.hpp"
 
@@ -44,7 +44,7 @@ template <class Type,
               typename get_collection_item_type<typename Type::element_type>::type::element_type&,
               const std::string&,
               const std::string&)>
-class FillStrategy : public IDatabaseEngine::ICallbackStrategy
+class FillStrategy : public SqlDatabaseEngine::CallbackStrategy
 {
 public:
     using ResultType = Type;

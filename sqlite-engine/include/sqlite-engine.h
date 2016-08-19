@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <idatabase-engine.h>
+#include <sql-database-engine.h>
 
 namespace hb
 {
@@ -25,7 +25,7 @@ private:
     const std::string m_what;
 };
 
-class SqliteEngine : public sql_storage::IDatabaseEngine
+class SqliteEngine : public sql_storage::SqlDatabaseEngine
 {
 public:
     static bool IsDbExists(const std::string& path);
@@ -35,7 +35,7 @@ public:
     SqliteEngine(const std::string& path);
 
     virtual bool ExecuteQuery(const std::string& sqlquery,
-                              ICallbackStrategy& callbackStrategy) const;
+                              CallbackStrategy& callbackStrategy) const;
 
     virtual bool ExecuteNonQuery(const std::string& sqlquery) const;
 

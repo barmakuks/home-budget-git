@@ -1,39 +1,43 @@
 #pragma once
-#include "storage/istorage.h"
-#include "idatabase-engine.h"
+#include "storage/storage.h"
+#include "storage/exchange-rates-storage.h"
+#include "sql-database-engine.h"
 
 namespace hb
 {
-class IFilter;
+namespace storage
+{
+class Filter;
+}  // namespace storage
 
 namespace sql_storage
 {
-class DatabaseStorage : public IStorage
+class DatabaseStorage : public storage::Storage, public storage::ExchangeRatesStorage
 {
 public:
-    DatabaseStorage(IDatabaseEngine& engine);
+    DatabaseStorage(SqlDatabaseEngine& engine);
 
-    // IStorage interface
+    // Storage interface
 public:
-    DocumentTypeListPtr GetTypeList(const IFilter& filter) const override;
+    DocumentTypeListPtr GetTypeList(const storage::Filter& filter) const override;
 
-    DocumentsPtr GetDocuments(const IFilter& filter) const override;
+    DocumentsPtr GetDocuments(const storage::Filter& filter) const override;
 
-    AccountMapPtr GetAccounts(const IFilter& filter) const override;
+    AccountMapPtr GetAccounts(const storage::Filter& filter) const override;
 
-    CurrencyMapPtr GetCurrencies(const IFilter& filter) const override;
+    CurrencyMapPtr GetCurrencies(const storage::Filter& filter) const override;
 
-    BalancePtr GetBalance(const IFilter& filter) const override;
+    BalancePtr GetBalance(const storage::Filter& filter) const override;
 
-    PaymentsBalancePtr GetPaymentsBalance(const IFilter& filter) const override;
+    PaymentsBalancePtr GetPaymentsBalance(const storage::Filter& filter) const override;
 
-    PaymentTypesMapPtr GetPaymentTypes(const IFilter& filter) const override;
+    PaymentTypesMapPtr GetPaymentTypes(const storage::Filter& filter) const override;
 
-    PaymentsPtr GetPayments(const IFilter& filter) const override;
+    PaymentsPtr GetPayments(const storage::Filter& filter) const override;
 
-    ShopListPtr GetShopList(const IFilter& filter) const override;
+    ShopListPtr GetShopList(const storage::Filter& filter) const override;
 
-    ReportPtr GetReport(const IFilter& filter) const override;
+    ReportPtr GetReport(const storage::Filter& filter) const override;
 
     ParamValue GetParamValue(const ParamName& paramName,
                              const ParamValue& defaultValue) const override;
@@ -49,10 +53,18 @@ public:
     bool Delete(const Account& account) const override;
     bool Delete(const Currency& currency) const override;
 
-    const IFilterFactory& GetFilterFactory() const override;
+    const storage::FilterFactory& GetFilterFactory() const override;
+
+    // ExchangeRatesStorage interface
+public:
+    bool ContainsExchangeRates(const Date& date) const override;
+    void UpdateExchangeRates(const Date& date,
+                             const currency_exchange::ExchangeRatesTable& rates) override;
+    currency_exchange::ExchangeRates GetExhangeRates(const Date& date,
+                                                     CurrencyId currency) const override;
 
 private:
-    IDatabaseEngine& m_databaseEngine;
+    SqlDatabaseEngine& m_databaseEngine;
 };
 
 }  // namespace sql_storage

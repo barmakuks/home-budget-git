@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "storage/istorage.h"
+#include "storage/storage.h"
 #include <documenttype.h>
 #include "payment-type.h"
 
@@ -16,7 +16,7 @@ class DocEngine
     DocEngine(const DocEngine& storage) = delete;
 
 public:
-    DocEngine(const IStoragePtr& storage);
+    DocEngine(const storage::StoragePtr& storage);
 
     DocumentPtr CreateDocument(DocumentType::Direction docType);
 
@@ -60,7 +60,7 @@ protected:
     DocTypeId GetRootDocTypeId(DocumentType::Direction documentType);
 
 private:
-    IStoragePtr m_storage;
+    storage::StoragePtr m_storage;
 
     AccountMapPtr m_accounts;
     AccountListPtr m_accountList;

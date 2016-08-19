@@ -8,7 +8,7 @@ namespace hb
 {
 namespace sql_storage
 {
-class FillReportStrategy : public IDatabaseEngine::ICallbackStrategy
+class FillReportStrategy : public SqlDatabaseEngine::CallbackStrategy
 {
 public:
     using ResultType = ReportPtr;

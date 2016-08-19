@@ -46,8 +46,8 @@ int callback(void* strategyPtr, int argc, char** argv, char** azColName)
 {
     if (strategyPtr)
     {
-        sql_storage::IDatabaseEngine::ICallbackStrategy* strategy
-            = static_cast<sql_storage::IDatabaseEngine::ICallbackStrategy*>(strategyPtr);
+        sql_storage::SqlDatabaseEngine::CallbackStrategy* strategy
+            = static_cast<sql_storage::SqlDatabaseEngine::CallbackStrategy*>(strategyPtr);
 
         strategy->NewRecord();
 
@@ -64,7 +64,7 @@ int callback(void* strategyPtr, int argc, char** argv, char** azColName)
 }
 
 bool SqliteEngine::ExecuteQuery(const std::string& sqlquery,
-                                ICallbackStrategy& callbackStrategy) const
+                                CallbackStrategy& callbackStrategy) const
 {
     sqlite3* db;
     char* zErrMsg = 0;

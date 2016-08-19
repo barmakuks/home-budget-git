@@ -17,38 +17,40 @@ namespace hb
 class PaymentsPtr;
 class PaymentTypesMapPtr;
 
-class IFilter;
-class IFilterFactory;
+namespace storage
+{
+class Filter;
+class FilterFactory;
 
-class IStorage
+class Storage
 {
 public:
-    virtual ~IStorage()
+    virtual ~Storage()
     {
     }
 
     /** Returns map of pairs [DocumentId, DocumentType] from storage
       @param sign
     */
-    virtual DocumentTypeListPtr GetTypeList(const IFilter& filter) const = 0;
+    virtual DocumentTypeListPtr GetTypeList(const Filter& filter) const = 0;
 
-    virtual AccountMapPtr GetAccounts(const IFilter& filter) const = 0;
+    virtual AccountMapPtr GetAccounts(const Filter& filter) const = 0;
 
-    virtual BalancePtr GetBalance(const IFilter& filter) const = 0;
+    virtual BalancePtr GetBalance(const Filter& filter) const = 0;
 
-    virtual CurrencyMapPtr GetCurrencies(const IFilter& filter) const = 0;
+    virtual CurrencyMapPtr GetCurrencies(const Filter& filter) const = 0;
 
-    virtual DocumentsPtr GetDocuments(const IFilter& filter) const = 0;
+    virtual DocumentsPtr GetDocuments(const Filter& filter) const = 0;
 
-    virtual PaymentsBalancePtr GetPaymentsBalance(const IFilter& filter) const = 0;
+    virtual PaymentsBalancePtr GetPaymentsBalance(const Filter& filter) const = 0;
 
-    virtual PaymentsPtr GetPayments(const IFilter& filter) const = 0;
+    virtual PaymentsPtr GetPayments(const Filter& filter) const = 0;
 
-    virtual PaymentTypesMapPtr GetPaymentTypes(const IFilter& filter) const = 0;
+    virtual PaymentTypesMapPtr GetPaymentTypes(const Filter& filter) const = 0;
 
-    virtual ShopListPtr GetShopList(const IFilter& filter) const = 0;
+    virtual ShopListPtr GetShopList(const Filter& filter) const = 0;
 
-    virtual ReportPtr GetReport(const IFilter& filter) const = 0;
+    virtual ReportPtr GetReport(const Filter& filter) const = 0;
 
     virtual ParamValue GetParamValue(const ParamName& paramName,
                                      const ParamValue& defaultValue = NULL) const = 0;
@@ -64,9 +66,9 @@ public:
     virtual bool Delete(const Account& account) const = 0;
     virtual bool Delete(const Currency& currency) const = 0;
 
-    virtual const IFilterFactory& GetFilterFactory() const = 0;
+    virtual const storage::FilterFactory& GetFilterFactory() const = 0;
 };
 
-typedef std::shared_ptr<IStorage> IStoragePtr;
-
+typedef std::shared_ptr<Storage> StoragePtr;
+}  // namespace storage
 }  // namespace hb

@@ -6,16 +6,19 @@ namespace hb
 {
 namespace sql_storage
 {
-
-class IDatabaseEngine
+class SqlDatabaseEngine
 {
 public:
-    virtual ~IDatabaseEngine(){}
+    virtual ~SqlDatabaseEngine()
+    {
+    }
 
-    class ICallbackStrategy
+    class CallbackStrategy
     {
     public:
-        virtual ~ICallbackStrategy(){}
+        virtual ~CallbackStrategy()
+        {
+        }
         virtual void NewRecord() = 0;
         virtual void ApplyRecord() = 0;
         virtual void AddColumnValue(const std::string& fieldName, const std::string& value) = 0;
@@ -23,9 +26,10 @@ public:
     };
 
 public:
-    virtual bool ExecuteQuery(const std::string& sqlquery, ICallbackStrategy& callbackStrategy) const = 0;
+    virtual bool ExecuteQuery(const std::string& sqlquery,
+                              CallbackStrategy& callbackStrategy) const = 0;
 
     virtual bool ExecuteNonQuery(const std::string& sqlquery) const = 0;
 };
-} // namespace sql_storage
-} // namespace hg
+}  // namespace sql_storage
+}  // namespace hg

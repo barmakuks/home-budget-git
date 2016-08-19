@@ -1,10 +1,10 @@
 #pragma once
-#include "storage/istorage.h"
+#include "storage/storage.h"
 
 namespace hb
 {
 class DocEngine;
 
-DocEngine& InitDocEngine(const IStoragePtr& storage);
+DocEngine& InitDocEngine(const storage::StoragePtr& storage);
 DocEngine& GetDocEngine();
 }

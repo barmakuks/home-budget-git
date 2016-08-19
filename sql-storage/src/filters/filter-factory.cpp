@@ -13,60 +13,60 @@ namespace hb
 {
 namespace sql_storage
 {
-IFilterPtr FilterFactory::CreateDocTypeFilter(DocumentType::Direction doc_type_sign) const
+storage::FilterPtr FilterFactory::CreateDocTypeFilter(DocumentType::Direction doc_type_sign) const
 {
-    return IFilterPtr(new DocTypeSignFilter(doc_type_sign));
+    return storage::FilterPtr(new DocTypeSignFilter(doc_type_sign));
 }
 
-IFilterPtr FilterFactory::CreateDocTypeFilter() const
+storage::FilterPtr FilterFactory::CreateDocTypeFilter() const
 {
-    return IFilterPtr(new DocTypeFilter());
+    return storage::FilterPtr(new DocTypeFilter());
 }
 
-IFilterPtr FilterFactory::CreateDocByDateFilter(const std::string& after,
-                                                const std::string& before,
-                                                const AccountId accountId,
-                                                const CurrencyId currencyId,
-                                                const DocTypeIdList& doc_types) const
+storage::FilterPtr FilterFactory::CreateDocByDateFilter(const std::string& after,
+                                                        const std::string& before,
+                                                        const AccountId accountId,
+                                                        const CurrencyId currencyId,
+                                                        const DocTypeIdList& doc_types) const
 {
-    return IFilterPtr(new DocByDateFilter(after, before, accountId, currencyId, doc_types));
+    return storage::FilterPtr(new DocByDateFilter(after, before, accountId, currencyId, doc_types));
 }
 
-IFilterPtr FilterFactory::CreateAllAccountsFilter() const
+storage::FilterPtr FilterFactory::CreateAllAccountsFilter() const
 {
-    return IFilterPtr(new AllAccountsFilter());
+    return storage::FilterPtr(new AllAccountsFilter());
 }
 
-IFilterPtr FilterFactory::CreateAllCurrencyFilter() const
+storage::FilterPtr FilterFactory::CreateAllCurrencyFilter() const
 {
-    return IFilterPtr(new AllCurrencyFilter());
+    return storage::FilterPtr(new AllCurrencyFilter());
 }
 
-IFilterPtr FilterFactory::CreateBalanceFilter(const Date& date) const
+storage::FilterPtr FilterFactory::CreateBalanceFilter(const Date& date) const
 {
-    return IFilterPtr(new BalanceFilter(date));
+    return storage::FilterPtr(new BalanceFilter(date));
 }
 
-IFilterPtr FilterFactory::CreatePaymentsBalanceFilter(const Date& date) const
+storage::FilterPtr FilterFactory::CreatePaymentsBalanceFilter(const Date& date) const
 {
-    return IFilterPtr(new PaymentsBalanceFilter(date));
+    return storage::FilterPtr(new PaymentsBalanceFilter(date));
 }
 
-IFilterPtr FilterFactory::CreatePaymentsByDateFilter(const std::string& after,
+storage::FilterPtr FilterFactory::CreatePaymentsByDateFilter(const std::string& after,
+                                                             const std::string& before) const
+{
+    return storage::FilterPtr(new PaymentsByDateFilter(after, before));
+}
+
+storage::FilterPtr FilterFactory::CreateShopListFilter() const
+{
+    return storage::FilterPtr(new ShopListFilter());
+}
+
+storage::FilterPtr FilterFactory::CreateReportFilter(const std::string& after,
                                                      const std::string& before) const
 {
-    return IFilterPtr(new PaymentsByDateFilter(after, before));
-}
-
-IFilterPtr FilterFactory::CreateShopListFilter() const
-{
-    return IFilterPtr(new ShopListFilter());
-}
-
-IFilterPtr FilterFactory::CreateReportFilter(const std::string& after,
-                                             const std::string& before) const
-{
-    return IFilterPtr(new ReportFilter(after, before));
+    return storage::FilterPtr(new ReportFilter(after, before));
 }
 
 }  // namespace sql_storage

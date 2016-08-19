@@ -1,6 +1,6 @@
 #include "database-storage.h"
 
-#include "idatabase-engine.h"
+#include "sql-database-engine.h"
 
 #include "payment-document.h"
 #include "payment-type.h"
@@ -17,7 +17,7 @@ namespace hb
 {
 namespace sql_storage
 {
-DatabaseStorage::DatabaseStorage(IDatabaseEngine& engine)
+DatabaseStorage::DatabaseStorage(SqlDatabaseEngine& engine)
     : m_databaseEngine(engine)
 {
 }
@@ -25,7 +25,7 @@ DatabaseStorage::DatabaseStorage(IDatabaseEngine& engine)
 namespace
 {
 template <class Strategy>
-typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& filter)
+typename Strategy::ResultType GetData(SqlDatabaseEngine& engine, const storage::Filter& filter)
 {
     Strategy strategy;
 
@@ -52,7 +52,7 @@ typename Strategy::ResultType GetData(IDatabaseEngine& engine, const IFilter& fi
 }
 
 template <class T>
-Identifier SetLastId(IDatabaseEngine& engine, T& data)
+Identifier SetLastId(SqlDatabaseEngine& engine, T& data)
 {
     LastIdStrategy strategy;
 
@@ -68,7 +68,7 @@ Identifier SetLastId(IDatabaseEngine& engine, T& data)
 }
 
 template <>
-Identifier SetLastId<Currency>(IDatabaseEngine& engine, Currency& data)
+Identifier SetLastId<Currency>(SqlDatabaseEngine& engine, Currency& data)
 {
     data.SetId(data.Code());
     return data.Id();
@@ -95,7 +95,7 @@ template <typename T, bool readId>
 class DataWriter
 {
 public:
-    static bool Write(IDatabaseEngine& engine, T& data)
+    static bool Write(SqlDatabaseEngine& engine, T& data)
     {
         const std::string sql_query = BuildSql<T>(data);
 
@@ -114,7 +114,7 @@ template <typename T>
 class DataWriter<T, false>
 {
 public:
-    static bool Write(IDatabaseEngine& engine, T& data)
+    static bool Write(SqlDatabaseEngine& engine, T& data)
     {
         const std::string sql_query = BuildSql<T>(data);
         const bool result = engine.ExecuteNonQuery(sql_query);
@@ -124,13 +124,13 @@ public:
 };
 
 template <typename T>
-bool WriteData(IDatabaseEngine& engine, T& data)
+bool WriteData(SqlDatabaseEngine& engine, T& data)
 {
     return DataWriter<T, class_has_id<T>::value>::Write(engine, data);
 }
 
 template <typename T>
-bool DeleteData(IDatabaseEngine& engine, T& data)
+bool DeleteData(SqlDatabaseEngine& engine, T& data)
 {
     const std::string sql_query = BuildDeleteSql(data);
     const bool result = engine.ExecuteNonQuery(sql_query);
@@ -140,56 +140,56 @@ bool DeleteData(IDatabaseEngine& engine, T& data)
 
 }  // namespace
 
-DocumentTypeListPtr DatabaseStorage::GetTypeList(const IFilter& filter) const
+DocumentTypeListPtr DatabaseStorage::GetTypeList(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::DocumentTypeListPtr, SetDocTypeValue> >(m_databaseEngine,
                                                                             filter);
 }
 
-DocumentsPtr DatabaseStorage::GetDocuments(const IFilter& filter) const
+DocumentsPtr DatabaseStorage::GetDocuments(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::DocumentsPtr, SetDocumentValue> >(m_databaseEngine, filter);
 }
 
-hb::AccountMapPtr DatabaseStorage::GetAccounts(const IFilter& filter) const
+hb::AccountMapPtr DatabaseStorage::GetAccounts(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::AccountMapPtr, SetAccountValue> >(m_databaseEngine, filter);
 }
 
-CurrencyMapPtr DatabaseStorage::GetCurrencies(const IFilter& filter) const
+CurrencyMapPtr DatabaseStorage::GetCurrencies(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::CurrencyMapPtr, SetCurrencyValue> >(m_databaseEngine, filter);
 }
 
-BalancePtr DatabaseStorage::GetBalance(const IFilter& filter) const
+BalancePtr DatabaseStorage::GetBalance(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::BalancePtr, SetBalanceValue> >(m_databaseEngine, filter);
 }
 
-PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const IFilter& filter) const
+PaymentsBalancePtr DatabaseStorage::GetPaymentsBalance(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::PaymentsBalancePtr, SetPaymentsBalanceValue> >(m_databaseEngine,
                                                                                    filter);
 }
 
-PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const IFilter& filter) const
+PaymentTypesMapPtr DatabaseStorage::GetPaymentTypes(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::PaymentTypesMapPtr, SetPaymentTypeValue> >(m_databaseEngine,
                                                                                filter);
 }
 
-PaymentsPtr DatabaseStorage::GetPayments(const IFilter& filter) const
+PaymentsPtr DatabaseStorage::GetPayments(const storage::Filter& filter) const
 {
     return GetData<FillStrategy<hb::PaymentsPtr, SetPaymentValue> >(m_databaseEngine, filter);
 }
 
-ShopListPtr DatabaseStorage::GetShopList(const IFilter& filter) const
+ShopListPtr DatabaseStorage::GetShopList(const storage::Filter& filter) const
 {
     // TODO change strategy
     return GetData<FillShopListStrategy>(m_databaseEngine, filter);
 }
 
-ReportPtr DatabaseStorage::GetReport(const IFilter& filter) const
+ReportPtr DatabaseStorage::GetReport(const storage::Filter& filter) const
 {
     return GetData<FillReportStrategy>(m_databaseEngine, filter);
 }
@@ -246,10 +246,26 @@ bool DatabaseStorage::Delete(const Currency& currency) const
     return DeleteData(m_databaseEngine, currency);
 }
 
-const hb::IFilterFactory& DatabaseStorage::GetFilterFactory() const
+const hb::storage::FilterFactory& DatabaseStorage::GetFilterFactory() const
 {
     static FilterFactory filter_factory;
     return filter_factory;
+}
+
+bool DatabaseStorage::ContainsExchangeRates(const Date& /*date*/) const
+{
+    return false;
+}
+
+void DatabaseStorage::UpdateExchangeRates(const Date& /*date*/,
+                                          const currency_exchange::ExchangeRatesTable& /*rates*/)
+{
+}
+
+currency_exchange::ExchangeRates DatabaseStorage::GetExhangeRates(const Date& /*date*/,
+                                                                  CurrencyId /*currency*/) const
+{
+    return currency_exchange::ExchangeRates();
 }
 
 }  // namespace sql_storage

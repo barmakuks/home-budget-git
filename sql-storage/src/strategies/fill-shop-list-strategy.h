@@ -1,6 +1,6 @@
 #pragma once
 
-#include "idatabase-engine.h"
+#include "sql-database-engine.h"
 #include "document.h"
 
 namespace hb
@@ -8,7 +8,7 @@ namespace hb
 namespace sql_storage
 {
 
-class FillShopListStrategy: public IDatabaseEngine::ICallbackStrategy
+class FillShopListStrategy: public SqlDatabaseEngine::CallbackStrategy
 {
 public:
     using ResultType = ShopListPtr;
