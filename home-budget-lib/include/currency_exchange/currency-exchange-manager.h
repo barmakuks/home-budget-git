@@ -1,63 +1,38 @@
-#ifndef CURRENCYEXCHANGEMANAGER_H
-#define CURRENCYEXCHANGEMANAGER_H
-
+#pragma once
 #include <memory>
-#include <map>
-#include <vector>
-
-#include "currency-rates-interfaces.h"
+#include "exchange-rates.h"
+#include "hb-types.h"
 
 namespace hb
 {
-namespace core
+namespace storage
+{
+class ExchangeRatesStorage;
+} // namespace storage
+
+namespace currency_exchange
 {
 
-typedef std::shared_ptr<ICurrencyRatesProvider> CurrencyRatesProviderPtr;
-class CurrencyRatesStoragePtr;
+class ExchangeRatesProvider;
+typedef std::shared_ptr<ExchangeRatesProvider> ExchangeRatesProviderPtr;
 
-class CurrencyExchangeManager: public ICurrencyRatesReceiver
+typedef std::shared_ptr<storage::ExchangeRatesStorage> ExchangeRatesStoragePtr;
+
+class CurrencyExchangeManager
 {
 public:
+    CurrencyExchangeManager(const ExchangeRatesProviderPtr& provider,
+                            const ExchangeRatesStoragePtr& storage);
 
-    static void AddRatesProvider(const CurrencyRatesProviderPtr& ratesProvider);
-
-    static void RequestRates(const Date& date, ICurrencyRatesReceiver* listener);
-
+    void LoadExchangeRates(const hb::Date& date);
+    bool IsExchangeRatesLoaded(const hb::Date& date) const;
+    ExchangeRates GetExchangeRates(const hb::Date& date, hb::CurrencyId currency) const;
 private:
-    static std::shared_ptr<CurrencyExchangeManager> instance;
+    class Impl;
 
-protected:
-    CurrencyExchangeManager()
-    {}
-
-    void SetRatesStorage(const CurrencyRatesStoragePtr& ratesStorage);
-    void AddProvider(const CurrencyRatesProviderPtr& ratesProvider);
-
-private:
-    void SendRequest(const Date& date, ICurrencyRatesReceiver* listener);
-
-    bool SendNextRequest(const Date& date);
-
-    void AddListener(const Date& date, ICurrencyRatesReceiver* listener);
-    void RemoveListeners(const Date& date);
-
-    // Overwrite ICurrencyRatesReceiver
-    virtual void OnCurrencyExchangeRatesReceived(const Date& date, const ExchangeRateTable& rates);
-
-private:
-    typedef std::vector<ICurrencyRatesReceiver*>    Listeners;
-    typedef std::map<Date, Listeners>               ListenersByDate;
-
-    ListenersByDate                                 m_listeners;
-
-    typedef std::vector<CurrencyRatesProviderPtr>   Providers;
-    Providers                                       m_providers;
-
-    typedef std::map<Date, Providers::const_iterator> ProviderIterators;
-    ProviderIterators                               m_current_providers;
+    std::unique_ptr<Impl> m_impl;
 };
 
-} // namespace core
+} // namespace currency_exchange
 } // namespace hb
 
-#endif // CURRENCYEXCHANGEMANAGER_H
