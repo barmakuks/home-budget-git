@@ -209,7 +209,7 @@ PaymentTypesMapPtr DocEngine::GetPaymentTypes(bool reload)
 {
     if (reload || !m_paymentTypes)
     {
-        static const auto filter = m_storage->GetFilterFactory().CreatePaymentsBalanceFilter();
+        const auto filter = m_storage->GetFilterFactory().CreatePaymentsBalanceFilter();
         m_paymentTypes = m_storage->GetPaymentTypes(*filter);
     }
 
@@ -235,7 +235,7 @@ ShopListPtr DocEngine::GetShops(bool reload)
 
 ReportPtr DocEngine::GetReport(const Date& from, const Date& to) const
 {
-    static const auto filter = m_storage->GetFilterFactory().CreateReportFilter(from, to);
+    const auto filter = m_storage->GetFilterFactory().CreateReportFilter(from, to);
     return m_storage->GetReport(*filter);
 }
 
