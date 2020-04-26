@@ -16,6 +16,8 @@
 #include "utils/convert-utils.h"
 #include "models/moneyvalidator.h"
 
+#include <cmath>
+
 DocumentDialog* DocumentDialog::dlg = NULL;
 
 using namespace hb;

@@ -10,6 +10,8 @@
 #include "models/moneyvalidator.h"
 #include "utils/convert-utils.h"
 
+#include <cmath>
+
 MovementDialog* MovementDialog::dlg = NULL;
 
 using namespace hb;

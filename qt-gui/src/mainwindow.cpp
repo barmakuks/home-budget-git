@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <QGraphicsTextItem>
 #include <functional>
+#include <cmath>
 
 #include "hb_chrono.h"
 #include "document-dialog.h"
