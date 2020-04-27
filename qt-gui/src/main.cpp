@@ -40,6 +40,8 @@ int main(int argc, char* argv[])
     //    CurrencyExchangeManager::AddRatesProvider(CurrencyRatesProviderPtr(new
     //    PrivatbankCurrencyRatesProvider()));
 
+    QLocale::setDefault(QLocale(QLocale::Language::English, QLocale::Country::UnitedStates));
+
     std::string path_to_db = "/home/vitalii/development/home-budget-git/data/budget.sqlite";
 
     if (argc > 1)
