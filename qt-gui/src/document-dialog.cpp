@@ -61,7 +61,7 @@ void DocumentDialog::SetupUI(const DocumentPtr& document)
     }
 
     // set amount
-    Amount& amount = docType->Sign() == DocumentType::Direction::Income
+    Amount amount = docType->Sign() == DocumentType::Direction::Income
                          ? document->AmountTo().get()
                          : document->AmountFrom().get();
     ui->amountEdit->setText(Tr(FormatMoney(amount.Value())));
