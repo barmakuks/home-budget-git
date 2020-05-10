@@ -50,8 +50,8 @@ void MovementDialog::SetupUI(const hb::DocumentPtr& document)
     assert(docType->Sign() == DocumentType::Direction::Movement);
 
     // set amount
-    Amount& amountFrom = document->AmountFrom().get();
-    Amount& amountTo = document->AmountTo().get();
+    Amount amountFrom = document->AmountFrom().get();
+    Amount amountTo = document->AmountTo().get();
 
     ui->amountFromEdit->setText(Tr(FormatMoney(amountFrom.Value())));
     ui->amountToEdit->setText(Tr(FormatMoney(amountTo.Value())));
